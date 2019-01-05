@@ -1,6 +1,6 @@
 {
   "name": "dashboard-mediator",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "engines": {
     "node": "8.12.0"
   },
@@ -8,13 +8,9 @@
     "start": "echo start",
     "test": "echo test"
   },
-  "dependencies": {
-  },
-  "devDependencies": {
-  },
-  "repository": {
-  },
-  "keywords": [
-  ],
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {},
+  "keywords": [],
   "license": "MIT"
 }
