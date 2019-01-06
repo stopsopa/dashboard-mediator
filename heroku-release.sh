@@ -1,4 +1,14 @@
 
+if [ -e .env ]; then
 
-(cd migrations && yarn)
+    echo '.env exist'
+else
+
+    echo ".env doen't exist - copying .env.heroku to .env"
+
+    cp .env.heroku .env
+fi
+
+# (cd migrations && yarn)
+(cd migrations && ln -s ../node_modules .)
 make fixtures
