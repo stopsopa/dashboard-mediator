@@ -31,12 +31,12 @@ const server = app.listen(port, host, () => {
 
 process.on('SIGTERM', function () {
 
-    console.log('one')
+    console.log('SIGTERM handler')
 
     server.close(function () {
 
-        console.log('two')
+        console.log('server.close callback, now exit 0')
 
-        process.exit(12);
+        process.exit(0);
     });
 });
