@@ -21,14 +21,15 @@ export class Roles {
 
 
     @Column("datetime", {
-        default: () => 'CURRENT_TIMESTAMP',
+        nullable: true,
+        // default: () => 'CURRENT_TIMESTAMP',
     })
     created: Date;
 
     @Column("datetime", {
         default: () => null,
         nullable: true,
-        onUpdate: "CURRENT_TIMESTAMP"
+        // onUpdate: "CURRENT_TIMESTAMP"
     })
     updated: Date;
 }
