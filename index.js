@@ -17,14 +17,15 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(bodyParser.json());
 
-app.all('/test', (req, res) => {
 
-    return res.json({
-        body: req.body,
-        query: req.query,
-        node: process.version,
-    })
-});
+const knex              = require('@stopsopa/knex-abstract');
+
+const log               = require('@stopsopa/knex-abstract/log/logn');
+
+knex.init(require('./models/config'));
+
+
+app.all('/test', require('./middlewares/test'));
 
 const port = config.port;
 
