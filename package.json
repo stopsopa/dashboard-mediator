@@ -18,7 +18,10 @@
     "@babel/polyfill": "^7.0.0",
     "@stopsopa/knex-abstract": "^0.0.37",
     "reflect-metadata": "^0.1.10",
-    "typeorm": "^0.2.9"
+    "typeorm": "^0.2.9",
+    "@types/node": "^8.0.29",
+    "ts-node": "3.3.0",
+    "typescript": "2.5.2"
   },
   "devDependencies": {},
   "repository": {},
