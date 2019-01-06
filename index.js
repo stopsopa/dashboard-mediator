@@ -24,7 +24,19 @@ const port = config.port;
 
 const host = '0.0.0.0';
 
-app.listen(port, host, () => {
+const server = app.listen(port, host, () => {
 
     console.log(`\n 🌎  Server is running ` + ` ${host}:${port} ` + "\n")
+});
+
+process.on('SIGTERM', function () {
+
+    console.log('one')
+
+    server.close(function () {
+
+        console.log('two')
+
+        process.exit(12);
+    });
 });
