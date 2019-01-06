@@ -1,7 +1,4 @@
 
-## Online
-[https://stopsopa.herokuapp.com](https://stopsopa.herokuapp.com/)
-
 # node-js-getting-started
 
 A barebones Node.js app using [Express 4](http://expressjs.com/).
@@ -89,6 +86,29 @@ Useful commands:
     
     # scheduler
     heroku addons:open scheduler
+    
+# mysql database managemnet:
+
+[ClearDB MySQL](https://devcenter.heroku.com/articles/cleardb)
+    
+    heroku addons:docs cleardb
+    heroku addons:open cleardb
+
+to see how to connect to db:
+
+    heroku config | grep CLEARDB_DATABASE_URL
+    
+to access through HeidiSQL extract only host from *heroku config | grep CLEARDB_DATABASE_URL* like:
+   
+    mysql://xxxxxxxxxxxxxx:44444444@us-cdbr-iron-east-01.cleardb.net/heroku_444444444444444?reconnect=true
+    to:
+    us-cdbr-iron-east-01.cleardb.net <--- use only host part
+    
+... and use **username** and **password** extracted from *heroku addons:open cleardb*  
+port regular for mysql 3306
+
+WARNING: Sometimes it might be necessary to reset password through *heroku addons:open cleardb* panel (at least I had to)      
+      
     
 # read more:
 

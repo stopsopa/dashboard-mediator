@@ -10,6 +10,13 @@ t:
 start:
 	node index.js
 
+doc: docs
+	(cd docker && docker-compose build)
+	(cd docker && docker-compose up -d --build)
+
+docs:
+	cd docker && docker-compose stop
+
 fixtures:
 	node migrations/recreate-db.js
 	(cd migrations && make mrun)

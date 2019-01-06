@@ -1,5 +1,5 @@
 
-require('@stopsopa/dotenv-up')(2, false, 'tests');
+const mainconfig = require('../config');
 
 const mysql = require('./mysql');
 
@@ -20,13 +20,7 @@ module.exports = {
         // SHOW GRANTS FOR 'dashboard';
         // DROP USER 'dashboard'
         client: 'mysql',
-        connection: {
-            host        : process.env.CLEARDB_DATABASE_URL,
-            port        : process.env.PROTECTED_MYSQL_PORT,
-            user        : process.env.PROTECTED_MYSQL_USER,
-            password    : process.env.PROTECTED_MYSQL_PASS,
-            database    : process.env.PROTECTED_MYSQL_DB,
-        },
+        connection: mainconfig.mysql,
         models: mysql,
     },
     // test: {

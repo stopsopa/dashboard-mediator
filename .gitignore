@@ -5,3 +5,6 @@ npm-debug.log
 # Local development
 .DS_Store
 /.idea/
+/docker/mysql/
+/.env
+/knex-project/
