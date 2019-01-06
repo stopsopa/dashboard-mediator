@@ -15,4 +15,21 @@
     
 # to update project just change code, commit and run:
 
-    make u    
+    make u  
+    
+# deploy locally
+
+    # copy .env
+    cp .env.local .env
+    # run docker mysql
+    make doc       
+    # fixtures
+    make fixtures
+    # run server
+    node index.js
+    # finish
+        
+    
+    
+    
+    
