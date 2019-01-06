@@ -1,1 +1,1 @@
-web: node index.js
+web: /bin/bash heroku-start.sh

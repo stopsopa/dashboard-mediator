@@ -10,4 +10,8 @@ t:
 start:
 	node index.js
 
+fixtures:
+	node migrations/recreate-db.js
+	(cd migrations && make mrun)
+
 
