@@ -4,7 +4,7 @@ services:
     mysql:
         image: mysql/mysql-server:5.7
         ports:
-            - "1060:3306"
+            - "1061:3306"
         environment:
             - MYSQL_ROOT_PASSWORD=docker_super_secret_passwd
             - MYSQL_ROOT_HOST=%
