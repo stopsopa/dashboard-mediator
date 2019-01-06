@@ -1,11 +1,17 @@
 
+const path = require('path');
+
 const express = require('express');
 
 const bodyParser = require('body-parser');
 
+const config = require('./config');
+
 const app = express();
 
-const config = require('./config');
+const favicon = require('serve-favicon');
+
+app.use(favicon(path.join(__dirname, 'favicon.ico')))
 
 app.use(bodyParser.urlencoded({extended: false}));
 
