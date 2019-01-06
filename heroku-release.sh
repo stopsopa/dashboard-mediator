@@ -1,4 +1,7 @@
 
+set -e
+set -x
+
 if [ -e .env ]; then
 
     echo '.env exist'
