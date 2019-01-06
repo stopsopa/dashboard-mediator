@@ -1,4 +1,4 @@
 node_modules
 
-/ormconfig.js
+# /ormconfig.js
 /migration_debug.log
