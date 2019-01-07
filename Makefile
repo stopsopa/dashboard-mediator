@@ -1,4 +1,9 @@
 
+# https://docs.docker.com/compose/reference/envvars/#compose_project_name
+COMPOSE_PROJECT_NAME:="$(shell cat docker/name.conf)"
+
+export COMPOSE_PROJECT_NAME
+
 u: # push to github & release in heroku
 	@/bin/bash update.sh
 

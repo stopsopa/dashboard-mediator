@@ -8,3 +8,4 @@ npm-debug.log
 /docker/mysql/
 /.env
 /knex-project/
+yarn-error.log

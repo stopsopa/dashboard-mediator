@@ -45,7 +45,7 @@ if (process.env.CLEARDB_DATABASE_URL) {
 
     user        = auth[0];
     password    = auth[1];
-    database    = t.pathname.substring(1);
+    database    = t.pathname.substring(1); // remofe leading slash
 
 }
 else {
@@ -76,6 +76,16 @@ if ( ! password ) {
 if ( ! database ) {
 
     throw `database is empty`
+}
+
+if ( ! process.env.PASSWORD ) {
+
+    throw `process.env.PASSWORD is not defined`
+}
+
+if ( ! process.env.PORT && ! process.env.NODE_PORT ) {
+
+    throw `no process.env.PORT nor process.env.NODE_PORT are defined`
 }
 
 module.exports = {

@@ -8,10 +8,13 @@
     # check if
     heroku config
     # has correct CLEARDB_DATABASE_URL env variable 
-    # can be setup by: heroku config:set CLEARDB_DATABASE_URL="mysql://username:password@us-cdbr-iron-east-01.cleardb.net/database_name?reconnect=true"
+    # can be set by: 
+    #       heroku config:set CLEARDB_DATABASE_URL="mysql://username:password@us-cdbr-iron-east-01.cleardb.net/database_name?reconnect=true"
     # for more details see HOROKU.md   
     
     heroku create dashboard-mediator
+    
+    make u
     
 # to update project just change code, commit and run:
 
@@ -28,6 +31,13 @@
     # run server
     node index.js
     # finish
+        
+
+addidional tools
+---    
+
+
+    
         
     
     

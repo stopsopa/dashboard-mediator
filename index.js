@@ -31,6 +31,11 @@ app.all('/test', require('./middlewares/test'));
 
 require('./middlewares/keep-awake')(app);
 
+require('./middlewares/proxy')({
+    password: process.env.PASSWORD,
+    app,
+});
+
 const port = config.port;
 
 const host = '0.0.0.0';
