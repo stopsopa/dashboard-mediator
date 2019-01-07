@@ -118,6 +118,8 @@ if [ "$DIFF" != "" ] || [ "$1" = "force" ]; then
 
     npm version patch
 
+    (cd heroku && /bin/bash keep-awake.sh)
+
     # make umd
     # cat comment.txt dist/spvalidation.js > dist/test.js
     # mv dist/test.js dist/spvalidation.js
