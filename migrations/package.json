@@ -9,7 +9,7 @@
    },
    "dependencies": {
       "@babel/polyfill": "^7.0.0",
-      "@stopsopa/dotenv-up": "^1.0.17",
+      "@stopsopa/dotenv-up": "^1.0.18",
       "@stopsopa/knex-abstract": "^0.0.37",
       "mysql": "^2.14.1",
       "reflect-metadata": "^0.1.10",

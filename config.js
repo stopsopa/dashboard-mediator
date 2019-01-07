@@ -1,5 +1,5 @@
 
-require('@stopsopa/dotenv-up')(8, false, 'main config.js');
+require('@stopsopa/dotenv-up')(1, false, 'main config.js');
 
 // const url = require('url');
 //

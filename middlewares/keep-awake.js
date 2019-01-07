@@ -21,11 +21,13 @@ module.exports = app => {
     app.all('/keep-awake', (req, res) => res.json({
         ok: true,
     }));
-    
+
     /**
      * "... Applications that use the free dyno type will sleep after 30 minutes of inactivity ..."
      * from:
+     *      https://www.heroku.com/pricing
      *      https://devcenter.heroku.com/articles/how-heroku-works#runtime
+     *
      * ... so:
      *      let's so execute again after 25 minutes
      */
@@ -41,13 +43,13 @@ module.exports = app => {
 
         label = now() + ' - ' + label;
 
-        console.log(`[${label}]: attempt to request to '${fullUrl}' ... (async)`);
+        // console.log(`[${label}]: attempt to request to '${fullUrl}' ... (async)`);
 
         fetch(fullUrl)
             .then(res => res.json())
             .then(json => {
 
-                console.log(`[${label}]: keep-awake '${fullUrl}' then: `, json);
+                // console.log(`[${label}]: keep-awake '${fullUrl}' then: `, json);
 
                 if ( json.ok !== true ) {
 

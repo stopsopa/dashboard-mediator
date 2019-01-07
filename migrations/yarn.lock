@@ -15,6 +15,11 @@
   resolved "https://registry.yarnpkg.com/@stopsopa/dotenv-up/-/dotenv-up-1.0.17.tgz#42f4202131a8e3ec49deedc5f0d37ffbb356ba59"
   integrity sha512-4TPUlhK6sFYRmSPhe0fKkZ4QovCVRRxFxpigD0wHCd+i6HONEvbNm/0V2iu9m2reD8Rb7hurzlUdlQIRupBpcA==
 
+"@stopsopa/dotenv-up@^1.0.18":
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/@stopsopa/dotenv-up/-/dotenv-up-1.0.18.tgz#f78ed6401630ba2e5e07c4ff3eda7e4e601d19fb"
+  integrity sha512-HqusLlVAByWCQ9u+va1RqrUE1VkWVlEjibwNFO2CnokGwXHWJnEQXAt2a+Yt4eHGAYbE9Vv3QPg0zv4XzV2g1Q==
+
 "@stopsopa/knex-abstract@^0.0.37":
   version "0.0.37"
   resolved "https://registry.yarnpkg.com/@stopsopa/knex-abstract/-/knex-abstract-0.0.37.tgz#5d8b8a7afd6d06fcefd02bc2ff998d6f5ef26630"
