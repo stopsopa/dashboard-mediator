@@ -83,6 +83,11 @@ if ( ! process.env.PASSWORD ) {
     throw `process.env.PASSWORD is not defined`
 }
 
+if ( ! process.env.PROTECTED_ADMIN_PASS ) {
+
+    throw `process.env.PROTECTED_ADMIN_PASS is not defined`
+}
+
 if ( ! process.env.PORT && ! process.env.NODE_PORT ) {
 
     throw `no process.env.PORT nor process.env.NODE_PORT are defined`

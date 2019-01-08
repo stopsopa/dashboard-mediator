@@ -19,6 +19,33 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(bodyParser.json());
 
+(function () {
+
+    var auth = require('basic-auth');
+
+    app.use((req, res, next) => {
+
+        if (/^\/admin/.test(req.url)) {
+
+            var credentials = auth(req);
+
+            if (!credentials || credentials.name !== 'admin' || credentials.pass !== process.env.PROTECTED_ADMIN_PASS) {
+
+                res.statusCode = 401;
+
+                res.setHeader('WWW-Authenticate', 'Basic realm="Sign in"')
+
+                return res.end('Access denied');
+            } else {
+
+                return next();
+            }
+        }
+
+        next();
+    });
+}());
+
 app.use(require('nlab/express/extend-res'));
 
 app.use(require('nlab/express/console-logger'));

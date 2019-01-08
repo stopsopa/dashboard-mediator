@@ -14,6 +14,7 @@
     "@stopsopa/knex-abstract": "^0.0.40",
     "@stopsopa/validator": "^0.0.93",
     "@types/node": "^8.0.29",
+    "basic-auth": "^2.0.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "inspc": "^0.0.13",

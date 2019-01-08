@@ -293,4 +293,22 @@ fetch('/one/root/dd/test', {
             return res.jsonError(`Can't one proxy`);
         }
     });
+
+    app.all('/admin/clusters', async (req, res) => {
+
+        try {
+
+            const list = await knex().model.clusters.findAll();
+
+            return res.jsonNoCache({
+                list,
+            });
+        }
+        catch (e) {
+
+            log.dump(e);
+
+            return res.jsonError(`Can't one proxy`);
+        }
+    })
 }
