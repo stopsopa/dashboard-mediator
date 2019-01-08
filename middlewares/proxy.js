@@ -316,4 +316,34 @@ fetch('/one/root/dd/test', {
             return res.jsonError(`Can't one proxy`);
         }
     })
+
+    app.all('/admin/cluster/:id', async (req, res) => {
+
+        if ( ! req.basicauth ) {
+
+            return res.basicAuth();
+        }
+
+        const id = req.params.id;
+
+        try {
+
+            const entity = await knex().model.clusters.find(id);
+
+            if ( ! entity ) {
+
+                return res.notFound(`Cluster not found by id: '${id}'`)
+            }
+
+            return res.jsonNoCache({
+                entity,
+            });
+        }
+        catch (e) {
+
+            log.dump(e);
+
+            return res.jsonError(`Can't one proxy`);
+        }
+    })
 }
