@@ -1,5 +1,13 @@
 
+exec 3<> /dev/null
+function red {
+    printf "\e[91m$1\e[0m\n"
+}
+function green {
+    printf "\e[32m$1\e[0m\n"
+}
 set -e
+
 set -x
 
 trim() {
@@ -20,7 +28,7 @@ REG="^https?://"
 
 if ! [[ $DOMAIN =~ $REG ]]; then
 
-    echo "heroku domain >>$DOMAIN<< is not starting from http:// nor https://"
+    { echo "heroku domain >>$DOMAIN<< is not starting from http:// nor https://"; } 2>&3
 
     exit 1;
 fi
@@ -33,4 +41,4 @@ if [ "$DOMAIN" != "$CURRENT_KEEP_AWAKE" ]; then
     heroku config:get KEEP_AWAKE
 fi
 
-echo 'all good'
+{ echo 'all good'; } 2>&3
