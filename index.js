@@ -46,7 +46,7 @@ app.use(bodyParser.json());
 
         if (credentials && credentials.name === 'admin' && credentials.pass === process.env.PROTECTED_ADMIN_PASS) {
 
-            req.basicauth = true;
+            req.admin = true;
         }
 
         next();

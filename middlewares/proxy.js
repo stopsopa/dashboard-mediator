@@ -54,7 +54,7 @@ fetch('/register', {
 	})
 }).then(res => res.json()).then(data => console.log('end', data))
      */
-    app.all('/register', async (req, res) => {
+    app.post('/register', async (req, res) => {
 
         let entity              = req.body;
 
@@ -174,7 +174,7 @@ fetch('/many/root/test', {
     body: JSON.stringify({data:'value'})
 }).then(res => res.json()).then(data => console.log('end', data))
      */
-    app.all('/many/:cluster/:path(*)', async (req, res) => {
+    app.post('/many/:cluster/:path(*)', async (req, res) => {
 
         try {
 
@@ -230,7 +230,7 @@ fetch('/one/root/dd/test', {
 	body: JSON.stringify({data:'value'})
 }).then(res => res.json()).then(data => console.log('end', data))
      */
-    app.all('/one/:cluster/:node(([^\\/]+)|)/:path(*)?', async (req, res) => {
+    app.post('/one/:cluster/:node(([^\\/]+)|)/:path(*)?', async (req, res) => {
 
         try {
 
@@ -296,7 +296,7 @@ fetch('/one/root/dd/test', {
 
     app.all('/admin/clusters', async (req, res) => {
 
-        if ( ! req.basicauth ) {
+        if ( ! req.admin ) {
 
             return res.basicAuth();
         }
@@ -319,7 +319,7 @@ fetch('/one/root/dd/test', {
 
     app.all('/admin/cluster/:id', async (req, res) => {
 
-        if ( ! req.basicauth ) {
+        if ( ! req.admin ) {
 
             return res.basicAuth();
         }
