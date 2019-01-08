@@ -25,21 +25,28 @@ app.use(bodyParser.json());
 
     app.use((req, res, next) => {
 
-        if (/^\/admin/.test(req.url)) {
+        // if (/^\/admin/.test(req.url)) {
+        //
+        //     var credentials = auth(req);
+        //
+        //     if (!credentials || credentials.name !== 'admin' || credentials.pass !== process.env.PROTECTED_ADMIN_PASS) {
+        //
+        //         res.statusCode = 401;
+        //
+        //         res.setHeader('WWW-Authenticate', 'Basic realm="Sign in"')
+        //
+        //         return res.end('Access denied');
+        //     } else {
+        //
+        //         return next();
+        //     }
+        // }
 
-            var credentials = auth(req);
+        var credentials = auth(req);
 
-            if (!credentials || credentials.name !== 'admin' || credentials.pass !== process.env.PROTECTED_ADMIN_PASS) {
+        if (credentials && credentials.name === 'admin' && credentials.pass === process.env.PROTECTED_ADMIN_PASS) {
 
-                res.statusCode = 401;
-
-                res.setHeader('WWW-Authenticate', 'Basic realm="Sign in"')
-
-                return res.end('Access denied');
-            } else {
-
-                return next();
-            }
+            req.basicauth = true;
         }
 
         next();

@@ -1424,10 +1424,10 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
-nlab@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/nlab/-/nlab-0.0.6.tgz#3048d094a907b358350dd51c75fd0676213da70b"
-  integrity sha512-0KzscPRRtCGmeqJ+9Eeuoepg8qJ5s2hXiHsQua9d48jyl/pTSn2WS7Z5hPqAyXJoPFNlRzi9g3OsY9vIlIizuw==
+nlab@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/nlab/-/nlab-0.0.8.tgz#22e203f574366c65fc84994cf23ad23656ee5e77"
+  integrity sha512-hLbaY8Z9+HGTUrbsTxjjJPxjXfO4fiqBuKX8FNqyCiQYkeKQMnhoiVoDcsbzi4sdSXRUpqTuW4vWze3Rk7UsCA==
 
 node-fetch@^1.0.1:
   version "1.7.3"

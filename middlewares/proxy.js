@@ -296,6 +296,11 @@ fetch('/one/root/dd/test', {
 
     app.all('/admin/clusters', async (req, res) => {
 
+        if ( ! req.basicauth ) {
+
+            return res.basicAuth();
+        }
+
         try {
 
             const list = await knex().model.clusters.findAll();
