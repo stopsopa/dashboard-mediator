@@ -1,11 +1,13 @@
 
-const isObject = require('nlab/isObject');
+const isObject      = require('nlab/isObject');
 
-const aes256   = require('nlab/aes256');
+const aes256        = require('nlab/aes256');
 
-const knex     = require('@stopsopa/knex-abstract');
+const knex          = require('@stopsopa/knex-abstract');
 
-const log      = require('inspc');
+const log           = require('inspc');
+
+const validator     = require('@stopsopa/validator');
 
 module.exports = opt => {
 
@@ -35,100 +37,60 @@ module.exports = opt => {
 
     app.all('/register', async (req, res) => {
 
-        if ( ! isObject(req.body) ) {
+        let entity              = req.body;
 
-            return res.jsonError(`req.body is not an object`);
+        let id                  = entity.id;
+
+        const mode              = id ? 'edit' : 'create';
+
+        const man               = knex().model.clusters;
+
+        const validators        = man.getValidators(mode, id, entity);
+
+        if (mode === 'create') {
+
+            entity = {
+                ...man.initial(),
+                ...entity,
+            };
         }
 
-        const {
-            cluster,
-            node,
-            domain,
-            port = 80,
-        } = req.body;
+        const entityPrepared    = man.prepareToValidate(entity, mode);
 
-        let {
-            id,
-        } = req.body;
+        const errors            = await validator(entityPrepared, validators);
 
-        try {
+        if ( ! errors.count() ) {
 
-            if ( typeof cluster !== 'string' ) {
+            try {
 
-                return res.jsonError(`cluster is not a string`);
-            }
+                if (mode === 'edit') {
 
-            if ( typeof node !== 'string' ) {
+                    await man.update(entityPrepared, id);
+                }
+                else {
 
-                return res.jsonError(`node is not a string`);
-            }
-
-            if ( typeof domain !== 'string' ) {
-
-                return res.jsonError(`domain is not a string`);
-            }
-
-            if ( ! port ) {
-
-                return res.jsonError(`port is not defined`);
-            }
-
-            const man = knex().model.clusters;
-
-
-            let entity
-
-            if (id) {
+                    id = await man.insert(entityPrepared);
+                }
 
                 entity = await man.find(id);
+
+                if ( ! entity ) {
+
+                    return res.jsonError("Database state conflict: updated/created entity doesn't exist");
+                }
             }
-            else {
+            catch (e) {
 
-                entity = await man.queryOne(`select id from :table: where cluster = :cluster and node = :node`, {
-                    cluster,
-                    node,
-                });
+                log.dump(e);
+
+                return res.jsonError(`Can't register: ` + JSON.stringify(req.body) + ', reason: ' + e.e);
             }
-
-            let found = true;
-
-            if ( ! entity ) {
-
-                found = false;
-
-                entity = await man.initial();
-            }
-
-            cluster && (entity.cluster = cluster);
-            node    && (entity.node = node);
-            domain  && (entity.domain = domain);
-            port    && (entity.port = port);
-
-            let affected;
-
-            if (found) {
-
-                id = entity.id;
-
-                affected = await man.update(entity, id);
-            }
-            else {
-
-                id = await man.insert(entity);
-            }
-
-            return res.json({
-                mode: (found ? 'update' : 'insert'),
-                affected,
-                id,
-            });
         }
-        catch (e) {
 
-            log.dump(e)
-
-            return res.jsonError(`Can't register: ` + JSON.stringify(req.body));
-        }
+        return res.jsonNoCache({
+            entity: entity,
+            errors: errors.getTree(),
+        });
 
     });
 

@@ -5,36 +5,25 @@ const extend            = abstract.extend;
 
 const prototype         = abstract.prototype;
 
-const log               = require('@stopsopa/knex-abstract/log/logn');
+const log               = require('inspc');
 
 const a                 = prototype.a;
 
+const {
+    Collection,
+    All,
+    Required,
+    Optional,
+    NotBlank,
+    Length,
+    Email,
+    Type,
+    IsTrue,
+    Regex,
+    Callback,
+} = require('@stopsopa/validator');
+
 const ext = {
-    initial: async function () {
-
-//         const id = await this.raw(`
-// select r.id from roles r where r.name = ?
-// `, ['user']).then(role => {
-//             try {
-//                 return role[0][0].id;
-//             }
-//             catch (e) {
-//
-//             }
-//         });
-//
-//         const roles = [];
-//
-//         if (id) {
-//
-//             roles.push(id);
-//         }
-
-        return {
-            updated     : this.now(),
-            created     : this.now(),
-        }
-    },
     // fromDb: row => {
     //
     //     if ( ! row ) {
@@ -71,32 +60,14 @@ const ext = {
     //
     //     return row;
     // },
+    initial: async function () {
+        return {
+            updated     : this.now(),
+            created     : this.now(),
+            port        : 80,
+        }
+    },
     toDb: row => {
-
-        if (typeof row.roles !== 'undefined') {
-
-            delete row.roles;
-        }
-
-        // if (typeof row.created !== 'undefined') {
-        //
-        //     delete row.created;
-        // }
-        //
-        // if (typeof row.updated !== 'undefined') {
-        //
-        //     delete row.updated;
-        // }
-
-        if (!row.config) {
-
-            delete row.config;
-        }
-
-        if (typeof row.config !== 'undefined' && typeof row.config !== 'string') {
-
-            row.config = JSON.stringify(row.config, null, 4);
-        }
 
         return row;
     },
@@ -114,27 +85,109 @@ const ext = {
 
         let [debug, trx, entity] = a(args);
 
-        entity.updated = this.now();
+        entity.created = this.now();
 
         delete entity.updated;
 
-        // let roles = null;
-        //
-        // if (Array.isArray(entity.roles)) {
-        //
-        //     roles = entity.roles;
-        // }
-        //
-        // entity = this.toDb(Object.assign({}, entity));
-        //
         const id = await prototype.prototype.insert.call(this, debug, trx, entity);
 
-        // if (roles) {
-        //
-        //     await this.updateRoles(id, roles);
-        // }
-
         return id;
+    },
+    prepareToValidate: function (data = {}, mode) {
+
+        delete data.created;
+
+        delete data.updated;
+
+        return data;
+    },
+    getValidators: function (mode = null, id, entity) {
+
+        const validators = {
+            id: new Optional(),
+            cluster: new Required([
+                new NotBlank(),
+                new Length({max: 50}),
+                new Callback(
+                    (value, context, path, extra) =>
+                        new Promise(async (resolve, reject) => {
+
+                            const {
+                                cluster,
+                                node,
+                                id,
+                            } = context.rootData;
+
+                            const condition = (node === null) ? 'is' : '=';
+
+                            let c;
+
+                            if (mode === 'create') {
+
+                                c = await this.queryColumn(`select count(*) c from :table: where cluster = :cluster and node ${condition} :node`, {
+                                    cluster,
+                                    node,
+                                });
+                            }
+                            else {
+
+                                c = await this.queryColumn(`select count(*) c from :table: where cluster = :cluster and node ${condition} :node and id != :id`, {
+                                    cluster,
+                                    node,
+                                    id,
+                                });
+                            }
+
+                            const code = "CALLBACK-NOTUNIQUE";
+
+                            if (c > 0) {
+
+                                context
+                                    .buildViolation('Not unique')
+                                    .atPath(path)
+                                    //.setParameter('{{ callback }}', 'not equal')
+                                    .setCode(code)
+                                    .setInvalidValue(`cluster: '${cluster}' and node: '${node}'`)
+                                    .addViolation()
+                                ;
+
+                                if (extra && extra.stop) {
+
+                                    return reject('reject ' + code);
+                                }
+                            }
+
+                            resolve('resolve ' + code);
+                        })
+                )
+            ]),
+            domain: new Required([
+                new NotBlank(),
+                new Length({max: 50}),
+            ]),
+            port: new Required([
+                new NotBlank(),
+                new Length({max: 8}),
+                new Regex(/^\d+$/),
+            ]),
+        };
+
+        if (typeof entity.node !== 'undefined') {
+
+            if (entity.node === null) {
+
+                validators.node = new Optional();
+            }
+            else {
+
+                validators.node = new Required([
+                    new NotBlank(),
+                    new Length({max: 50}),
+                ]);
+            }
+        }
+
+        return new Collection(validators);
     },
     // delete: async function (id, ...args) {
     //
@@ -200,32 +253,6 @@ const ext = {
 //         `).then(data => {
 //             return data[0];
 //         }).then(list => list.map(this.fromDb));
-//
-//         return data;
-//     },
-//     prepareToValidate: function (data = {}, mode) {
-//
-//         if (typeof data.id !== 'undefined') {
-//
-//             delete data.id;
-//         }
-//
-//         delete data.created;
-//
-//         delete data.updated;
-//
-//         if (mode === 'create') {
-//
-// //            if (empty($data['shortname']) && !empty($data['name'])) {
-// //
-// //                $data['shortname'] = Urlizer::urlizeTrim($data['name']);
-// //            }
-//         }
-//
-//         if (data.config === null) {
-//
-//             delete data.config;
-//         }
 //
 //         return data;
 //     },

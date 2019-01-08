@@ -12,6 +12,7 @@ import {
 import { Roles } from './Roles';
 
 @Entity('clusters')
+@Unique(['cluster', 'node']) // http://typeorm.io/#/decorator-reference/unique
 export class Clusters {
 
     @PrimaryGeneratedColumn()
@@ -26,7 +27,8 @@ export class Clusters {
     cluster: string;
 
     @Column({
-        length: 50
+        length: 50,
+        nullable: true,
     })
     node: string;
 
@@ -36,9 +38,10 @@ export class Clusters {
     domain: string;
 
     @Column({
-        length: 8
+        precision:8 ,
+        default: () => 80
     })
-    port: string;
+    port: number;
 
     @Column("datetime", {
         nullable: true,

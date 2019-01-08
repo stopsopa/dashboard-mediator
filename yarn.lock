@@ -29,6 +29,11 @@
     knex "^0.16.2"
     mysql "^2.16.0"
 
+"@stopsopa/validator@^0.0.93":
+  version "0.0.93"
+  resolved "https://registry.yarnpkg.com/@stopsopa/validator/-/validator-0.0.93.tgz#3bdb5ae5b1c22053f707bf27e89e721646180e3b"
+  integrity sha512-hUl3Wn71shJE0jwyTrvyC25WSaG9gjhQ+0OqXO2bUd5LCcxYXpB6avDcHWS9Sqpvpvjh1gYvtogHUx+lpX4i4Q==
+
 "@types/bluebird@^3.5.25":
   version "3.5.25"
   resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.5.25.tgz#59188b871208092e37767e4b3d80c3b3eaae43bd"

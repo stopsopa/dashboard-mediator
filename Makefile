@@ -26,4 +26,16 @@ fixtures:
 	(cd migrations && node recreate-db.js safe)
 	(cd migrations && make mrun)
 
+diff:
+	(cd migrations && make diff)
+
+mrun:
+	(cd migrations && make mrun)
+
+torun:
+	(cd migrations && make torun)
+
+mrevert:
+	(cd migrations && make mrevert)
+
 
