@@ -351,41 +351,45 @@ fetch('/one/root/dd/test', {
         }
     });
 
-    // app.all('/token', (req, res) => {
-    //
-    //
-    //     // to create use:
-    //     const token = jwt.sign(
-    //         {},
-    //         process.env.PASSWORD,
-    //         {
-    //             // https://github.com/auth0/node-jsonwebtoken#jwtsignpayload-secretorprivatekey-options-callback
-    //             // must be int
-    //             expiresIn: parseInt(config.jwt.jwt_expire, 10)
-    //         }
-    //     )
-    //
-    //     let verified = false;
-    //
-    //     try {
-    //
-    //         // expecting exception from method .verify() if not valid:
-    //         // https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback
-    //         jwt.verify(token, process.env.PASSWORD);
-    //
-    //         verified = true;
-    //     }
-    //     catch (e) { // auth based on cookie failed (any reason)
-    //
-    //
-    //         log.t(`api: req: '${req.url}', invalid jwt token: '${e}'`);
-    //     }
-    //
-    //     return res.jsonNoCache({
-    //         token,
-    //         verified,
-    //         pass: process.env.PASSWORD,
-    //         exp: config.jwt.jwt_expire,
-    //     })
-    // });
+    app.all('/token', (req, res) => {
+
+        if ( req.admin !== 'basicauth' ) {
+
+            return res.basicAuth();
+        }
+
+        // to create use:
+        const token = jwt.sign(
+            {},
+            process.env.PASSWORD,
+            {
+                // https://github.com/auth0/node-jsonwebtoken#jwtsignpayload-secretorprivatekey-options-callback
+                // must be int
+                expiresIn: parseInt(config.jwt.jwt_expire, 10)
+            }
+        )
+
+        let verified = false;
+
+        try {
+
+            // expecting exception from method .verify() if not valid:
+            // https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback
+            jwt.verify(token, process.env.PASSWORD);
+
+            verified = true;
+        }
+        catch (e) { // auth based on cookie failed (any reason)
+
+
+            log.t(`api: req: '${req.url}', invalid jwt token: '${e}'`);
+        }
+
+        return res.jsonNoCache({
+            token,
+            verified,
+            pass: process.env.PASSWORD,
+            exp: config.jwt.jwt_expire,
+        })
+    });
 }
