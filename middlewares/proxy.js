@@ -11,6 +11,8 @@ const validator     = require('@stopsopa/validator');
 
 const trim          = require('nlab/trim');
 
+const querystring = require('querystring');
+
 module.exports = opt => {
 
     if ( ! isObject(opt) ) {
@@ -185,6 +187,13 @@ fetch('/many/root/test', {
 
             path = '/' + path;
 
+            let query = querystring.stringify(req.query);
+
+            if (query) {
+
+                path += '?' + query;
+            }
+
             const found = await knex().model.clusters.findClusters({
                 cluster,
             });
@@ -212,6 +221,15 @@ fetch('/many/root/test', {
             return res.jsonError(`Can't many proxy`);
         }
     });
+    /**
+fetch('/one/root/dd/test', {
+	method: 'post',
+	headers: {
+		'Content-type': 'application/json; charset=utf-8',
+    },
+	body: JSON.stringify({data:'value'})
+}).then(res => res.json()).then(data => console.log('end', data))
+     */
     app.all('/one/:cluster/:node(([^\\/]+)|)/:path(*)?', async (req, res) => {
 
         try {
@@ -226,12 +244,19 @@ fetch('/many/root/test', {
 
             path = '/' + path;
 
+            let query = querystring.stringify(req.query);
+
+            if (query) {
+
+                path += '?' + query;
+            }
+
             if (typeof node === 'undefined') {
 
                 node = null;
             }
 
-            const found = await knex().model.clusters.findClusters(true, {
+            const found = await knex().model.clusters.findClusters({
                 cluster,
                 node,
             });
