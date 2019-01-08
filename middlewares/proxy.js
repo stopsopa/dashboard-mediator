@@ -9,6 +9,8 @@ const log           = require('inspc');
 
 const validator     = require('@stopsopa/validator');
 
+const trim          = require('nlab/trim');
+
 module.exports = opt => {
 
     if ( ! isObject(opt) ) {
@@ -35,6 +37,21 @@ module.exports = opt => {
 
     const enc = aes256(password);
 
+    /**
+fetch('/register', {
+	method: 'post',
+	headers: {
+		'Content-type': 'application/json; charset=utf-8',
+    },
+	body: JSON.stringify({
+		cluster: 'cluster1',
+		node: 'ddd',
+		domain: 'dom66',
+		port: '90',
+		// id: 19
+	})
+}).then(res => res.json()).then(data => console.log('end', data))
+     */
     app.all('/register', async (req, res) => {
 
         let entity              = req.body;
@@ -94,10 +111,161 @@ module.exports = opt => {
 
     });
 
-    app.all('/proxy', (req, res) => {
+    let i = 0;
 
-        res.json({
-            pass: opt,
-        })
+    const send = ({
+        domain,
+        port,
+    }, path, data) => {
+
+        let url = domain;
+
+        if (port != 80) {
+
+            url += ':' + port;
+        }
+
+        url += path;
+
+        let tmp;
+
+        return fetch(url, {
+            method: 'post',
+            headers: {
+                'Content-type': 'application/json; charset=utf-8',
+            },
+            body: JSON.stringify(data)
+        }).then(res => {
+            tmp = res;
+            return res.json();
+        }).then(
+            d => ({then: d}),
+            e => {
+
+                const resp = {catch: e};
+
+                tmp && (resp.res = {
+                    status: tmp.status,
+                    url: tmp.url,
+                    statusText: tmp.statusText,
+                    headers: (function (){
+                        try {
+                            return tmp.headers._headers;
+                        }
+                        catch (e) {
+
+                            return `can't extract`;
+                        }
+                    }()),
+                });
+
+                return resp;
+            }
+        );
+    }
+    /**
+fetch('/many/root/test', {
+    method: 'post',
+    headers: {
+        'Content-type': 'application/json; charset=utf-8',
+    },
+    body: JSON.stringify({data:'value'})
+}).then(res => res.json()).then(data => console.log('end', data))
+     */
+    app.all('/many/:cluster/:path(*)', async (req, res) => {
+
+        try {
+
+            let {
+                cluster,
+                path,
+            } = req.params;
+
+            path = trim(path, '/');
+
+            path = '/' + path;
+
+            const found = await knex().model.clusters.findClusters({
+                cluster,
+            });
+
+            if ( ! found.length ) {
+
+                return res.jsonError(`cluster not found`);
+            }
+
+            try {
+
+                const data = await Promise.all(found.map(d => send(d, path, req.body)))
+
+                return res.jsonNoCache(data);
+            }
+            catch (e) {
+
+                return res.jsonError(e + '');
+            }
+        }
+        catch (e) {
+
+            log.dump(e);
+
+            return res.jsonError(`Can't many proxy`);
+        }
+    });
+    app.all('/one/:cluster/:node(([^\\/]+)|)/:path(*)?', async (req, res) => {
+
+        try {
+
+            let {
+                cluster,
+                node,
+                path,
+            } = req.params;
+
+            path = trim(path || '', '/');
+
+            path = '/' + path;
+
+            if (typeof node === 'undefined') {
+
+                node = null;
+            }
+
+            const found = await knex().model.clusters.findClusters(true, {
+                cluster,
+                node,
+            });
+
+            // log.dump({
+            //     route: 'one',
+            //     found,
+            //     cluster,
+            //     node,
+            //     path,
+            //     body: req.body,
+            // }, 3);
+
+            if ( ! found.length ) {
+
+                return res.jsonError(`clusters not found`);
+            }
+
+            try {
+
+                const data = await send(found.shift(), path, req.body);
+
+                return res.jsonNoCache(data);
+            }
+            catch (e) {
+
+                return res.jsonError(e + '');
+            }
+        }
+        catch (e) {
+
+            log.dump(e);
+
+            return res.jsonError(`Can't one proxy`);
+        }
     });
 }

@@ -164,6 +164,7 @@ const ext = {
             domain: new Required([
                 new NotBlank(),
                 new Length({max: 50}),
+                new Regex(/^https?:\/\//i),
             ]),
             port: new Required([
                 new NotBlank(),
@@ -174,11 +175,9 @@ const ext = {
 
         if (typeof entity.node !== 'undefined') {
 
-            if (entity.node === null) {
+            validators.node = new Optional();
 
-                validators.node = new Optional();
-            }
-            else {
+            if (entity.node !== null) {
 
                 validators.node = new Required([
                     new NotBlank(),
@@ -189,6 +188,37 @@ const ext = {
 
         return new Collection(validators);
     },
+    findClusters: async function (...args) {
+
+        let [debug, trx, params] = a(args);
+
+        let query = `select * from :table: where cluster = :cluster`;
+
+        let {
+            cluster,
+            node,
+        } = params;
+
+        params = {
+            cluster,
+        }
+
+        if (typeof node !== 'undefined') {
+
+            if (node === null) {
+
+                query += ' and node is null';
+            }
+            else {
+
+                query += ' and node = :node';
+
+                params.node = node;
+            }
+        }
+
+        return await this.query(debug, trx, query, params);
+    }
     // delete: async function (id, ...args) {
     //
     //     await this.clearRoles(id);
