@@ -95,6 +95,10 @@ if ( ! process.env.PORT && ! process.env.NODE_PORT ) {
 
 module.exports = {
     port: process.env.PORT || process.env.NODE_PORT,
+    jwt: {
+        // in seconds (in this case 9 hours)
+        jwt_expire: 32400,
+    },
     mysql: {
         host,
         port,

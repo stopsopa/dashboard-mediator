@@ -1,13 +1,15 @@
 
-const path = require('path');
+const path          = require('path');
 
-const express = require('express');
+const express       = require('express');
 
-const bodyParser = require('body-parser');
+const bodyParser    = require('body-parser');
 
-const config = require('./config');
+const jwt           = require('jsonwebtoken');
 
-const app = express();
+const config        = require('./config');
+
+const app           = express();
 
 require('isomorphic-fetch');
 
@@ -42,11 +44,42 @@ app.use(bodyParser.json());
         //     }
         // }
 
-        var credentials = auth(req);
+        let token = req.get('x-jwt');
 
-        if (credentials && credentials.name === 'admin' && credentials.pass === process.env.PROTECTED_ADMIN_PASS) {
+        if (token) {
 
-            req.admin = true;
+            // to create use:
+            // const token = jwt.sign(
+            //     {},
+            //     process.env.PASSWORD,
+            //     {
+            //         // https://github.com/auth0/node-jsonwebtoken#jwtsignpayload-secretorprivatekey-options-callback
+            //         // must be int
+            //         expiresIn: parseInt(config.jwt.jwt_expire, 10)
+            //     }
+            // )
+
+            try {
+
+                // expecting exception from method .verify() if not valid:
+                // https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback
+                jwt.verify(token, process.env.PASSWORD);
+
+                req.admin = 'jwt';
+            }
+            catch (e) { // auth based on cookie failed (any reason)
+
+                log.t(`api: req: '${req.url}', invalid jwt token: '${e}'`);
+            }
+        }
+        else {
+
+            var credentials = auth(req);
+
+            if (credentials && credentials.name === 'admin' && credentials.pass === process.env.PROTECTED_ADMIN_PASS) {
+
+                req.admin = 'basicauth';
+            }
         }
 
         next();
