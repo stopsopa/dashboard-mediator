@@ -10,4 +10,5 @@ const log               = require('@stopsopa/knex-abstract/log/logn');
 const a                 = prototype.a;
 
 module.exports = knex => extend(knex, prototype, {
+
 }, 'many', 'id');

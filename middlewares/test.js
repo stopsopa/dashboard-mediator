@@ -1,8 +1,7 @@
 
 const knex              = require('@stopsopa/knex-abstract');
 
-
-const log               = require('@stopsopa/knex-abstract/log/logn');
+const log               = require('inspc');
 
 module.exports = async (req, res) => {
 

@@ -33,7 +33,7 @@ export class Clusters {
     @Column({
         length: 50
     })
-    ip: string;
+    domain: string;
 
     @Column({
         length: 8

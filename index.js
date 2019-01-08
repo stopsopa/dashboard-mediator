@@ -19,6 +19,9 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(bodyParser.json());
 
+app.use(require('nlab/express/extend-res'));
+
+app.use(require('nlab/express/console-logger'));
 
 const knex              = require('@stopsopa/knex-abstract');
 
