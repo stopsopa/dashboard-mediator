@@ -9,6 +9,8 @@ const bodyParser    = require('body-parser');
 
 const jwt           = require('jsonwebtoken');
 
+const log           = require('inspc');
+
 const config        = require('./config');
 
 const app           = express();
@@ -116,8 +118,6 @@ app.use(require('nlab/express/console-logger'));
 }());
 
 const knex              = require('@stopsopa/knex-abstract');
-
-const log               = require('@stopsopa/knex-abstract/log/logn');
 
 knex.init(require('./models/config'));
 

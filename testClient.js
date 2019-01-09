@@ -9,6 +9,8 @@ const bodyParser    = require('body-parser');
 
 const jwt           = require('jsonwebtoken');
 
+const log           = require('inspc');
+
 const config        = require('./config');
 
 const app           = express();
@@ -114,19 +116,6 @@ app.use(require('nlab/express/console-logger'));
 
     app.use(express.static(dir));
 }());
-
-const knex              = require('@stopsopa/knex-abstract');
-
-const log               = require('@stopsopa/knex-abstract/log/logn');
-
-knex.init(require('./models/config'));
-
-
-app.all('/ping', require('./middlewares/test'));
-
-require('./middlewares/keep-awake')(app);
-
-require('./middlewares/proxy')(app);
 
 require('./middlewares/registerItself')({
     password: process.env.PASSWORD,
