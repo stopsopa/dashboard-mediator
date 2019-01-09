@@ -21,6 +21,14 @@ module.exports = {
         // DROP USER 'dashboard'
         client: 'mysql',
         connection: mainconfig.mysql,
+        pool: {
+            ping: function(connection, callback) { // https://github.com/tgriesser/knex/issues/1198#issuecomment-190893377
+                connection.query({sql: 'SELECT 1 = 1'}, [], callback);
+            },
+            pingTimeout: 3*1000,
+            min: 1,
+            max: 10
+        },
         models: mysql,
     },
     // test: {
