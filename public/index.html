@@ -61,7 +61,7 @@
                 let json;
                 try {
 
-                    const res       = await fetch('/token');
+                    const res       = await fetch('/token?x-jwt=');
                     json      = await res.json();
                     this.setState({
                         jwt: json.token,
@@ -85,7 +85,7 @@
             onGetNodes = async () => {
                 try {
 
-                    const res       = await fetch('/admin/clusters');
+                    const res       = await fetch('/admin/clusters?x-jwt=');
                     const json      = await res.json();
                     this.setState({
                         nodes: json,
@@ -107,7 +107,7 @@
 
                     const { nodeId } = this.state;
 
-                    const res       = await fetch(`/admin/cluster/${nodeId}`);
+                    const res       = await fetch(`/admin/cluster/${nodeId}?x-jwt=`);
                     const json      = await res.json();
                     this.setState({
                         nodeIdJson: json,
@@ -138,11 +138,14 @@
                     <>
                         <button onClick={this.onLogout}>logout</button>
                         <div>
+<h3>about authentication:</h3>
+<p>each of following fetch requests can be authenticated using genrated jwt token by placing it in request header <b>x-jwt</b>, request get parameter: <b>x-jwt</b> or in json body object on the main level under the same name key <b>x-jwt</b></p>
+
 <h3>get token:</h3>
 <p>(request have to be authenticated with basic auth or jwt)</p>
-<pre>{`fetch('/token').then(res => res.json()).then(console.log)`}</pre>
+<pre>{`fetch('/token?x-jwt=').then(res => res.json()).then(console.log)`}</pre>
 <button onClick={this.onGenerateJWT}>generate token</button><button onClick={() => this.onClear('jwt', '')}>clear</button>
-<a href="/token" target="_blank">/token</a>
+<a href="/token?x-jwt=" target="_blank">/token</a>
 <br />
 <textarea type="text" value={jwt} style={{width: '100%', height: '50px'}} onClick={e => e.target.select()} />
 
@@ -150,15 +153,15 @@
 <p>(request have to be authenticated with basic auth or jwt)</p>
 <pre>{`fetch('/admin/clusters').then(res => res.json()).then(console.log)`}</pre>
 <button onClick={this.onGetNodes}>get nodes</button><button onClick={() => this.onClear('nodes', '')}>clear</button>
-<a href="/admin/clusters" target="_blank">/admin/clusters</a>
+<a href="/admin/clusters?x-jwt=" target="_blank">/admin/clusters</a>
 <br />
 <pre type="text" onClick={e => e.target.select()} >{JSON.stringify(nodes, null, 4)}</pre>
 
 <h3>get one node details:</h3>
 <p>(request have to be authenticated with basic auth or jwt)</p>
-<pre>{`fetch('/admin/cluster/:id').then(res => res.json()).then(console.log)`}</pre>
+<pre>{`fetch('/admin/cluster/:id?x-jwt=').then(res => res.json()).then(console.log)`}</pre>
 <button onClick={this.onGetNodeDetails}>get node{nodeId ? `(id: ${nodeId}) ` : ''} details</button>
-<a href={`/admin/cluster/${nodeId}`} target="_blank">{`/admin/cluster/${nodeId}`}</a>
+<a href={`/admin/cluster/${nodeId}?x-jwt=`} target="_blank">{`/admin/cluster/${nodeId}`}</a>
 <input onChange={e => this.setState({nodeId: e.target.value})} value={nodeId}/>
 <button onClick={() => this.onClear('nodeIdJson', '')}>clear</button>
 <br />
@@ -166,7 +169,7 @@
 
 <h3>registering/editing node</h3>
 <p>(request have to be authenticated with basic auth or jwt)</p>
-<pre>{`fetch('/register', {
+<pre>{`fetch('/register?x-jwt=', {
     method: 'post',
     headers: {
         'Content-type': 'application/json; charset=utf-8',
@@ -184,9 +187,9 @@
 
 
 <h3>remove node</h3>
-<pre>{`fetch('/remove/28').then(res => res.json()).then(e => console.log('then', e), e => console.log('catch', e))`}</pre>
+<pre>{`fetch('/remove/28?x-jwt=').then(res => res.json()).then(e => console.log('then', e), e => console.log('catch', e))`}</pre>
 <p>or:</p>
-<pre>{`fetch('/remove', {
+<pre>{`fetch('/remove?x-jwt=', {
     method: 'post',
     headers: {
         'Content-type': 'application/json; charset=utf-8',
