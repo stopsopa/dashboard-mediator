@@ -12,4 +12,4 @@ else
     cp .env.heroku .env
 fi
 
-node index.js
+make start
