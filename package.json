@@ -1,6 +1,6 @@
 {
   "name": "dashboard-mediator",
-  "version": "0.0.40",
+  "version": "0.0.41",
   "engines": {
     "node": "8.12.0"
   },
