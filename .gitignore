@@ -10,3 +10,4 @@ npm-debug.log
 /knex-project/
 yarn-error.log
 /public/public
+/publicSender/public

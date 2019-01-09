@@ -19,16 +19,11 @@ require('isomorphic-fetch');
 
 const favicon = require('serve-favicon');
 
-app.use(favicon(path.join(__dirname, 'favicon.ico')))
+app.use(favicon(path.join(__dirname, 'faviconSender.ico')))
 
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(bodyParser.json());
-
-app.use((req, res, next) => {
-    res.set('Access-Control-Allow-Origin', '*');
-    next();
-});
 
 (function () {
 
@@ -102,7 +97,7 @@ app.use(require('nlab/express/console-logger'));
 // serving static files
 (function () {
 
-    const dir = path.resolve('./public');
+    const dir = path.resolve('./publicSender');
 
     app.use((req, res, next) => {
 
@@ -122,18 +117,16 @@ app.use(require('nlab/express/console-logger'));
     app.use(express.static(dir));
 }());
 
-const knex              = require('@stopsopa/knex-abstract');
+require('./middlewares/registerItself')({
+    password: process.env.PASSWORD,
+    mediator: config.testSenderConfig.mediator,
+});
 
-knex.init(require('./models/config'));
-
-
-app.all('/ping', require('./middlewares/ping'));
-
-require('./middlewares/keep-awake')(app);
+app.all('/config', (req, res) => res.jsonNoCache(config))
 
 require('./middlewares/proxy')(app);
 
-const port = config.port;
+const port = config.testSenderConfig.port;
 
 const host = '0.0.0.0';
 

@@ -15,8 +15,12 @@ t:
 start: linknpm
 	node index.js
 
+sender: linknpm
+	node testClientSender.js
+
 linknpm:
 	(cd public && ln -s ../node_modules public) | true
+	(cd publicSender && ln -s ../node_modules public) | true
 
 doc: docs
 	(cd docker && docker-compose build)
