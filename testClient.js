@@ -131,7 +131,6 @@ require('./middlewares/proxy')(app);
 require('./middlewares/registerItself')({
     password: process.env.PASSWORD,
     mediator: config.testClientConfig.mediator,
-    app,
 });
 
 const port = config.testClientConfig.port;

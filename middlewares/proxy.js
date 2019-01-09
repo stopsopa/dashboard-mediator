@@ -48,8 +48,6 @@ fetch('/register', {
 
         let entity              = req.body;
 
-        log.dump(entity);
-
         const man               = knex().model.clusters;
 
         if ( ! entity.id && entity.cluster && typeof entity.node !== 'undefined' ) {

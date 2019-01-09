@@ -62,7 +62,6 @@ module.exports = async opt => {
         }
 
         const validators = new Collection({
-            app                         : new Required(),
             password                    : new Required([b, s]),
             mediator                    : new Collection({
                 domain                  : new Required([b, u]),
@@ -146,8 +145,11 @@ module.exports = async opt => {
 
                 again();
             })
-            .catch(() => {
-                log.t(th('catch'));
+            .catch(e => {
+                log.dump({
+                    'catch': e
+                }, 4)
+
                 again();
             })
         ;
