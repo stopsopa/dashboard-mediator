@@ -6,6 +6,12 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        pre {
+            padding: 4px;
+            background-color: rgba(239, 239, 239, 1);
+        }
+    </style>
 </head>
 <body>
     <div id="app"></div>
@@ -14,6 +20,7 @@
     <script src="public/@babel/standalone/babel.min.js"></script>
     <script>window.React || document.write("run server using 'make start' it will link node_modules where it should be");</script>
     <script type="text/babel">
+
         const log=(function(){try{return console.log}catch(e){return function(){}}}());
 
         const delay = (time, data) =>
@@ -28,11 +35,143 @@
                 super(...args);
 
                 this.state = {
+                    jwt: '',
+                    nodes: '',
+                    nodeId: '',
                 }
             }
+            onLogout = () => {
+                function logout(url){
+                    var str = url.replace("http://", "http://" + new Date().getTime() + "@");
+                    var xmlhttp;
+                    if (window.XMLHttpRequest) xmlhttp=new XMLHttpRequest();
+                    else xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                    xmlhttp.onreadystatechange=function()
+                    {
+                        if (xmlhttp.readyState==4) location.reload();
+                    }
+                    xmlhttp.open("GET",str,true);
+                    xmlhttp.setRequestHeader("Authorization","Basic YXNkc2E6")
+                    xmlhttp.send();
+                    return false;
+                }
+                logout(location.href);
+            }
+            onGenerateJWT = async () => {
+                let json;
+                try {
+
+                    const res       = await fetch('/token');
+                    json      = await res.json();
+                    this.setState({
+                        jwt: json.token,
+                    })
+                }
+                catch (e) {
+                    console.log(e)
+                }
+
+                return json.token;
+            }
+            getToken = async () => {
+
+                if (this.state.token) {
+
+                    return this.state.token;
+                }
+
+                return this.onGenerateJWT();
+            }
+            onGetNodes = async () => {
+                try {
+
+                    const res       = await fetch('/admin/clusters');
+                    const json      = await res.json();
+                    this.setState({
+                        nodes: json,
+                    });
+
+                    if (json.list.length > 0) {
+
+                        this.setState({
+                            nodeId: json.list[0].id,
+                        });
+                    }
+                }
+                catch (e) {
+                    console.log(e)
+                }
+            }
+            onGetNodeDetails = async () => {
+                try {
+
+                    const { nodeId } = this.state;
+
+                    const res       = await fetch(`/admin/cluster/${nodeId}`);
+                    const json      = await res.json();
+                    this.setState({
+                        nodeIdJson: json,
+                    });
+                }
+                catch (e) {
+
+                    this.setState({
+                        nodeIdJson: e,
+                    });
+
+                    console.log(e)
+                }
+            }
+            onClear = (field, value) => this.setState({
+                [field]: value,
+            })
             render() {
+
+                const {
+                    jwt,
+                    nodes,
+                    nodeId,
+                    nodeIdJson,
+                } = this.state;
+
                 return (
-                    <div>It's working...</div>
+                    <>
+                        <button onClick={this.onLogout}>logout</button>
+                        <div>
+<h3>get token:</h3>
+<p>(request have to be authenticated with basic auth or jwt)</p>
+<pre>{`fetch('/token').then(res => res.json()).then(console.log)`}</pre>
+<button onClick={this.onGenerateJWT}>generate token</button><button onClick={() => this.onClear('jwt', '')}>clear</button>
+<br />
+<textarea type="text" value={jwt} style={{width: '100%', height: '50px'}} onClick={e => e.target.select()} />
+
+<h3>list node across all clusters:</h3>
+<p>(request have to be authenticated with basic auth or jwt)</p>
+<pre>{`fetch('/admin/clusters').then(res => res.json()).then(console.log)`}</pre>
+<button onClick={this.onGetNodes}>get nodes</button><button onClick={() => this.onClear('nodes', '')}>clear</button>
+<br />
+<pre type="text" onClick={e => e.target.select()} >{JSON.stringify(nodes, null, 4)}</pre>
+
+<h3>get one node details:</h3>
+<p>(request have to be authenticated with basic auth or jwt)</p>
+<pre>{`fetch('/admin/cluster/:id').then(res => res.json()).then(console.log)`}</pre>
+<button onClick={this.onGetNodeDetails}>get node{nodeId ? `(id: ${nodeId}) ` : ''} details</button>
+<input onChange={e => this.setState({nodeId: e.target.value})} value={nodeId}/>
+<button onClick={() => this.onClear('nodeIdJson', '')}>clear</button>
+<br />
+<pre type="text" onClick={e => e.target.select()} >{JSON.stringify(nodeIdJson, null, 4)}</pre>
+
+<pre>{`fetch('/many/cluster/path?x-jwt=...', {
+    method: 'post',
+    headers: {
+        'Content-type': 'application/json; charset=utf-8',
+    },
+    body: JSON.stringify({data:'value'})
+}).then(res => res.json()).then(data => console.log('end', data))
+`}</pre>
+
+                        </div>
+                    </>
                 );
             }
         }

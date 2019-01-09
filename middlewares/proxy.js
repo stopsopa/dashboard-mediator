@@ -342,7 +342,7 @@ fetch('/one/root/dd/test', {
         }
     })
 
-    app.all('/admin/cluster/:id', async (req, res) => {
+    app.all('/admin/cluster/:id?', async (req, res) => {
 
         if ( ! req.admin ) {
 
