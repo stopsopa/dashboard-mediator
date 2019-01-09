@@ -114,7 +114,7 @@ const ext = {
 
                             const {
                                 cluster,
-                                node,
+                                node = null,
                                 id,
                             } = context.rootData;
 

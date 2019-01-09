@@ -46,7 +46,7 @@ module.exports = opt => {
     /**
 fetch('/register?x-jwt=...', {
 
-
+// you might identify node in cluster to edit by id or just by pair of values (cluster & node)
 fetch('/register', {
 	method: 'post',
 	headers: {
@@ -70,11 +70,31 @@ fetch('/register', {
 
         let entity              = req.body;
 
+        const man               = knex().model.clusters;
+
+        if ( ! entity.id && entity.cluster && typeof entity.node !== 'undefined' ) {
+
+            const {
+                cluster,
+                node,
+            } = entity;
+
+            const cond = (node === null) ? 'is' : '=';
+
+            const found = await man.queryOne(`select id from :table: where cluster = :cluster and node ${cond} :node`, {
+                cluster,
+                node,
+            });
+
+            if (found) {
+
+                entity.id = found.id;
+            }
+        }
+
         let id                  = entity.id;
 
         const mode              = id ? 'edit' : 'create';
-
-        const man               = knex().model.clusters;
 
         const validators        = man.getValidators(mode, id, entity);
 

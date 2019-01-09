@@ -164,14 +164,21 @@
 <br />
 <pre type="text" onClick={e => e.target.select()} >{JSON.stringify(nodeIdJson, null, 4)}</pre>
 
-<pre>{`fetch('/many/cluster/path?x-jwt=...', {
+<h3>registering/editing node</h3>
+<p>(request have to be authenticated with basic auth or jwt)</p>
+<pre>{`fetch('/register', {
     method: 'post',
     headers: {
         'Content-type': 'application/json; charset=utf-8',
     },
-    body: JSON.stringify({data:'value'})
-}).then(res => res.json()).then(data => console.log('end', data))
-`}</pre>
+    body: JSON.stringify({
+        cluster: 'cluster-name',
+        node: 'node-nam', // can be null
+        domain: 'http://service.url',
+        port: '80',
+        // id: 19 // you might use id, but if not then in order to find entity will be used uniqe index values (cluster & node)
+    })
+}).then(res => res.json()).then(console.log)`}</pre>
 
                         </div>
                     </>
