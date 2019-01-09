@@ -25,19 +25,19 @@
   resolved "https://registry.yarnpkg.com/@stopsopa/dotenv-up/-/dotenv-up-1.0.18.tgz#f78ed6401630ba2e5e07c4ff3eda7e4e601d19fb"
   integrity sha512-HqusLlVAByWCQ9u+va1RqrUE1VkWVlEjibwNFO2CnokGwXHWJnEQXAt2a+Yt4eHGAYbE9Vv3QPg0zv4XzV2g1Q==
 
-"@stopsopa/knex-abstract@^0.0.40":
-  version "0.0.40"
-  resolved "https://registry.yarnpkg.com/@stopsopa/knex-abstract/-/knex-abstract-0.0.40.tgz#50c32dce225bfff2cf81e5fb08bb8275500783dc"
-  integrity sha512-ktBVwYEIRJfEJQ+r8KyASR+5aLECGaqYsrv2TMjtEvai4EgXCj7zJ836XUhAMJqeGG27jEhmy9XCH0Cm6yC68w==
+"@stopsopa/knex-abstract@^0.0.41":
+  version "0.0.41"
+  resolved "https://registry.yarnpkg.com/@stopsopa/knex-abstract/-/knex-abstract-0.0.41.tgz#90a76b884e78f95493296d76846b1dd99174c3b7"
+  integrity sha512-kkCylOCSC60AHy5xQukii1lOO6CmlRW8PHMqVCeY0+kyVqev3/LrWnqL8R2rLgc5Y3tfm9YH/5pho9PvBFm8Rw==
   dependencies:
     "@stopsopa/dotenv-up" "^1.0.17"
     knex "^0.16.2"
     mysql "^2.16.0"
 
-"@stopsopa/validator@^0.0.93":
-  version "0.0.93"
-  resolved "https://registry.yarnpkg.com/@stopsopa/validator/-/validator-0.0.93.tgz#3bdb5ae5b1c22053f707bf27e89e721646180e3b"
-  integrity sha512-hUl3Wn71shJE0jwyTrvyC25WSaG9gjhQ+0OqXO2bUd5LCcxYXpB6avDcHWS9Sqpvpvjh1gYvtogHUx+lpX4i4Q==
+"@stopsopa/validator@^0.0.94":
+  version "0.0.94"
+  resolved "https://registry.yarnpkg.com/@stopsopa/validator/-/validator-0.0.94.tgz#c4b2846960082038eec18ddd93edaad9067ca284"
+  integrity sha512-tUmelTYmJqGj3iDuY0w/+TTRRvANIOsG5DNKuoQ5RbWiBfw4qwWMzLy2+5mDT5v6aGsFhtjNoslf1gL/BvFPdA==
 
 "@types/bluebird@^3.5.25":
   version "3.5.25"

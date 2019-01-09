@@ -17,31 +17,7 @@ const jwt           = require('jsonwebtoken');
 
 const config        = require('../config');
 
-module.exports = opt => {
-
-    if ( ! isObject(opt) ) {
-
-        throw `proxy.js: opt is not an object`;
-    }
-
-    let {
-        password,
-        app,
-    } = opt;
-
-    if ( typeof password !== 'string' ) {
-
-        throw `opt.password is not string`
-    }
-
-    password = password.trim();
-
-    if ( typeof password !== 'string' ) {
-
-        throw `opt.password is string but it's empty`
-    }
-
-    const enc = aes256(password);
+module.exports = app => {
 
     /**
 fetch('/register?x-jwt=...', {
@@ -65,10 +41,14 @@ fetch('/register', {
 
         if ( ! req.admin ) {
 
+            log("no access\n");
+
             return res.basicAuth();
         }
 
         let entity              = req.body;
+
+        log.dump(entity);
 
         const man               = knex().model.clusters;
 
@@ -147,6 +127,8 @@ fetch('/register', {
     app.all('/remove/:id?', async (req, res) => {
 
         if ( ! req.admin ) {
+
+            log("no access\n");
 
             return res.basicAuth();
         }
@@ -257,6 +239,8 @@ fetch('/many/root/test', {
 
         if ( ! req.admin ) {
 
+            log("no access\n");
+
             return res.basicAuth();
         }
 
@@ -317,6 +301,8 @@ fetch('/one/root/dd/test', {
     app.post('/one/:cluster/:node(([^\\/]+)|)/:path(*)?', async (req, res) => {
 
         if ( ! req.admin ) {
+
+            log("no access\n");
 
             return res.basicAuth();
         }
@@ -387,6 +373,8 @@ fetch('/one/root/dd/test', {
 
         if ( ! req.admin ) {
 
+            log("no access\n");
+
             return res.basicAuth();
         }
 
@@ -409,6 +397,8 @@ fetch('/one/root/dd/test', {
     app.all('/admin/cluster/:id?', async (req, res) => {
 
         if ( ! req.admin ) {
+
+            log("no access\n");
 
             return res.basicAuth();
         }
@@ -439,6 +429,8 @@ fetch('/one/root/dd/test', {
     app.all('/token', (req, res) => {
 
         if ( req.admin !== 'basicauth' ) {
+
+            log("no access\n");
 
             return res.basicAuth();
         }

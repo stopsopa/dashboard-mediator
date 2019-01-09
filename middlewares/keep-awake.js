@@ -18,7 +18,7 @@ module.exports = app => {
 
     // fullUrl = 'https://dashboard-mediator.herokuapp.com/test?a=bcde';
 
-    app.all('/keep-awake', (req, res) => res.json({
+    app.all(endpoint, (req, res) => res.json({
         ok: true,
     }));
 

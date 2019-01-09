@@ -93,8 +93,12 @@ if ( ! process.env.PORT && ! process.env.NODE_PORT ) {
     throw `no process.env.PORT nor process.env.NODE_PORT are defined`
 }
 
+const mainPort = process.env.PORT || process.env.NODE_PORT;
+
+const testClientPort = 8090;
+
 module.exports = {
-    port: process.env.PORT || process.env.NODE_PORT,
+    port: mainPort,
     jwt: {
         // in seconds (in this case 9 hours)
         jwt_expire: 32400,
@@ -106,5 +110,27 @@ module.exports = {
         password,
         database,
     },
+    testClientConfig: {
+
+        // this config (testClientConfig section) is for testClient.js script,
+        // it used only for debugging,
+        // no need to configure it on production
+
+        port: testClientPort, // one thing is to tell where to bind server internally...
+        mediator: {
+            domain: 'http://localhost',
+            port: mainPort,
+            registrationInterval: 2 * 60 * 1000, // 2 min - not more than hour
+            plusMinus: 15 * 1000, // 15 sec
+            thisserver: {
+                cluster: 'dashboard',
+                node: 'test-local-node', // can be null
+                domain: 'http://localhost',
+                port: testClientPort, // ... another thing is to tell outside world how to reach this server
+            },
+            // in seconds (in this case 9 hours)
+            jwt_expire: 32400,
+        }
+    }
 };
 

@@ -17,7 +17,7 @@ require('isomorphic-fetch');
 
 const favicon = require('serve-favicon');
 
-app.use(favicon(path.join(__dirname, 'favicon.ico')))
+app.use(favicon(path.join(__dirname, 'faviconClient.ico')))
 
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -128,7 +128,13 @@ require('./middlewares/keep-awake')(app);
 
 require('./middlewares/proxy')(app);
 
-const port = config.port;
+require('./middlewares/registerItself')({
+    password: process.env.PASSWORD,
+    mediator: config.testClientConfig.mediator,
+    app,
+});
+
+const port = config.testClientConfig.port;
 
 const host = '0.0.0.0';
 
