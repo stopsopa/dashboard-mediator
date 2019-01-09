@@ -101,8 +101,6 @@ app.use(require('nlab/express/console-logger'));
 
         const file = dir + req.url.split('?')[0];
 
-        log('file: ' + file);
-
         if ( fs.existsSync(file) ) {
 
             if ( ! req.admin ) {
