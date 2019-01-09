@@ -18,6 +18,9 @@ start: linknpm
 sender: linknpm
 	node testClientSender.js
 
+client:
+	node testClient.js
+
 linknpm:
 	(cd public && ln -s ../node_modules public) | true
 	(cd publicSender && ln -s ../node_modules public) | true
