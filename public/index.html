@@ -142,6 +142,7 @@
 <p>(request have to be authenticated with basic auth or jwt)</p>
 <pre>{`fetch('/token').then(res => res.json()).then(console.log)`}</pre>
 <button onClick={this.onGenerateJWT}>generate token</button><button onClick={() => this.onClear('jwt', '')}>clear</button>
+<a href="/token" target="_blank">/token</a>
 <br />
 <textarea type="text" value={jwt} style={{width: '100%', height: '50px'}} onClick={e => e.target.select()} />
 
@@ -149,6 +150,7 @@
 <p>(request have to be authenticated with basic auth or jwt)</p>
 <pre>{`fetch('/admin/clusters').then(res => res.json()).then(console.log)`}</pre>
 <button onClick={this.onGetNodes}>get nodes</button><button onClick={() => this.onClear('nodes', '')}>clear</button>
+<a href="/admin/clusters" target="_blank">/admin/clusters</a>
 <br />
 <pre type="text" onClick={e => e.target.select()} >{JSON.stringify(nodes, null, 4)}</pre>
 
@@ -156,6 +158,7 @@
 <p>(request have to be authenticated with basic auth or jwt)</p>
 <pre>{`fetch('/admin/cluster/:id').then(res => res.json()).then(console.log)`}</pre>
 <button onClick={this.onGetNodeDetails}>get node{nodeId ? `(id: ${nodeId}) ` : ''} details</button>
+<a href={`/admin/cluster/${nodeId}`} target="_blank">{`/admin/cluster/${nodeId}`}</a>
 <input onChange={e => this.setState({nodeId: e.target.value})} value={nodeId}/>
 <button onClick={() => this.onClear('nodeIdJson', '')}>clear</button>
 <br />
