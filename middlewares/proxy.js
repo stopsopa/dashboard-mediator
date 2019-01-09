@@ -144,6 +144,50 @@ fetch('/register', {
         });
 
     });
+    app.all('/remove/:id?', async (req, res) => {
+
+        if ( ! req.admin ) {
+
+            return res.basicAuth();
+        }
+
+        let id              = req.params.id;
+
+        let entity          = req.body || {};
+
+        const man               = knex().model.clusters;
+
+        if ( ! id && entity.cluster && typeof entity.node !== 'undefined' ) {
+
+            const {
+                cluster,
+                node,
+            } = entity;
+
+            const cond = (node === null) ? 'is' : '=';
+
+            const found = await man.queryOne(`select id from :table: where cluster = :cluster and node ${cond} :node`, {
+                cluster,
+                node,
+            });
+
+            if (found) {
+
+                id = found.id;
+            }
+        }
+
+        if ( ! id ) {
+
+            return res.jsonError(`it's necessary to give id in url or cluster and node in json body`);
+        }
+
+        const affected = await man.delete(id);
+
+        return res.jsonNoCache({
+            affected,
+        });
+    });
 
     let i = 0;
 

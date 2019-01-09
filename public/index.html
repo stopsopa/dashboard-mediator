@@ -176,9 +176,26 @@
         node: 'node-nam', // can be null
         domain: 'http://service.url',
         port: '80',
-        // id: 19 // you might use id, but if not then in order to find entity will be used uniqe index values (cluster & node)
+        // id: 19
+            // you might use id to identify entity to edit,
+            // but if not, then in order to find entity uniqe index values (cluster & node) will be used
     })
 }).then(res => res.json()).then(console.log)`}</pre>
+
+
+<h3>remove node</h3>
+<pre>{`fetch('/remove/28').then(res => res.json()).then(e => console.log('then', e), e => console.log('catch', e))`}</pre>
+<p>or:</p>
+<pre>{`fetch('/remove', {
+    method: 'post',
+    headers: {
+        'Content-type': 'application/json; charset=utf-8',
+    },
+    body: JSON.stringify({
+        cluster: 'cluster-name',
+        node: 'node-nam', // can be null
+    })
+}).then(res => res.json()).then(e => console.log('then', e), e => console.log('catch', e))`}</pre>
 
                         </div>
                     </>
