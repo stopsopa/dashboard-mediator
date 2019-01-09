@@ -1,8 +1,4 @@
 
-const isObject      = require('nlab/isObject');
-
-const aes256        = require('nlab/aes256');
-
 const knex          = require('@stopsopa/knex-abstract');
 
 const log           = require('inspc');

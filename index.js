@@ -122,7 +122,7 @@ const knex              = require('@stopsopa/knex-abstract');
 knex.init(require('./models/config'));
 
 
-app.all('/ping', require('./middlewares/test'));
+app.all('/ping', require('./middlewares/ping'));
 
 require('./middlewares/keep-awake')(app);
 

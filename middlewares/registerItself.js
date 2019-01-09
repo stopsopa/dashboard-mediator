@@ -1,6 +1,4 @@
 
-const isObject      = require('nlab/isObject');
-
 const random        = require('lodash/random');
 
 const log           = require('inspc');
