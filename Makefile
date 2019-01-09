@@ -12,8 +12,11 @@ uf: # update even if there is nothing new committed
 t:
 	/bin/bash test.sh
 
-start:
+start: linknpm
 	node index.js
+
+linknpm:
+	(cd public && ln -s ../node_modules public) | true
 
 doc: docs
 	(cd docker && docker-compose build)

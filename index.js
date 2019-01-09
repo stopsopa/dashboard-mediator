@@ -1,6 +1,8 @@
 
 const path          = require('path');
 
+const fs            = require('fs');
+
 const express       = require('express');
 
 const bodyParser    = require('body-parser');
@@ -44,7 +46,7 @@ app.use(bodyParser.json());
         //     }
         // }
 
-        let token = req.get('x-jwt');
+        let token = req.get('x-jwt') || req.query['x-jwt'] || req.body['x-jwt'];
 
         if (token) {
 
@@ -89,6 +91,31 @@ app.use(bodyParser.json());
 app.use(require('nlab/express/extend-res'));
 
 app.use(require('nlab/express/console-logger'));
+
+// serving static files
+(function () {
+
+    const dir = path.resolve('./public');
+
+    app.use((req, res, next) => {
+
+        const file = dir + req.url.split('?')[0];
+
+        log('file: ' + file);
+
+        if ( fs.existsSync(file) ) {
+
+            if ( ! req.admin ) {
+
+                return res.basicAuth();
+            }
+        }
+
+        next();
+    });
+
+    app.use(express.static(dir));
+}());
 
 const knex              = require('@stopsopa/knex-abstract');
 

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "@babel/standalone": "^7.2.5",
     "@stopsopa/dotenv-up": "^1.0.18",
     "@stopsopa/knex-abstract": "^0.0.40",
     "@stopsopa/validator": "^0.0.93",
@@ -24,6 +25,8 @@
     "md5": "^2.2.1",
     "mysql": "^2.16.0",
     "nlab": "^0.0.8",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
     "reflect-metadata": "^0.1.10",
     "serve-favicon": "^2.5.0",
     "ts-node": "3.3.0",

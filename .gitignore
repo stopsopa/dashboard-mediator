@@ -9,3 +9,4 @@ npm-debug.log
 /.env
 /knex-project/
 yarn-error.log
+/public/public

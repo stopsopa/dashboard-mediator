@@ -44,6 +44,9 @@ module.exports = opt => {
     const enc = aes256(password);
 
     /**
+fetch('/register?x-jwt=...', {
+
+
 fetch('/register', {
 	method: 'post',
 	headers: {
@@ -52,13 +55,18 @@ fetch('/register', {
 	body: JSON.stringify({
 		cluster: 'cluster1',
 		node: 'ddd',
-		domain: 'dom66',
+		domain: 'http://dom66',
 		port: '90',
 		// id: 19
 	})
 }).then(res => res.json()).then(data => console.log('end', data))
      */
     app.post('/register', async (req, res) => {
+
+        if ( ! req.admin ) {
+
+            return res.basicAuth();
+        }
 
         let entity              = req.body;
 
@@ -170,6 +178,9 @@ fetch('/register', {
         );
     }
     /**
+fetch('/many/root/test?x-jwt=...', {
+
+
 fetch('/many/root/test', {
     method: 'post',
     headers: {
@@ -179,6 +190,11 @@ fetch('/many/root/test', {
 }).then(res => res.json()).then(data => console.log('end', data))
      */
     app.post('/many/:cluster/:path(*)', async (req, res) => {
+
+        if ( ! req.admin ) {
+
+            return res.basicAuth();
+        }
 
         try {
 
@@ -235,6 +251,11 @@ fetch('/one/root/dd/test', {
 }).then(res => res.json()).then(data => console.log('end', data))
      */
     app.post('/one/:cluster/:node(([^\\/]+)|)/:path(*)?', async (req, res) => {
+
+        if ( ! req.admin ) {
+
+            return res.basicAuth();
+        }
 
         try {
 

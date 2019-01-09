@@ -164,7 +164,10 @@ const ext = {
             domain: new Required([
                 new NotBlank(),
                 new Length({max: 50}),
-                new Regex(/^https?:\/\//i),
+                new Regex({
+                    pattern: /^https?:\/\//i,
+                    message: 'Domain should start from http:// or https://',
+                }),
             ]),
             port: new Required([
                 new NotBlank(),

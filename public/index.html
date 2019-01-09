@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script src="public/react/umd/react.production.min.js"></script>
+    <script src="public/react-dom/umd/react-dom.production.min.js"></script>
+    <script src="public/@babel/standalone/babel.min.js"></script>
+    <script>window.React || document.write("run server using 'make start' it will link node_modules where it should be");</script>
+    <script type="text/babel">
+        const log=(function(){try{return console.log}catch(e){return function(){}}}());
+
+        const delay = (time, data) =>
+            new Promise(
+                resolve => time ? setTimeout(resolve, time, data) : resolve(data)
+            )
+        ;
+
+        class Root extends React.Component {
+            constructor(...args) {
+
+                super(...args);
+
+                this.state = {
+                }
+            }
+            render() {
+                return (
+                    <div>It's working...</div>
+                );
+            }
+        }
+        ReactDOM.render(
+            <Root
+            />,
+            document.getElementById('app')
+        );
+    </script>
+</body>
+</html>
