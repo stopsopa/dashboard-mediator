@@ -130,6 +130,7 @@ if [ "$DIFF" != "" ] || [ "$1" = "force" ]; then
 
 #                            node update-badge.js
 #                            git add README.md
+                            git add package_npm.json
 
                             # git add dist
                             # git add examples.es5.js
