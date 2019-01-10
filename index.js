@@ -102,11 +102,9 @@ app.use(require('nlab/express/extend-res'));
  * Very custom logger strictly for this mediator
  */
 (function (extend_res) {
-
     app.post('/one/:cluster/:node(([^\\/]+)|)/:path(*)?', (req, res, next) => {
-
-        req.mediatoParams = req.params;
-
+        req.mediatorParams  = req.params || {};
+        req.mediatorBody    = req.body || {};
         next();
     });
     app.use((req, res, next) => {
@@ -119,11 +117,16 @@ app.use(require('nlab/express/extend-res'));
         const {
             cluster,
             node = '[null]',
-        } = req.mediatoParams || {};
+        } = req.mediatorParams;
+
+        const {
+            fromCluster,
+            fromNode = '[null]',
+        } = req.mediatorBody;
 
         process.stdout.write(
             (new Date()).toISOString().substring(0, 19).replace('T', ' ') +
-            `: from: cluster() node() to: cluster(${cluster}) node(${node}) ` +
+            `: from: cluster(${fromCluster}) node(${fromNode}) to: cluster(${cluster}) node(${node}) ` +
             req.method.toUpperCase().padEnd(4, ' ') +
             ":" +
             req.url +

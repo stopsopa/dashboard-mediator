@@ -110,15 +110,18 @@ require('./middlewares/registerItself')({
     const mrequest = require('./libs/mrequest');
 
     mrequest.create('test', {
-        domain      : config.domain,
-        port        : config.port,
+        domain          : config.domain,
+        port            : config.port,
 
-        cluster     : config.testClientConfig.thisserver.cluster,
-        node        : config.testClientConfig.thisserver.node,
+        thisCluster     : config.testSenderConfig.thisserver.cluster,
+        thisNode        : config.testSenderConfig.thisserver.node,
 
-        aesPass     : process.env.PROTECTED_AES256,
-        jwtPass     : process.env.PROTECTED_BASIC_AND_JWT,
-        expire      : config.jwt.jwt_expire,
+        targetCluster   : config.testClientConfig.thisserver.cluster,
+        targetNode      : config.testClientConfig.thisserver.node,
+
+        aesPass         : process.env.PROTECTED_AES256,
+        jwtPass         : process.env.PROTECTED_BASIC_AND_JWT,
+        expire          : config.jwt.jwt_expire,
     });
 
     const test = mrequest('test'); // get connection by local reference name

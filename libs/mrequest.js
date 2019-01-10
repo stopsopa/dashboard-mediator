@@ -23,13 +23,15 @@ tool.create = (register, opt) => {
     const {
         domain,
         port,
-        node,
+        targetNode,
+        thisNode,
         jwtPass,
         expire,
     } = opt;
 
     let {
-        cluster,
+        targetCluster,
+        thisCluster,
         aesPass,
     } = opt;
 
@@ -109,7 +111,7 @@ tool.create = (register, opt) => {
         return [url, opt];
     };
 
-    return arequest.register(register, {domain, port, cluster, node, encoder, decoder, authenticator});
+    return arequest.register(register, {domain, port, thisCluster, thisNode, targetCluster, targetNode, encoder, decoder, authenticator});
 };
 
 tool.delete = arequest.delete;

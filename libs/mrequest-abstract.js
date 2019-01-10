@@ -45,8 +45,10 @@ const tool = register => {
     const {
         domain,
         port,
-        cluster,
-        node,
+        thisCluster,
+        thisNode,
+        targetCluster,
+        targetNode,
         encoder,
         decoder,
         authenticator,
@@ -79,12 +81,12 @@ const tool = register => {
 
         if (stringsOrNull.length < 3) {
 
-            stringsOrNull.unshift(node);
+            stringsOrNull.unshift(targetNode);
         }
 
         if (stringsOrNull.length < 3) {
 
-            stringsOrNull.unshift(cluster);
+            stringsOrNull.unshift(targetCluster);
         }
 
         if (stringsOrNull.length < 3) {
@@ -155,7 +157,9 @@ other: ${other}
                     'Content-type': 'application/json; charset=utf-8',
                 },
                 body: JSON.stringify({
-                    payload: encoder(data)
+                    fromCluster : thisCluster,
+                    fromNode    : thisNode,
+                    payload     : encoder(data)
                 })
             };
 
@@ -209,7 +213,7 @@ tool.create = ((register, opt) => {
 
 tool.register = (register, opt) => {
 
-    let {domain, port, cluster, node, encoder, decoder, authenticator} = opt;
+    let {domain, port, thisCluster, thisNode, targetCluster, targetNode, encoder, decoder, authenticator} = opt;
 
     if ( typeof domain !== 'string') {
 
@@ -234,20 +238,36 @@ tool.register = (register, opt) => {
         throw th(`register(), domain should start from http:// or https://`)
     }
 
-    if ( typeof cluster !== 'string') {
+    if ( typeof targetCluster !== 'string') {
 
-        log.t(th(`register(), cluster is not string`))
+        log.t(th(`register(), targetCluster is not string`))
 
-        throw th(`register(), cluster is not string`)
+        throw th(`register(), targetCluster is not string`)
     }
 
-    cluster = cluster.trim();
+    targetCluster = targetCluster.trim();
 
-    if ( ! cluster ) {
+    if ( ! targetCluster ) {
 
-        log.t(th(`register(), cluster is not defined`))
+        log.t(th(`register(), targetCluster is not defined`))
 
-        throw th(`register(), cluster is not defined`)
+        throw th(`register(), targetCluster is not defined`)
+    }
+
+    if ( typeof thisCluster !== 'string') {
+
+        log.t(th(`register(), thisCluster is not string`))
+
+        throw th(`register(), thisCluster is not string`)
+    }
+
+    thisCluster = thisCluster.trim();
+
+    if ( ! thisCluster ) {
+
+        log.t(th(`register(), thisCluster is not defined`))
+
+        throw th(`register(), thisCluster is not defined`)
     }
 
     if ( port !== null && typeof port !== 'string' && typeof port !== 'number') {
@@ -257,11 +277,18 @@ tool.register = (register, opt) => {
         throw th(`register(), port is not null not a number nor string`);
     }
 
-    if ( node !== null && typeof node !== 'string') {
+    if ( targetNode !== null && typeof targetNode !== 'string') {
 
-        log.t(th(`register(), node is not null nor string`))
+        log.t(th(`register(), targetNode is not null nor string`))
 
-        throw th(`register(), node is not null nor string`);
+        throw th(`register(), targetNode is not null nor string`);
+    }
+
+    if ( thisNode !== null && typeof thisNode !== 'string') {
+
+        log.t(th(`register(), thisNode is not null nor string`))
+
+        throw th(`register(), thisNode is not null nor string`);
     }
 
     if (typeof encoder !== 'function') {
@@ -285,7 +312,7 @@ tool.register = (register, opt) => {
         throw th(`register(), authenticator is not a function`);
     }
 
-    cache[register] = opt
+    cache[register] = {domain, port, thisCluster, thisNode, targetCluster, targetNode, encoder, decoder, authenticator};
 
     return tool(register);
 };
