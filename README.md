@@ -1,5 +1,5 @@
 [![npm version](https://badge.fury.io/js/%40stopsopa%2Fmediator.svg)](https://www.npmjs.com/package/@stopsopa/mediator)
-[![NpmLicense](https://img.shields.io/npm/l/@stopsopa/mediator.svg)](https://github.com/stopsopa/dashboard-mediator/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/stopsopa/dashboard-mediator/blob/master/LICENSE)
 
 
 
