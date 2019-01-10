@@ -19,6 +19,9 @@ app.use(favicon(path.join(__dirname, 'faviconClient.ico')));
 
 app.use(require('nlab/express/console-logger'));
 
+app.all('/', (req, res) => res.end('no need for front api in this test server'));
+
+// not important code for this example ^^^
 
 
 

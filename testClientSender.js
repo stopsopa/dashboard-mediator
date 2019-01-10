@@ -26,7 +26,31 @@ app.use(require('nlab/express/console-logger'));
  */
 app.all('/config', (req, res) => res.jsonNoCache(config));
 
+/**
+ * serving static files
+ * WARNING: static files middleware have to be after auth block
+ */
+(function () {
 
+    const dir = path.resolve('./publicSender');
+    
+    // app.use((req, res, next) => {
+    //
+    //     const file = dir + req.url.split('?')[0];
+    //
+    //     if ( fs.existsSync(file) ) {
+    //
+    //         if ( ! req.admin ) {
+    //
+    //             return res.basicAuth();
+    //         }
+    //     }
+    //
+    //     next();
+    // });
+
+    app.use(express.static(dir));
+}());
 
 /**
  * serving static files
@@ -54,6 +78,7 @@ app.all('/config', (req, res) => res.jsonNoCache(config));
 //
 //     app.use(express.static(dir));
 // }());
+
 // not important code for this example ^^^
 
 
@@ -71,10 +96,10 @@ require('./middlewares/registerItself')({
     mediator: config.testSenderConfig.mediator,
 });
 
-
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(bodyParser.json());
+
 /**
  * test controller for sending requests through mediator to another node
  */
@@ -109,7 +134,6 @@ app.use(bodyParser.json());
                 e => res.status(404).jsonNoCache(e)
             )
         ;
-
     });
 }());
 
