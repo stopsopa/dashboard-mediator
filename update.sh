@@ -72,7 +72,7 @@ trim() {
         exit 0
     fi
 
-    if [ ! -f package_prod.json ]; then
+    if [ -f package_prod.json ]; then
 
         { red "package_prod.json DOES NOT exist, before update run\n    /bin/bash update.sh --prod"; } 2>&3
 
