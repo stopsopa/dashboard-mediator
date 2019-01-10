@@ -331,15 +331,6 @@ fetch('/one/root/dd/test', {
                 node,
             });
 
-            // log.dump({
-            //     route: 'one',
-            //     found,
-            //     cluster,
-            //     node,
-            //     path,
-            //     body: req.body,
-            // }, 3);
-
             if ( ! found.length ) {
 
                 return res.jsonError(`clusters not found`);
@@ -347,17 +338,9 @@ fetch('/one/root/dd/test', {
 
             try {
 
-                log.dump({
-                    proxy_body: req.body
-                })
-
                 const data = await send(found.shift(), path, req.body);
 
                 if (data.then) {
-
-                    log.dump({
-                        response_from_client: data.then,
-                    }, 5)
 
                     return res.jsonNoCache(data.then);
                 }

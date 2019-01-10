@@ -32,7 +32,43 @@ tool.create = (name, domain, port, cluster, node, aesPass, jwtPass, expire) => {
 
     const encoder       = data => aes.encrypt(JSON.stringify(data));
 
-    const decoder       = json => json;
+    const decoder       = json => {
+
+        let decoded;
+
+        if (json && json.payload) {
+
+            try {
+
+                decoded = aes.decrypt(json.payload);
+
+                try {
+
+                    decoded = JSON.parse(decoded);
+                }
+                catch (e) {
+
+                    return {
+                        'catch': th(`couldn't parse json after successful decoding response aes256 payload: `+ decoded)
+                    }
+                }
+
+                return {
+                    then: decoded
+                };
+            }
+            catch (e) {
+
+                return {
+                    'catch': th(`couldn't decode response aes256 payload: `+ json.payload)
+                }
+            }
+        }
+
+        return {
+            'catch': th(`no json payload in response`)
+        }
+    };
 
     const authenticator = (url, opt) => {
 

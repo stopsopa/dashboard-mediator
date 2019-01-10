@@ -129,15 +129,25 @@ other: ${other}
                 body: JSON.stringify({
                     payload: encoder(data)
                 })
-                // body: encoder(data)
             };
 
             [furl, opt] = authenticator(furl, opt);
 
-            log.dump([furl, opt], 5);
+            // log.dump([furl, opt], 5);
 
             const promise = fetch(furl, opt)
                 .then(res => res.json())
+                .then(json => {
+
+                    const decoded = decoder(json);
+
+                    if (decoded.then) {
+
+                        return decoded.then;
+                    }
+
+                    return Promise.reject(decoded.catch);
+                })
             ;
 
             promise.catch(e => {

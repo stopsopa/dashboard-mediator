@@ -1,56 +1,25 @@
 
-const isObject              = require('nlab/isObject');
+const aes256                = require('nlab/aes256');
+
+const mabstract             = require('./mresponse-abstract');
 
 const th                    = msg => `mresponse.js: ` + msg;
-/**
- * This is express middleware which means that it have to be used like this:
- *
- const app = express();
 
- app.use(require('nlab/express/extend-res'));
+module.exports = aesPass => {
 
- app.all((req, res) => {
+    if ( typeof aesPass !== 'string' ) {
 
-    res.aes({ // instead of res.json({})
-        data: "value"
-    });
- });
-
- * @param req
- * @param res
- * @param next
- */
-module.exports = (opt = {}) => {
-
-    if ( ! isObject(opt) ) {
-
-        throw th(`opt is not an object`);
+        throw th(`aesPass is not a string`);
     }
 
-    opt = Object.assign({
+    aesPass = aesPass.trim();
 
-    }, opt);
+    if ( ! aesPass ) {
 
-    return function (req, res, next) {
+        throw th(`aesPass is empty string`);
+    }
 
-        if ( ! res.constructor.prototype.aesextended ) {
+    const aes           = aes256(aesPass);
 
-            res.constructor.prototype.aesextended = true;
-
-            res.constructor.prototype.aes = function (obj) {
-                return this.set({
-                    'Cache-Control' : 'no-store, no-cache, must-revalidate',
-                    'Pragma'        : 'no-cache',
-                    'Content-type'  : 'application/json; charset=utf-8',
-                    'Expires'       : new Date().toUTCString(),
-                }).json(json);
-
-                return this.status(409).jsonNoCache({
-                    error: errstring
-                });
-            }
-        }
-
-        next();
-    };
+    return mabstract(obj => aes.encrypt(JSON.stringify(obj)));
 }

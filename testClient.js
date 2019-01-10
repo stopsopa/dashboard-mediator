@@ -22,6 +22,7 @@ const favicon = require('serve-favicon');
 app.use(favicon(path.join(__dirname, 'faviconClient.ico')));
 
 
+app.use(require('./libs/mresponse')(process.env.PROTECTED_AES256));
 
 
 
@@ -80,8 +81,8 @@ app.use(bodyParser.json());
 }());
 
 app.all('/path', (req, res) => {
-    return res.json({
-        data_from: req.body
+    return res.aes({
+        part_of_data: req.body
     });
 });
 
