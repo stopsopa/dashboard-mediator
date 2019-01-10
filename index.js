@@ -97,7 +97,42 @@ app.use((req, res, next) => {
 
 app.use(require('nlab/express/extend-res'));
 
-app.use(require('nlab/express/console-logger'));
+// app.use(require('nlab/express/console-logger'));
+/**
+ * Very custom logger strictly for this mediator
+ */
+(function (extend_res) {
+
+    app.post('/one/:cluster/:node(([^\\/]+)|)/:path(*)?', (req, res, next) => {
+
+        req.mediatoParams = req.params;
+
+        next();
+    });
+    app.use((req, res, next) => {
+
+        if ( ! req.get('x-jwt') ) {
+
+            return extend_res(req, res, next);
+        }
+
+        const {
+            cluster,
+            node = '[null]',
+        } = req.mediatoParams || {};
+
+        process.stdout.write(
+            (new Date()).toISOString().substring(0, 19).replace('T', ' ') +
+            `: from: cluster() node() to: cluster(${cluster}) node(${node}) ` +
+            req.method.toUpperCase().padEnd(4, ' ') +
+            ":" +
+            req.url +
+            "\n"
+        );
+
+        next();
+    });
+}(require('nlab/express/console-logger')));
 
 // serving static files
 (function () {

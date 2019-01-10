@@ -12,17 +12,37 @@ const th = msg => `mrequest-abstract.js: ` + msg;
  * If there is need to specify custom encryption then you have to extend this object
  * like it is done in mrequest.js
  *
- * @param name
+ * @param register
  * @returns {Function}
  */
-const tool = name => {
+const tool = register => {
 
-    if ( ! cache[name] ) {
+    if ( typeof register !== 'string') {
 
-        throw th(`can't find mediator setup base on name '${name}', use first mediator.create(name, domain, port, cluster) or mediator.create(name, {domain, port, cluster})`);
+        log.t(th(`register is not string`))
+
+        throw th(`register is not string`)
     }
 
-    const [
+    register = register.trim();
+
+    if ( ! register ) {
+
+        log.t(th(`register is not defined`))
+
+        throw th(`register is not defined`)
+    }
+
+    if ( ! cache[register] ) {
+
+        const msg = `can't find mediator setup base on register '${register}', use first mediator.create(register, domain, port, cluster) or mediator.create(register, {domain, port, cluster})`;
+
+        log.t(th(msg))
+
+        throw th(msg);
+    }
+
+    const {
         domain,
         port,
         cluster,
@@ -30,7 +50,7 @@ const tool = name => {
         encoder,
         decoder,
         authenticator,
-    ] = cache[name];
+    } = cache[register];
 
     let url = domain;
 
@@ -177,90 +197,102 @@ other: ${other}
     };
 };
 
-tool.create = ((name, domain, port, cluster, node, encoder, decoder, authenticator) => {
+tool.create = ((register, opt) => {
 
-    if (isObject(domain)) {
+    if (typeof port === 'undefined') {
 
-        const {
-            domain,
-            port = null,
-            cluster,
-            node,
-            encoder,
-            decoder,
-            authenticator,
-        } = domain;
+        opt.port = null;
     }
 
-    tool.register(name, [domain, port, cluster, node, encoder, decoder, authenticator]);
-
-    return tool(name);
+    return tool.register(register, opt);
 });
 
-tool.register = (name, config) => {
+tool.register = (register, opt) => {
 
-    let [domain, port, cluster, node, encoder, decoder, authenticator] = config;
+    let {domain, port, cluster, node, encoder, decoder, authenticator} = opt;
 
     if ( typeof domain !== 'string') {
 
-        throw th(`create(), domain is not string`)
+        log.t(th(`register(), domain is not string`))
+
+        throw th(`register(), domain is not string`)
     }
 
     domain = domain.trim();
 
     if ( ! domain ) {
 
-        throw th(`create(), domain is not defined`)
+        log.t(th(`register(), domain is not defined`))
+
+        throw th(`register(), domain is not defined`)
     }
 
     if ( /^https:\/\//.test(domain) ) {
 
-        throw th(`create(), domain should start from http:// or https://`)
+        log.t(th(`register(), domain should start from http:// or https://`))
+
+        throw th(`register(), domain should start from http:// or https://`)
     }
 
     if ( typeof cluster !== 'string') {
 
-        throw th(`create(), cluster is not string`)
+        log.t(th(`register(), cluster is not string`))
+
+        throw th(`register(), cluster is not string`)
     }
 
     cluster = cluster.trim();
 
     if ( ! cluster ) {
 
-        throw th(`create(), cluster is not defined`)
+        log.t(th(`register(), cluster is not defined`))
+
+        throw th(`register(), cluster is not defined`)
     }
 
     if ( port !== null && typeof port !== 'string' && typeof port !== 'number') {
 
-        throw th(`create(), port is not null not a number nor string`);
+        log.t(th(`register(), port is not null not a number nor string`))
+
+        throw th(`register(), port is not null not a number nor string`);
     }
 
     if ( node !== null && typeof node !== 'string') {
 
-        throw th(`create(), node is not null nor string`);
+        log.t(th(`register(), node is not null nor string`))
+
+        throw th(`register(), node is not null nor string`);
     }
 
     if (typeof encoder !== 'function') {
 
-        throw th(`create(), encoder is not a function`);
+        log.t(th(`register(), encoder is not a function`))
+
+        throw th(`register(), encoder is not a function`);
     }
 
     if (typeof decoder !== 'function') {
 
-        throw th(`create(), decoder is not a function`);
+        log.t(th(`register(), decoder is not a function`))
+
+        throw th(`register(), decoder is not a function`);
     }
 
     if (typeof authenticator !== 'function') {
 
-        throw th(`create(), authenticator is not a function`);
+        log.t(th(`register(), authenticator is not a function`))
+
+        throw th(`register(), authenticator is not a function`);
     }
 
-    cache[name] = config
+    cache[register] = opt
+
+    return tool(register);
 };
 
-tool.delete = name => {
+tool.delete = register => {
 
-    delete cache[name];
+    delete cache[register];
 
     return tool;
 };

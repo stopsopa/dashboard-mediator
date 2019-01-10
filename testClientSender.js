@@ -109,19 +109,19 @@ require('./middlewares/registerItself')({
 
     const mrequest = require('./libs/mrequest');
 
-    mrequest.create(
-        'test',
-        config.domain,
-        config.port,
-        config.testClientConfig.thisserver.cluster,
-        config.testClientConfig.thisserver.node,
+    mrequest.create('test', {
+        domain      : config.domain,
+        port        : config.port,
 
-        process.env.PROTECTED_AES256,
-        process.env.PROTECTED_BASIC_AND_JWT,
-        config.jwt.jwt_expire,
-    );
+        cluster     : config.testClientConfig.thisserver.cluster,
+        node        : config.testClientConfig.thisserver.node,
 
-    const test = mrequest('test');
+        aesPass     : process.env.PROTECTED_AES256,
+        jwtPass     : process.env.PROTECTED_BASIC_AND_JWT,
+        expire      : config.jwt.jwt_expire,
+    });
+
+    const test = mrequest('test'); // get connection by local reference name
 
     app.all('/sender-service-controller', (req, res) => {
 

@@ -18,23 +18,20 @@ const tool          = name => arequest(name);
  * Extension of mrequest-abstract.js that provide specific encryption method
  * in this case aes256 encryption and jwt authentication
  */
-tool.create = (name, domain, port, cluster, node, aesPass, jwtPass, expire) => {
+tool.create = (register, opt) => {
 
-    if (isObject(domain)) {
+    const {
+        domain,
+        port,
+        node,
+        jwtPass,
+        expire,
+    } = opt;
 
-        const {
-            domain,
-            port,
-            node,
-            jwtPass,
-            expire,
-        } = domain;
-
-        let {
-            cluster,
-            aesPass,
-        } = domain;
-    }
+    let {
+        cluster,
+        aesPass,
+    } = opt;
 
     if ( typeof aesPass !== 'string' ) {
 
@@ -112,9 +109,7 @@ tool.create = (name, domain, port, cluster, node, aesPass, jwtPass, expire) => {
         return [url, opt];
     };
 
-    arequest.register(name, [domain, port, cluster, node, encoder, decoder, authenticator]);
-
-    return arequest(name);
+    return arequest.register(register, {domain, port, cluster, node, encoder, decoder, authenticator});
 };
 
 tool.delete = arequest.delete;
