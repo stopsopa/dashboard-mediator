@@ -23,7 +23,7 @@ if ( ! version ) {
     throw `can't extract version from '${from}'`;
 }
 
-let tmp         = require(to);
+tmp         = require(to);
 
 tmp.version     = version;
 
