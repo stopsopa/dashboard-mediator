@@ -118,7 +118,7 @@ if [ "$DIFF" != "" ] || [ "$1" = "force" ]; then
 
     npm version patch
 
-    node copy-package-version.js
+    node copy-package-version.js package.json package_npm.json
 
     (cd heroku && /bin/bash keep-awake.sh)
 
