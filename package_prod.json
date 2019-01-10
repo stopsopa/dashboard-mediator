@@ -1,6 +1,6 @@
 {
   "name": "@stopsopa/mediator",
-  "version": "0.0.44",
+  "version": "0.0.45",
   "engines": {
     "node": "8.12.0"
   },
@@ -9,17 +9,24 @@
     "test": "echo test"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "@babel/standalone": "^7.2.5",
     "@stopsopa/dotenv-up": "^1.0.18",
     "@stopsopa/knex-abstract": "^0.0.41",
     "@stopsopa/validator": "^0.0.94",
     "@types/node": "^8.0.29",
+    "basic-auth": "^2.0.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "inspc": "^0.0.13",
     "isomorphic-fetch": "^2.2.1",
     "jsonwebtoken": "^8.4.0",
+    "knex": "^0.16.3",
     "md5": "^2.2.1",
+    "mysql": "^2.16.0",
     "nlab": "^0.0.9",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
     "reflect-metadata": "^0.1.10",
     "serve-favicon": "^2.5.0",
     "ts-node": "3.3.0",

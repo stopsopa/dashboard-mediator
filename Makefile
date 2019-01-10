@@ -18,6 +18,9 @@ cn: # bring npm parameters.json
 cp: # bring github parameters.json
 	@/bin/bash update.sh --prod
 
+nt: # test .npmignore
+	@npm pack
+
 start: linknpm
 	node index.js
 
