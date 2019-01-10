@@ -29,7 +29,6 @@ module.exports = async opt => {
     const {
         password,
         mediator,
-        app,
     } = opt;
 
     try {

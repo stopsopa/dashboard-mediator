@@ -19,11 +19,71 @@ require('isomorphic-fetch');
 
 const favicon = require('serve-favicon');
 
-app.use(favicon(path.join(__dirname, 'faviconClient.ico')))
+app.use(favicon(path.join(__dirname, 'faviconClient.ico')));
+
+
+
+
 
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(bodyParser.json());
+
+(function () {
+
+    const aes256        = require('nlab/aes256');
+
+    const encoder       = aes256(process.env.PROTECTED_AES256);
+
+    app.use((req, res, next) => {
+
+        if ( req.get('x-mediator') !== 'true' ) {
+
+            return next();
+        }
+
+        if (req.body && typeof req.body.payload === 'string') {
+
+            try {
+
+                let decoded = encoder.decrypt(req.body.payload);
+
+                try {
+
+                    decoded = JSON.parse(decoded);
+                }
+                catch (e) {
+
+                    log.t(`parsing json after aes256 error`);
+
+                    return res.jsonError(`parsing json after aes256 error`);
+                }
+
+                req.body = decoded;
+            }
+            catch (e) {
+
+                log.t(`decrypting aes256 error`);
+
+                return res.jsonError(`decrypting aes256 error`);
+            }
+        }
+        else {
+
+            log.t(`x-mediator is present but there is no encoded payload`);
+
+            return res.jsonError(`x-mediator is present but there is no encoded payload`);
+        }
+
+        return next();
+    });
+}());
+
+app.all('/path', (req, res) => {
+    return res.json({
+        data_from: req.body
+    });
+});
 
 (function () {
 
@@ -35,7 +95,7 @@ app.use(bodyParser.json());
         //
         //     var credentials = auth(req);
         //
-        //     if (!credentials || credentials.name !== 'admin' || credentials.pass !== process.env.PROTECTED_ADMIN_PASS) {
+        //     if (!credentials || credentials.name !== 'admin' || credentials.pass !== process.env.PROTECTED_BASIC_AND_JWT) {
         //
         //         res.statusCode = 401;
         //
@@ -55,7 +115,7 @@ app.use(bodyParser.json());
             // to create use:
             // const token = jwt.sign(
             //     {},
-            //     process.env.PASSWORD,
+            //     process.env.PROTECTED_AES256,
             //     {
             //         // https://github.com/auth0/node-jsonwebtoken#jwtsignpayload-secretorprivatekey-options-callback
             //         // must be int
@@ -67,7 +127,7 @@ app.use(bodyParser.json());
 
                 // expecting exception from method .verify() if not valid:
                 // https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback
-                jwt.verify(token, process.env.PASSWORD);
+                jwt.verify(token, process.env.PROTECTED_BASIC_AND_JWT);
 
                 req.admin = 'jwt';
             }
@@ -80,7 +140,7 @@ app.use(bodyParser.json());
 
             var credentials = auth(req);
 
-            if (credentials && credentials.name === 'admin' && credentials.pass === process.env.PROTECTED_ADMIN_PASS) {
+            if (credentials && credentials.name === 'admin' && credentials.pass === process.env.PROTECTED_BASIC_AND_JWT) {
 
                 req.admin = 'basicauth';
             }
@@ -118,7 +178,7 @@ app.use(require('nlab/express/console-logger'));
 }());
 
 require('./middlewares/registerItself')({
-    password: process.env.PASSWORD,
+    password: process.env.PROTECTED_BASIC_AND_JWT,
     mediator: config.testClientConfig.mediator,
 });
 

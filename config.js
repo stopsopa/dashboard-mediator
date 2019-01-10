@@ -78,14 +78,14 @@ if ( ! database ) {
     throw `database is empty`
 }
 
-if ( ! process.env.PASSWORD ) {
+if ( ! process.env.PROTECTED_BASIC_AND_JWT ) {
 
-    throw `process.env.PASSWORD is not defined`
+    throw `process.env.PROTECTED_BASIC_AND_JWT is not defined`
 }
 
-if ( ! process.env.PROTECTED_ADMIN_PASS ) {
+if ( ! process.env.PROTECTED_AES256 ) {
 
-    throw `process.env.PROTECTED_ADMIN_PASS is not defined`
+    throw `process.env.PROTECTED_AES256 is not defined`
 }
 
 if ( ! process.env.PORT && ! process.env.NODE_PORT ) {

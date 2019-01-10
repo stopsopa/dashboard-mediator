@@ -40,7 +40,7 @@ app.use((req, res, next) => {
         //
         //     var credentials = auth(req);
         //
-        //     if (!credentials || credentials.name !== 'admin' || credentials.pass !== process.env.PROTECTED_ADMIN_PASS) {
+        //     if (!credentials || credentials.name !== 'admin' || credentials.pass !== process.env.PROTECTED_BASIC_AND_JWT) {
         //
         //         res.statusCode = 401;
         //
@@ -60,7 +60,7 @@ app.use((req, res, next) => {
             // to create use:
             // const token = jwt.sign(
             //     {},
-            //     process.env.PASSWORD,
+            //     process.env.PROTECTED_BASIC_AND_JWT,
             //     {
             //         // https://github.com/auth0/node-jsonwebtoken#jwtsignpayload-secretorprivatekey-options-callback
             //         // must be int
@@ -72,7 +72,7 @@ app.use((req, res, next) => {
 
                 // expecting exception from method .verify() if not valid:
                 // https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback
-                jwt.verify(token, process.env.PASSWORD);
+                jwt.verify(token, process.env.PROTECTED_BASIC_AND_JWT);
 
                 req.admin = 'jwt';
             }
@@ -85,7 +85,7 @@ app.use((req, res, next) => {
 
             var credentials = auth(req);
 
-            if (credentials && credentials.name === 'admin' && credentials.pass === process.env.PROTECTED_ADMIN_PASS) {
+            if (credentials && credentials.name === 'admin' && credentials.pass === process.env.PROTECTED_BASIC_AND_JWT) {
 
                 req.admin = 'basicauth';
             }

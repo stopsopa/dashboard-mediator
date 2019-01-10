@@ -198,7 +198,7 @@
 <br />
 <pre type="text" onClick={e => e.target.select()} >{JSON.stringify(nodes, null, 4)}</pre>
 
-<h3>get one node details:</h3>
+<h3>transport test:</h3>
 <p>(request have to be authenticated with basic auth or jwt)</p>
 <pre>{`fetch('/admin/cluster/:id?x-jwt=').then(res => res.json()).then(console.log)`}</pre>
 <button onClick={this.onGetNodeDetails}>get node{nodeId ? `(id: ${nodeId}) ` : ''} details</button>

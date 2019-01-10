@@ -35,7 +35,7 @@ app.use(bodyParser.json());
         //
         //     var credentials = auth(req);
         //
-        //     if (!credentials || credentials.name !== 'admin' || credentials.pass !== process.env.PROTECTED_ADMIN_PASS) {
+        //     if (!credentials || credentials.name !== 'admin' || credentials.pass !== process.env.PROTECTED_BASIC_AND_JWT) {
         //
         //         res.statusCode = 401;
         //
@@ -55,7 +55,7 @@ app.use(bodyParser.json());
             // to create use:
             // const token = jwt.sign(
             //     {},
-            //     process.env.PASSWORD,
+            //     process.env.PROTECTED_BASIC_AND_JWT,
             //     {
             //         // https://github.com/auth0/node-jsonwebtoken#jwtsignpayload-secretorprivatekey-options-callback
             //         // must be int
@@ -67,7 +67,7 @@ app.use(bodyParser.json());
 
                 // expecting exception from method .verify() if not valid:
                 // https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback
-                jwt.verify(token, process.env.PASSWORD);
+                jwt.verify(token, process.env.PROTECTED_BASIC_AND_JWT);
 
                 req.admin = 'jwt';
             }
@@ -80,7 +80,7 @@ app.use(bodyParser.json());
 
             var credentials = auth(req);
 
-            if (credentials && credentials.name === 'admin' && credentials.pass === process.env.PROTECTED_ADMIN_PASS) {
+            if (credentials && credentials.name === 'admin' && credentials.pass === process.env.PROTECTED_BASIC_AND_JWT) {
 
                 req.admin = 'basicauth';
             }
@@ -118,13 +118,38 @@ app.use(require('nlab/express/console-logger'));
 }());
 
 require('./middlewares/registerItself')({
-    password: process.env.PASSWORD,
+    password: process.env.PROTECTED_BASIC_AND_JWT,
     mediator: config.testSenderConfig.mediator,
 });
 
-app.all('/config', (req, res) => res.jsonNoCache(config))
+app.all('/config', (req, res) => res.jsonNoCache(config));
 
 require('./middlewares/proxy')(app);
+
+
+
+
+const mrequest = require('./libs/mrequest');
+
+mrequest.create(
+    'test',
+    config.domain,
+    config.port,
+    config.testClientConfig.mediator.thisserver.cluster,
+    config.testClientConfig.mediator.thisserver.node,
+
+    process.env.PROTECTED_AES256,
+    process.env.PROTECTED_BASIC_AND_JWT,
+    config.jwt.jwt_expire,
+);
+
+const test = mrequest('test');
+
+test('/path', {data: 'avlue--'})
+    .then(json => log.dump({
+        response_json: json
+    }, 6))
+;
 
 const port = config.testSenderConfig.port;
 

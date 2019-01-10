@@ -20,7 +20,7 @@ const users = [
         firstName: 'admin',
         lastName: 'admin',
         email: 'admin@gmail.com',
-        password: process.env.PROTECTED_ADMIN_PASS,
+        password: process.env.PROTECTED_BASIC_AND_JWT,
         enabled: 1,
         roles: ['admin', 'user'],
     },

@@ -187,6 +187,7 @@ fetch('/register', {
             method: 'post',
             headers: {
                 'Content-type': 'application/json; charset=utf-8',
+                'x-mediator': 'true',
             },
             body: JSON.stringify(data)
         }).then(res => {
@@ -346,6 +347,10 @@ fetch('/one/root/dd/test', {
 
             try {
 
+                log.dump({
+                    proxy_body: req.body
+                })
+
                 const data = await send(found.shift(), path, req.body);
 
                 return res.jsonNoCache(data);
@@ -432,7 +437,7 @@ fetch('/one/root/dd/test', {
         // to create use:
         const token = jwt.sign(
             {},
-            process.env.PASSWORD,
+            process.env.PROTECTED_BASIC_AND_JWT,
             {
                 // https://github.com/auth0/node-jsonwebtoken#jwtsignpayload-secretorprivatekey-options-callback
                 // must be int
@@ -446,7 +451,7 @@ fetch('/one/root/dd/test', {
 
             // expecting exception from method .verify() if not valid:
             // https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback
-            jwt.verify(token, process.env.PASSWORD);
+            jwt.verify(token, process.env.PROTECTED_BASIC_AND_JWT);
 
             verified = true;
         }
@@ -459,7 +464,6 @@ fetch('/one/root/dd/test', {
         return res.jsonNoCache({
             token,
             verified,
-            pass: process.env.PASSWORD,
             exp: config.jwt.jwt_expire,
         })
     });
