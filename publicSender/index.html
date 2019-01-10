@@ -42,7 +42,7 @@
                     jwt: token,
                     nodes: '',
                     nodeId: '',
-                    testPath: '/path/test-param/even-with-slash/why-not',
+                    testPath: '/path/test-param/even-with-slash/why-not?getparam=getvalue&getparamii=getvalueii',
                     testJson: `{
     "sent": "data..."
 }`,                 testRes: '',
@@ -61,23 +61,6 @@
                 }, 60 * 1000);
 
                 t();
-            }
-            onLogout = () => {
-                function logout(url){
-                    var str = url.replace("http://", "http://" + new Date().getTime() + "@");
-                    var xmlhttp;
-                    if (window.XMLHttpRequest) xmlhttp=new XMLHttpRequest();
-                    else xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-                    xmlhttp.onreadystatechange=function()
-                    {
-                        if (xmlhttp.readyState==4) location.reload();
-                    }
-                    xmlhttp.open("GET",str,true);
-                    xmlhttp.setRequestHeader("Authorization","Basic YXNkc2E6")
-                    xmlhttp.send();
-                    return false;
-                }
-                logout(location.href);
             }
             onGenerateJWT = async () => {
 
@@ -249,7 +232,6 @@
 
                 return (
                     <>
-                        <button onClick={this.onLogout}>logout</button>
                         <div>
 <h3>about authentication:</h3>
 <p>each of following fetch requests can be authenticated using genrated jwt token by placing it in request header <b>x-jwt</b>, request get parameter: <b>x-jwt</b> or in json body object on the main level under the same name key <b>x-jwt</b></p>

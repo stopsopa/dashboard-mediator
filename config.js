@@ -125,15 +125,15 @@ module.exports = {
             port: mediatorPort,
             registrationInterval: 15 * 60 * 1000, // 2 min - not more than hour
             plusMinus: 15 * 1000, // 15 sec
-            thisserver: {
-                cluster: 'dashboard',
-                node: 'test-client', // can be null
-                domain: 'http://localhost',
-                port: testClientPort, // ... another thing is to tell outside world how to reach this server
-            },
             // in seconds (in this case 9 hours)
             jwt_expire: 32400,
-        }
+        },
+        thisserver: {
+            cluster: 'dashboard',
+            node: 'test-client', // can be null
+            domain: 'http://localhost',
+            port: testClientPort, // ... another thing is to tell outside world how to reach this server
+        },
     },
     testSenderConfig: {
 
@@ -147,15 +147,15 @@ module.exports = {
             port: mediatorPort,
             registrationInterval: 15 * 60 * 1000, // 2 min - not more than hour
             plusMinus: 15 * 1000, // 15 sec
-            thisserver: {
-                cluster: 'dashboard',
-                node: 'test-sender', // can be null
-                domain: 'http://localhost',
-                port: testSenderPort, // ... another thing is to tell outside world how to reach this server
-            },
             // in seconds (in this case 9 hours)
             jwt_expire: 32400,
-        }
+        },
+        thisserver: {
+            cluster: 'dashboard',
+            node: 'test-sender', // can be null
+            domain: 'http://localhost',
+            port: testSenderPort, // ... another thing is to tell outside world how to reach this server
+        },
     }
 };
 

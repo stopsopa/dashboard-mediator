@@ -74,7 +74,7 @@ app.use((req, res, next) => {
                 // https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback
                 jwt.verify(token, process.env.PROTECTED_BASIC_AND_JWT);
 
-                req.admin = 'jwt';
+                req.auth = 'jwt';
             }
             catch (e) { // auth based on cookie failed (any reason)
 
@@ -87,7 +87,7 @@ app.use((req, res, next) => {
 
             if (credentials && credentials.name === 'admin' && credentials.pass === process.env.PROTECTED_BASIC_AND_JWT) {
 
-                req.admin = 'basicauth';
+                req.auth = 'basicauth';
             }
         }
 
@@ -110,7 +110,7 @@ app.use(require('nlab/express/console-logger'));
 
         if ( fs.existsSync(file) ) {
 
-            if ( ! req.admin ) {
+            if ( ! req.auth ) {
 
                 return res.basicAuth();
             }

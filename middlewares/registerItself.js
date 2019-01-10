@@ -24,11 +24,32 @@ const {
 
 const th            = msg => `registerItself.js: ` + msg;
 
+/**
+ *
+    require('./middlewares/registerItself')({
+        password    : process.env.PROTECTED_BASIC_AND_JWT,
+        mediator    : {
+            domain: 'http://localhost',
+            port: 4567,
+            registrationInterval: 15 * 60 * 1000, // 15 min - not more than hour
+            plusMinus: 15 * 1000, // 15 sec
+            // in seconds (in this case 9 hours)
+            jwt_expire: 32400,
+        },
+        thisserver  : {
+            cluster: 'dashboard',
+            node: 'test-client', // can be null
+            domain: 'http://localhost',
+            port: 6789, // ... another thing is to tell outside world how to reach this server
+        },
+    });
+ */
 module.exports = async opt => {
 
     const {
         password,
         mediator,
+        thisserver,
     } = opt;
 
     try {
@@ -65,14 +86,14 @@ module.exports = async opt => {
                 port                    : new Optional(nullablePort(mediator.port)),
                 registrationInterval    : new Required([b, d]),
                 plusMinus               : new Required([b, d]),
-                thisserver              : new Collection({
-                    cluster                 : new Required([b, s]),
-                    node                    : new Optional(nullableNode(mediator.node)),
-                    domain              : new Required([b, u]),
-                    port                : new Optional(nullablePort(mediator.thisserver.port)),
-                }),
                 jwt_expire              : new Required([b, d]),
-            })
+            }),
+            thisserver                  : new Collection({
+                cluster                 : new Required([b, s]),
+                node                    : new Optional(nullableNode(thisserver.node)),
+                domain                  : new Required([b, u]),
+                port                    : new Optional(nullablePort(thisserver.port)),
+            }),
         });
 
         const errors            = await validator(opt, validators);
@@ -124,10 +145,10 @@ module.exports = async opt => {
                 )
             },
             body: JSON.stringify({
-                cluster : mediator.thisserver.cluster,
-                node    : mediator.thisserver.node || null,
-                domain  : mediator.thisserver.domain,
-                port    : mediator.thisserver.port || 80,
+                cluster : thisserver.cluster,
+                node    : thisserver.node || null,
+                domain  : thisserver.domain,
+                port    : thisserver.port || 80,
             })
         })
             .then(res => res.json())
@@ -143,6 +164,7 @@ module.exports = async opt => {
                 again();
             })
             .catch(e => {
+
                 log.dump({
                     'catch': e
                 }, 4)
@@ -166,9 +188,9 @@ module.exports = async opt => {
 
         console.log(th(
             `register: cluster: '` +
-            mediator.thisserver.cluster +
+            thisserver.cluster +
             `' node: '` +
-            (mediator.thisserver.node ? mediator.thisserver.node : '[null]') +
+            (thisserver.node ? thisserver.node : '[null]') +
             `' to domain: ` +
             domain +
             `, next after: ` +

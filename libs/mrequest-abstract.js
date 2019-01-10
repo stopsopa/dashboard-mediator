@@ -7,6 +7,14 @@ const cache = {};
 
 const th = msg => `mrequest-abstract.js: ` + msg;
 
+/**
+ * This abstract layer is isolated to separate file in order to provide encryption agnostic library
+ * If there is need to specify custom encryption then you have to extend this object
+ * like it is done in mrequest.js
+ *
+ * @param name
+ * @returns {Function}
+ */
 const tool = name => {
 
     if ( ! cache[name] ) {
@@ -118,8 +126,8 @@ other: ${other}
                 data = {};
             }
 
-            let furl = `${url}/one/${cluster}/${node}${path}`;
             // '/one/:cluster/:node(([^\\/]+)|)/:path(*)?'
+            let furl = `${url}/one/${cluster}/${node}${path}`;
 
             let opt = {
                 method: 'post',
@@ -132,8 +140,6 @@ other: ${other}
             };
 
             [furl, opt] = authenticator(furl, opt);
-
-            // log.dump([furl, opt], 5);
 
             let cres;
 
@@ -186,6 +192,15 @@ tool.create = ((name, domain, port, cluster, node, encoder, decoder, authenticat
         } = domain;
     }
 
+    tool.register(name, [domain, port, cluster, node, encoder, decoder, authenticator]);
+
+    return tool(name);
+});
+
+tool.register = (name, config) => {
+
+    let [domain, port, cluster, node, encoder, decoder, authenticator] = config;
+
     if ( typeof domain !== 'string') {
 
         throw th(`create(), domain is not string`)
@@ -215,20 +230,14 @@ tool.create = ((name, domain, port, cluster, node, encoder, decoder, authenticat
         throw th(`create(), cluster is not defined`)
     }
 
-    if ( port !== null) {
+    if ( port !== null && typeof port !== 'string' && typeof port !== 'number') {
 
-        if (typeof port !== 'string' && typeof port !== 'number') {
-
-            throw th(`create(), port is not a number nor string`);
-        }
+        throw th(`create(), port is not null not a number nor string`);
     }
 
-    if ( node !== null) {
+    if ( node !== null && typeof node !== 'string') {
 
-        if (typeof node !== 'string') {
-
-            throw th(`create(), node is not a string`);
-        }
+        throw th(`create(), node is not null nor string`);
     }
 
     if (typeof encoder !== 'function') {
@@ -246,12 +255,8 @@ tool.create = ((name, domain, port, cluster, node, encoder, decoder, authenticat
         throw th(`create(), authenticator is not a function`);
     }
 
-    tool.register(name, [domain, port, cluster, node, encoder, decoder, authenticator]);
-
-    return tool(name);
-});
-
-tool.register = (name, config) => cache[name] = config;
+    cache[name] = config
+};
 
 tool.delete = name => {
 

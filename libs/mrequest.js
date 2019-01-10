@@ -13,19 +13,43 @@ const arequest      = require('./mrequest-abstract');
 
 const tool          = name => arequest(name);
 
+/**
+ *
+ * Extension of mrequest-abstract.js that provide specific encryption method
+ * in this case aes256 encryption and jwt authentication
+ */
 tool.create = (name, domain, port, cluster, node, aesPass, jwtPass, expire) => {
 
     if (isObject(domain)) {
 
         const {
             domain,
-            port = null,
-            cluster,
+            port,
             node,
-            aesPass,
             jwtPass,
             expire,
         } = domain;
+
+        let {
+            cluster,
+            aesPass,
+        } = domain;
+    }
+
+    if ( typeof aesPass !== 'string' ) {
+
+        log.t(`aesPass is not a string`);
+
+        throw th(`aesPass is not a string`);
+    }
+
+    aesPass = aesPass.trim();
+
+    if ( ! aesPass ) {
+
+        log.t(`aesPass is an empty string`);
+
+        throw th(`aesPass is an empty string`);
     }
 
     const aes           = aes256(aesPass);

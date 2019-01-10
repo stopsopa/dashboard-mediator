@@ -35,7 +35,7 @@ fetch('/register', {
      */
     app.post('/register', async (req, res) => {
 
-        if ( ! req.admin ) {
+        if ( ! req.auth ) {
 
             log("no access\n");
 
@@ -120,7 +120,7 @@ fetch('/register', {
     });
     app.all('/remove/:id?', async (req, res) => {
 
-        if ( ! req.admin ) {
+        if ( ! req.auth ) {
 
             log("no access\n");
 
@@ -232,7 +232,7 @@ fetch('/many/root/test', {
      */
     app.post('/many/:cluster/:path(*)', async (req, res) => {
 
-        if ( ! req.admin ) {
+        if ( ! req.auth ) {
 
             log("no access\n");
 
@@ -295,7 +295,7 @@ fetch('/one/root/dd/test', {
      */
     app.post('/one/:cluster/:node(([^\\/]+)|)/:path(*)?', async (req, res) => {
 
-        if ( ! req.admin ) {
+        if ( ! req.auth ) {
 
             log("no access\n");
 
@@ -362,7 +362,7 @@ fetch('/one/root/dd/test', {
 
     app.all('/admin/clusters', async (req, res) => {
 
-        if ( ! req.admin ) {
+        if ( ! req.auth ) {
 
             log("no access\n");
 
@@ -387,7 +387,7 @@ fetch('/one/root/dd/test', {
 
     app.all('/admin/cluster/:id?', async (req, res) => {
 
-        if ( ! req.admin ) {
+        if ( ! req.auth ) {
 
             log("no access\n");
 
@@ -419,7 +419,7 @@ fetch('/one/root/dd/test', {
 
     app.all('/token', (req, res) => {
 
-        if ( req.admin !== 'basicauth' ) {
+        if ( req.auth !== 'basicauth' ) {
 
             log("no access\n");
 

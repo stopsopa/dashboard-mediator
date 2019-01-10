@@ -40,72 +40,24 @@ app.all('/', (req, res) => res.end('no need for front api in this test server'))
 require('isomorphic-fetch');
 
 require('./middlewares/registerItself')({
-    password: process.env.PROTECTED_BASIC_AND_JWT,
-    mediator: config.testClientConfig.mediator,
+    password    : process.env.PROTECTED_BASIC_AND_JWT,
+    mediator    : config.testClientConfig.mediator,
+    thisserver  : config.testClientConfig.thisserver,
 });
 
-/**
- * Middleware to provide res.aes({}) method to return encrypted JSON responses to mediator service
- */
-app.use(require('./libs/mresponse')(process.env.PROTECTED_AES256));
 
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(bodyParser.json());
 
 /**
- * Decoding entire encoded json for next regular middlewares
- * The only requirements is that those middlewares should use res.aes() method to return response
+ * Middleware to provide res.aes({}) method to return encrypted JSON responses to mediator service
+ * and to decode incoming request to pass it to regular routes
  */
-(function () {
-
-    const aes256        = require('nlab/aes256');
-
-    const encoder       = aes256(process.env.PROTECTED_AES256);
-
-    app.use((req, res, next) => {
-
-        if ( req.get('x-mediator') !== 'true' ) {
-
-            return next();
-        }
-
-        if (req.body && typeof req.body.payload === 'string') {
-
-            try {
-
-                let decoded = encoder.decrypt(req.body.payload);
-
-                try {
-
-                    decoded = JSON.parse(decoded);
-                }
-                catch (e) {
-
-                    log.t(`parsing json after aes256 error`);
-
-                    return res.jsonError(`parsing json after aes256 error`);
-                }
-
-                req.body = decoded;
-            }
-            catch (e) {
-
-                log.t(`decrypting aes256 error`);
-
-                return res.jsonError(`decrypting aes256 error`);
-            }
-        }
-        else {
-
-            log.t(`x-mediator is present but there is no encoded payload`);
-
-            return res.jsonError(`x-mediator is present but there is no encoded payload`);
-        }
-
-        return next();
-    });
-}());
+require('./libs/mresponse')({
+    aesPass: process.env.PROTECTED_AES256,
+    app,
+});
 
 /**
  * Test endpoint after decoding encrypted body for manual testing
@@ -118,7 +70,8 @@ app.all('/path/:rest(*)?', (req, res) => {
         response_from_client: {
             request_body: req.body,
             request_full_url: req.url,
-            request_url_param_rest: req.params.rest
+            request_url_param_rest: req.params.rest,
+            request_query_params: req.query,
         }
     });
 });

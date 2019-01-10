@@ -17,14 +17,14 @@ const favicon = require('serve-favicon');
 
 app.use(favicon(path.join(__dirname, 'faviconSender.ico')));
 
-app.use(require('nlab/express/extend-res'));
-
 app.use(require('nlab/express/console-logger'));
 
 /**
  * Exposing config to browser code (this server in general is just for test so it's not security issue)
  */
 app.all('/config', (req, res) => res.jsonNoCache(config));
+
+app.use(require('nlab/express/extend-res'));
 
 /**
  * serving static files
@@ -33,14 +33,14 @@ app.all('/config', (req, res) => res.jsonNoCache(config));
 (function () {
 
     const dir = path.resolve('./publicSender');
-    
+
     // app.use((req, res, next) => {
     //
     //     const file = dir + req.url.split('?')[0];
     //
     //     if ( fs.existsSync(file) ) {
     //
-    //         if ( ! req.admin ) {
+    //         if ( ! req.auth ) {
     //
     //             return res.basicAuth();
     //         }
@@ -67,7 +67,7 @@ app.all('/config', (req, res) => res.jsonNoCache(config));
 //
 //         if ( fs.existsSync(file) ) {
 //
-//             if ( ! req.admin ) {
+//             if ( ! req.auth ) {
 //
 //                 return res.basicAuth();
 //             }
@@ -86,19 +86,21 @@ app.all('/config', (req, res) => res.jsonNoCache(config));
 
 
 
+
 /**
  * registerItself & mrequest both require iso-fetch in this test server
  */
 require('isomorphic-fetch');
 
-require('./middlewares/registerItself')({
-    password: process.env.PROTECTED_BASIC_AND_JWT,
-    mediator: config.testSenderConfig.mediator,
-});
-
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(bodyParser.json());
+
+require('./middlewares/registerItself')({
+    password    : process.env.PROTECTED_BASIC_AND_JWT,
+    mediator    : config.testSenderConfig.mediator,
+    thisserver  : config.testSenderConfig.thisserver,
+});
 
 /**
  * test controller for sending requests through mediator to another node
@@ -111,8 +113,8 @@ app.use(bodyParser.json());
         'test',
         config.domain,
         config.port,
-        config.testClientConfig.mediator.thisserver.cluster,
-        config.testClientConfig.mediator.thisserver.node,
+        config.testClientConfig.thisserver.cluster,
+        config.testClientConfig.thisserver.node,
 
         process.env.PROTECTED_AES256,
         process.env.PROTECTED_BASIC_AND_JWT,
@@ -155,7 +157,7 @@ app.use(bodyParser.json());
  * Fake auth, because I need proxy.js only to generate token for further requests to mediator service
  */
 app.use((req, res, next) => {
-    req.admin = 'basicauth';
+    req.auth = 'basicauth';
     next();
 });
 /**
