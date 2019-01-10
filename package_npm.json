@@ -4,6 +4,9 @@
     "engines": {
         "node": "8.12.0"
     },
+    "bin": {
+        "@stopsopa/mediator": "./install/install.js"
+    },
     "scripts": {
         "start": "echo start",
         "test": "echo test"

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MT</title>
+    <style>
+        pre {
+            background-color: #eeeeee;
+            padding: 10px;
+        }
+        input,
+        textarea {
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <button>send</button>
+    <br>
+    <input type="text" value="/path/test-param/even-with-slash/why-not?getparam=getvalue&getparamii=getvalueii">
+    <br>
+    <textarea id="" rows="10">{
+    "sent": "data..."
+}</textarea>
+    <pre>
+
+    </pre>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const send      = document.querySelector('button');
+            const url       = document.querySelector('input');
+            const json      = document.querySelector('textarea');
+            const output    = document.querySelector('pre');
+
+            send.addEventListener('click', () => {
+
+                let jsonToSent;
+
+                try {
+
+                    jsonToSent = JSON.parse(json.value);
+                }
+                catch (e) {
+
+                    return output.innerText = 'inpu data json parse error...'
+                }
+
+                output.innerText = 'Loading...';
+
+                let cres;
+
+                fetch(`/sender-service-controller`, {
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/json; charset=utf-8',
+                    },
+                    body: JSON.stringify({
+                        clientPath: url.value,
+                        jsonToSent,
+                    })
+                })
+                    .then(res => {
+                        cres = res;
+                        return res.json();
+                    })
+                    .then(json => {
+                        if (cres.status != 200) {
+
+                            return output.innerText = JSON.stringify({
+                                status: cres.status,
+                                wrong_status_code: json
+                            }, null, 4)
+                        }
+
+                        return output.innerText = JSON.stringify(json, null, 4)
+                    })
+                    .catch(e => output.innerText = JSON.stringify({
+                        status: cres.status,
+                        response_error: e
+                    }, null, 4))
+            });
+        });
+    </script>
+</body>
+</html>
