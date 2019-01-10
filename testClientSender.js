@@ -96,7 +96,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(bodyParser.json());
 
-require('./middlewares/registerItself')({
+require('./libs/registerItself')({
     password    : process.env.PROTECTED_BASIC_AND_JWT,
     mediator    : config.testSenderConfig.mediator,
     thisserver  : config.testSenderConfig.thisserver,

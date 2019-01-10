@@ -1,5 +1,5 @@
 {
-  "name": "dashboard-mediator",
+  "name": "@stopsopa/mediator",
   "version": "0.0.44",
   "engines": {
     "node": "8.12.0"
@@ -24,7 +24,7 @@
     "knex": "^0.16.3",
     "md5": "^2.2.1",
     "mysql": "^2.16.0",
-    "nlab": "^0.0.8",
+    "nlab": "^0.0.9",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "reflect-metadata": "^0.1.10",
@@ -36,5 +36,8 @@
   "devDependencies": {},
   "repository": {},
   "keywords": [],
-  "license": "MIT"
+  "license": "MIT",
+  "author": "Szymon Działowski",
+  "description": "",
+  "homepage": "https://github.com/stopsopa/nlab"
 }

@@ -97,43 +97,23 @@ app.use((req, res, next) => {
 
 app.use(require('nlab/express/extend-res'));
 
+require('./middlewares/proxy')(app);
+
 // app.use(require('nlab/express/console-logger'));
 /**
- * Very custom logger strictly for this mediator
+ * have to be after proxy.js, look for phrase 'clilogged' in the project to understand why
  */
-(function (extend_res) {
-    app.post('/one/:cluster/:node(([^\\/]+)|)/:path(*)?', (req, res, next) => {
-        req.mediatorParams  = req.params || {};
-        req.mediatorBody    = req.body || {};
-        next();
-    });
+(function (logger) {
     app.use((req, res, next) => {
+        if (
+            req.clilogged ||
+            (req.url.indexOf('/public/') === 0 && req.url.split('.html').pop() !== '')
+        ) { // ignore all public
 
-        if ( ! req.get('x-jwt') ) {
-
-            return extend_res(req, res, next);
+            return next();
         }
 
-        const {
-            cluster,
-            node = '[null]',
-        } = req.mediatorParams;
-
-        const {
-            fromCluster,
-            fromNode = '[null]',
-        } = req.mediatorBody;
-
-        process.stdout.write(
-            (new Date()).toISOString().substring(0, 19).replace('T', ' ') +
-            `: from: cluster(${fromCluster}) node(${fromNode}) to: cluster(${cluster}) node(${node}) ` +
-            req.method.toUpperCase().padEnd(4, ' ') +
-            ":" +
-            req.url +
-            "\n"
-        );
-
-        next();
+        return logger(req, res, next);
     });
 }(require('nlab/express/console-logger')));
 
@@ -168,8 +148,6 @@ knex.init(require('./models/config'));
 app.all('/ping', require('./middlewares/ping'));
 
 require('./middlewares/keep-awake')(app);
-
-require('./middlewares/proxy')(app);
 
 const port = config.port;
 

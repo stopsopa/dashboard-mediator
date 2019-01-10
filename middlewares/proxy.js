@@ -35,6 +35,18 @@ fetch('/register', {
      */
     app.post('/register', async (req, res) => {
 
+        // loggin to cli vvv
+        process.stdout.write(
+            (new Date()).toISOString().substring(0, 19).replace('T', ' ') +
+            ': ' + req.method.toUpperCase().padEnd(4, ' ') +
+            ":" +
+            req.url.split('?')[0] +
+            "\n"
+        );
+
+        req.clilogged = true;
+        // loggin to cli ^^^
+
         if ( ! req.auth ) {
 
             log("no access\n");
@@ -232,6 +244,18 @@ fetch('/many/root/test', {
      */
     app.post('/many/:cluster/:path(*)', async (req, res) => {
 
+        // loggin to cli vvv
+        process.stdout.write(
+            (new Date()).toISOString().substring(0, 19).replace('T', ' ') +
+            ': ' + req.method.toUpperCase().padEnd(4, ' ') +
+            ":" +
+            req.url.split('?')[0] +
+            "\n"
+        );
+
+        req.clilogged = true;
+        // loggin to cli ^^^
+
         if ( ! req.auth ) {
 
             log("no access\n");
@@ -294,6 +318,29 @@ fetch('/one/root/dd/test', {
 }).then(res => res.json()).then(data => console.log('end', data))
      */
     app.post('/one/:cluster/:node(([^\\/]+)|)/:path(*)?', async (req, res) => {
+
+        // loggin to cli vvv
+            const {
+                cluster,
+                node = '[null]',
+            } = req.params || {};
+
+            const {
+                fromCluster,
+                fromNode = '[null]',
+            } = req.body || {};
+
+            process.stdout.write(
+                (new Date()).toISOString().substring(0, 19).replace('T', ' ') +
+                `: from: cluster(${fromCluster}) node(${fromNode}) to: cluster(${cluster}) node(${node}) ` +
+                req.method.toUpperCase().padEnd(4, ' ') +
+                ":" +
+                req.url.split('?')[0] +
+                "\n"
+            );
+
+            req.clilogged = true;
+        // loggin to cli ^^^
 
         if ( ! req.auth ) {
 
@@ -362,6 +409,18 @@ fetch('/one/root/dd/test', {
 
     app.all('/admin/clusters', async (req, res) => {
 
+        // loggin to cli vvv
+        process.stdout.write(
+            (new Date()).toISOString().substring(0, 19).replace('T', ' ') +
+            ': ' + req.method.toUpperCase().padEnd(4, ' ') +
+            ":" +
+            req.url.split('?')[0] +
+            "\n"
+        );
+
+        req.clilogged = true;
+        // loggin to cli ^^^
+
         if ( ! req.auth ) {
 
             log("no access\n");
@@ -386,6 +445,18 @@ fetch('/one/root/dd/test', {
     })
 
     app.all('/admin/cluster/:id?', async (req, res) => {
+
+        // loggin to cli vvv
+        process.stdout.write(
+            (new Date()).toISOString().substring(0, 19).replace('T', ' ') +
+            ': ' + req.method.toUpperCase().padEnd(4, ' ') +
+            ":" +
+            req.url.split('?')[0] +
+            "\n"
+        );
+
+        req.clilogged = true;
+        // loggin to cli ^^^
 
         if ( ! req.auth ) {
 
@@ -418,6 +489,18 @@ fetch('/one/root/dd/test', {
     });
 
     app.all('/token', (req, res) => {
+
+        // loggin to cli vvv
+            process.stdout.write(
+                (new Date()).toISOString().substring(0, 19).replace('T', ' ') +
+                ': ' + req.method.toUpperCase().padEnd(4, ' ') +
+                ":" +
+                req.url.split('?')[0] +
+                "\n"
+            );
+
+            req.clilogged = true;
+        // loggin to cli ^^^
 
         if ( req.auth !== 'basicauth' ) {
 

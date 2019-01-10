@@ -26,58 +26,58 @@ trim() {
 }
 
 
-#    if [ "$1" = "--travis" ]; then
-#
-#        if [ ! -f package_travis.json ]; then red "package_travis.json does not exist - stop"; exit 1; fi
-#
-#        if [ ! -f package.json ]; then red "package.json does not exist - stop"; exit 1; fi
-#
-#        if [ -f package_prod.json ]; then red "package_prod.json does exist - stop"; exit 1; fi
-#
-#        mv package.json package_prod.json
-#
-#        if [ ! -f package_prod.json ]; then red "package_prod.json does not exist - stop"; exit 1; fi
-#
-#        mv package_travis.json package.json
-#
-#        if [ -f package_travis.json ]; then red "package_travis.json does exist - stop"; exit 1; fi
-#
-#        if [ ! -f package.json ]; then red "package.json does not exist - stop 2"; exit 1; fi
-#
-#        green "package.json -> package_prod.json  and  package_travis.json -> package.json [done]"
-#
-#        exit 0
-#    fi
-#
-#    if [ "$1" = "--prod" ]; then
-#
-#        if [ ! -f package_prod.json ]; then red "package_prod.json does not exist - stop"; exit 1; fi
-#
-#        if [ ! -f package.json ]; then red "package.json does not exist - stop"; exit 1; fi
-#
-#        if [ -f package_travis.json ]; then red "package_travis.json does exist - stop"; exit 1; fi
-#
-#        mv package.json package_travis.json
-#
-#        if [ ! -f package_travis.json ]; then red "package_travis.json does not exist - stop"; exit 1; fi
-#
-#        mv package_prod.json package.json
-#
-#        if [ -f package_prod.json ]; then red "package_prod.json does exist - stop"; exit 1; fi
-#
-#        if [ ! -f package.json ]; then red "package.json does not exist - stop 2"; exit 1; fi
-#
-#        green "package.json -> package_travis.json  and  package_prod.json -> package.json [done]"
-#
-#        exit 0
-#    fi
-#
-#    if [ -f package_prod.json ]; then
-#
-#        { red "package_prod.json exist, before update run\n    /bin/bash update.sh --prod"; } 2>&3
-#
-#        exit 1;
-#    fi
+    if [ "$1" = "--travis" ]; then
+
+        if [ ! -f package_travis.json ]; then red "package_travis.json does not exist - stop"; exit 1; fi
+
+        if [ ! -f package.json ]; then red "package.json does not exist - stop"; exit 1; fi
+
+        if [ -f package_prod.json ]; then red "package_prod.json does exist - stop"; exit 1; fi
+
+        mv package.json package_prod.json
+
+        if [ ! -f package_prod.json ]; then red "package_prod.json does not exist - stop"; exit 1; fi
+
+        mv package_travis.json package.json
+
+        if [ -f package_travis.json ]; then red "package_travis.json does exist - stop"; exit 1; fi
+
+        if [ ! -f package.json ]; then red "package.json does not exist - stop 2"; exit 1; fi
+
+        green "package.json -> package_prod.json  and  package_travis.json -> package.json [done]"
+
+        exit 0
+    fi
+
+    if [ "$1" = "--prod" ]; then
+
+        if [ ! -f package_prod.json ]; then red "package_prod.json does not exist - stop"; exit 1; fi
+
+        if [ ! -f package.json ]; then red "package.json does not exist - stop"; exit 1; fi
+
+        if [ -f package_travis.json ]; then red "package_travis.json does exist - stop"; exit 1; fi
+
+        mv package.json package_travis.json
+
+        if [ ! -f package_travis.json ]; then red "package_travis.json does not exist - stop"; exit 1; fi
+
+        mv package_prod.json package.json
+
+        if [ -f package_prod.json ]; then red "package_prod.json does exist - stop"; exit 1; fi
+
+        if [ ! -f package.json ]; then red "package.json does not exist - stop 2"; exit 1; fi
+
+        green "package.json -> package_travis.json  and  package_prod.json -> package.json [done]"
+
+        exit 0
+    fi
+
+    if [ -f package_prod.json ]; then
+
+        { red "package_prod.json exist, before update run\n    /bin/bash update.sh --prod"; } 2>&3
+
+        exit 1;
+    fi
 
 make t
 

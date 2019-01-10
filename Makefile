@@ -12,6 +12,12 @@ uf: # update even if there is nothing new committed
 t:
 	/bin/bash test.sh
 
+ck: # karma parameters.json
+	@/bin/bash update.sh --karma
+
+cj: # jest parameters.json
+	@/bin/bash update.sh --prod
+
 start: linknpm
 	node index.js
 

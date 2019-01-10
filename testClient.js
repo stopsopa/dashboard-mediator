@@ -39,7 +39,7 @@ app.all('/', (req, res) => res.end('no need for front api in this test server'))
  */
 require('isomorphic-fetch');
 
-require('./middlewares/registerItself')({
+require('./libs/registerItself')({
     password    : process.env.PROTECTED_BASIC_AND_JWT,
     mediator    : config.testClientConfig.mediator,
     thisserver  : config.testClientConfig.thisserver,

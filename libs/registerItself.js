@@ -26,7 +26,7 @@ const th            = msg => `registerItself.js: ` + msg;
 
 /**
  *
-    require('./middlewares/registerItself')({
+    require('./libs/registerItself')({
         password    : process.env.PROTECTED_BASIC_AND_JWT,
         mediator    : {
             domain: 'http://localhost',
@@ -142,7 +142,8 @@ module.exports = async opt => {
                         // must be int
                         expiresIn: parseInt(mediator.jwt_expire, 10)
                     }
-                )
+                ),
+                'x-regular-log': 'true'
             },
             body: JSON.stringify({
                 cluster : thisserver.cluster,
