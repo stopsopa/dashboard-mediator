@@ -80,9 +80,14 @@ app.use(bodyParser.json());
     });
 }());
 
-app.all('/path', (req, res) => {
+app.all('/path/:rest(*)?', (req, res) => {
+
     return res.aes({
-        part_of_data: req.body
+        response_from_client: {
+            request_body: req.body,
+            request_full_url: req.url,
+            request_url_param_rest: req.params.rest
+        }
     });
 });
 

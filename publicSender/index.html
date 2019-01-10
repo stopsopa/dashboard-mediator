@@ -42,6 +42,10 @@
                     jwt: token,
                     nodes: '',
                     nodeId: '',
+                    testPath: '/path/test-param/even-with-slash/why-not',
+                    testJson: `{
+    "sent": "data..."
+}`,                 testRes: '',
                 }
             }
             componentDidMount() {
@@ -163,6 +167,70 @@
                     console.log(e)
                 }
             }
+            onTestSend = () => {
+
+                const {
+                    jwt,
+
+                    testPath,
+                    testJson,
+                    testRes,
+                } = this.state;
+
+                let jsonToSent;
+
+                try {
+
+                    jsonToSent = JSON.parse(testJson);
+                }
+                catch (e) {
+
+                    return this.setState({
+                        testRes: 'input json parse error...'
+                    });
+                }
+
+                let cres;
+
+                this.setState({
+                    testRes: 'Loading...'
+                }, () => {
+                    fetch(`/sender-service-controller?x-jwt=` + jwt, {
+                        method: 'post',
+                        headers: {
+                            'Content-type': 'application/json; charset=utf-8',
+                        },
+                        body: JSON.stringify({
+                            clientPath: testPath,
+                            jsonToSent,
+                        })
+                    })
+                        .then(res => {
+                            cres = res;
+                            return res.json();
+                        })
+                        .then(json => {
+                            if (cres.status != 200) {
+
+                                return this.setState({
+                                    testRes: {
+                                        status: cres.status,
+                                        wrong_status_code: json
+                                    }
+                                })
+                            }
+                            this.setState({
+                                testRes: json,
+                            })
+                        })
+                        .catch(e => this.setState({
+                            testRes: {
+                                status: cres.status,
+                                response_error: e
+                            }
+                        }))
+                });
+            }
             onClear = (field, value) => this.setState({
                 [field]: value,
             })
@@ -173,6 +241,10 @@
                     nodes,
                     nodeId,
                     nodeIdJson,
+
+                    testPath,
+                    testJson,
+                    testRes,
                 } = this.state;
 
                 return (
@@ -208,39 +280,12 @@
 <br />
 <pre type="text" onClick={e => e.target.select()} >{JSON.stringify(nodeIdJson, null, 4)}</pre>
 
-<h3>registering/editing node</h3>
-<p>(request have to be authenticated with basic auth or jwt)</p>
-<pre>{`fetch('/register?x-jwt=', {
-    method: 'post',
-    headers: {
-        'Content-type': 'application/json; charset=utf-8',
-    },
-    body: JSON.stringify({
-        cluster: 'cluster-name',
-        node: 'node-nam', // can be null
-        domain: 'http://service.url',
-        port: '80',
-        // id: 19
-            // you might use id to identify entity to edit,
-            // but if not, then in order to find entity uniqe index values (cluster & node) will be used
-    })
-}).then(res => res.json()).then(console.log)`}</pre>
-
-
-<h3>remove node</h3>
-<pre>{`fetch('/remove/28?x-jwt=').then(res => res.json()).then(e => console.log('then', e), e => console.log('catch', e))`}</pre>
-<p>or:</p>
-<pre>{`fetch('/remove?x-jwt=', {
-    method: 'post',
-    headers: {
-        'Content-type': 'application/json; charset=utf-8',
-    },
-    body: JSON.stringify({
-        cluster: 'cluster-name',
-        node: 'node-nam', // can be null
-    })
-}).then(res => res.json()).then(e => console.log('then', e), e => console.log('catch', e))`}</pre>
-
+<h3>Test request from one client to another through mediator:</h3>
+<button onClick={this.onTestSend}>send</button>
+<input value={testPath} onChange={e => this.setState({testPath: e.target.value})} style={{width: '80%'}} />
+<br />
+<textarea value={testJson} onChange={e => this.setState({testJson: e.target.value})} style={{width: '80%', minHeight: "100px"}}/>
+<pre>{JSON.stringify(testRes, null, 4)}</pre>
                         </div>
                     </>
                 );

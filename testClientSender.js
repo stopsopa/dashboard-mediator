@@ -126,35 +126,49 @@ app.all('/config', (req, res) => res.jsonNoCache(config));
 
 require('./middlewares/proxy')(app);
 
+/**
+ * test controller for sending requests through mediator to another node
+ */
+(function () {
 
+    const mrequest = require('./libs/mrequest');
 
+    mrequest.create(
+        'test',
+        config.domain,
+        config.port,
+        config.testClientConfig.mediator.thisserver.cluster,
+        config.testClientConfig.mediator.thisserver.node,
 
-const mrequest = require('./libs/mrequest');
+        process.env.PROTECTED_AES256,
+        process.env.PROTECTED_BASIC_AND_JWT,
+        config.jwt.jwt_expire,
+    );
 
-mrequest.create(
-    'test',
-    config.domain,
-    config.port,
-    config.testClientConfig.mediator.thisserver.cluster,
-    config.testClientConfig.mediator.thisserver.node,
+    const test = mrequest('test');
 
-    process.env.PROTECTED_AES256,
-    process.env.PROTECTED_BASIC_AND_JWT,
-    config.jwt.jwt_expire,
-);
+    app.all('/sender-service-controller', (req, res) => {
 
-const test = mrequest('test');
+        const {
+            clientPath,
+            jsonToSent,
+        } = req.body;
 
-test('/path', {data: 'avlue--'})
-    .then(
-        json => log.dump({
-            success: json
-        }, 6),
-        json => log.dump({
-            fail: json
+        log({
+            clientPath,
+            jsonToSent,
         })
-    )
-;
+
+        test(clientPath, jsonToSent)
+            .then(
+                json => res.jsonNoCache(json),
+                e => res.status(404).jsonNoCache(e)
+            )
+        ;
+
+    });
+}());
+
 
 const port = config.testSenderConfig.port;
 
