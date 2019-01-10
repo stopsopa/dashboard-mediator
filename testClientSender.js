@@ -146,7 +146,14 @@ mrequest.create(
 const test = mrequest('test');
 
 test('/path', {data: 'avlue--'})
-    .then(json => log.dump(json, 6))
+    .then(
+        json => log.dump({
+            success: json
+        }, 6),
+        json => log.dump({
+            fail: json
+        })
+    )
 ;
 
 const port = config.testSenderConfig.port;

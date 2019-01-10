@@ -135,9 +135,21 @@ other: ${other}
 
             // log.dump([furl, opt], 5);
 
+            let cres;
+
             const promise = fetch(furl, opt)
-                .then(res => res.json())
+                .then(res => {
+
+                    cres = res;
+
+                    return res.json();
+                })
                 .then(json => {
+
+                    if (cres.status != 200) {
+
+                        return Promise.reject(json);
+                    }
 
                     const decoded = decoder(json);
 
