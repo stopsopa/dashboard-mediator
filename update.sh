@@ -118,6 +118,8 @@ if [ "$DIFF" != "" ] || [ "$1" = "force" ]; then
 
     npm version patch
 
+    node copy-package-version.js
+
     (cd heroku && /bin/bash keep-awake.sh)
 
     # make umd
