@@ -13,7 +13,8 @@
         "inspc": "^0.0.13",
         "jsonwebtoken": "^8.4.0",
         "lodash": "^4.17.11",
-        "nlab": "^0.0.9"
+        "nlab": "^0.0.9",
+        "isomorphic-fetch": "^2.2.1"
     },
     "devDependencies": {},
     "repository": {},

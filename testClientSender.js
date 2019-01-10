@@ -24,6 +24,9 @@ app.use(require('nlab/express/console-logger'));
  */
 app.all('/config', (req, res) => res.jsonNoCache(config));
 
+/**
+ * mainly for proxy.js, but it's general purpose library
+ */
 app.use(require('nlab/express/extend-res'));
 
 /**
