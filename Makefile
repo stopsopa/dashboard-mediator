@@ -12,10 +12,10 @@ uf: # update even if there is nothing new committed
 t:
 	/bin/bash test.sh
 
-ck: # karma parameters.json
-	@/bin/bash update.sh --karma
+cn: # bring npm parameters.json
+	@/bin/bash update.sh --npm
 
-cj: # jest parameters.json
+cp: # bring github parameters.json
 	@/bin/bash update.sh --prod
 
 start: linknpm

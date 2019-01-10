@@ -26,9 +26,9 @@ trim() {
 }
 
 
-    if [ "$1" = "--travis" ]; then
+    if [ "$1" = "--npm" ]; then
 
-        if [ ! -f package_travis.json ]; then red "package_travis.json does not exist - stop"; exit 1; fi
+        if [ ! -f package_npm.json ]; then red "package_npm.json does not exist - stop"; exit 1; fi
 
         if [ ! -f package.json ]; then red "package.json does not exist - stop"; exit 1; fi
 
@@ -38,13 +38,13 @@ trim() {
 
         if [ ! -f package_prod.json ]; then red "package_prod.json does not exist - stop"; exit 1; fi
 
-        mv package_travis.json package.json
+        mv package_npm.json package.json
 
-        if [ -f package_travis.json ]; then red "package_travis.json does exist - stop"; exit 1; fi
+        if [ -f package_npm.json ]; then red "package_npm.json does exist - stop"; exit 1; fi
 
         if [ ! -f package.json ]; then red "package.json does not exist - stop 2"; exit 1; fi
 
-        green "package.json -> package_prod.json  and  package_travis.json -> package.json [done]"
+        green "package.json -> package_prod.json  and  package_npm.json -> package.json [done]"
 
         exit 0
     fi
@@ -55,11 +55,11 @@ trim() {
 
         if [ ! -f package.json ]; then red "package.json does not exist - stop"; exit 1; fi
 
-        if [ -f package_travis.json ]; then red "package_travis.json does exist - stop"; exit 1; fi
+        if [ -f package_npm.json ]; then red "package_npm.json does exist - stop"; exit 1; fi
 
-        mv package.json package_travis.json
+        mv package.json package_npm.json
 
-        if [ ! -f package_travis.json ]; then red "package_travis.json does not exist - stop"; exit 1; fi
+        if [ ! -f package_npm.json ]; then red "package_npm.json does not exist - stop"; exit 1; fi
 
         mv package_prod.json package.json
 
@@ -67,19 +67,17 @@ trim() {
 
         if [ ! -f package.json ]; then red "package.json does not exist - stop 2"; exit 1; fi
 
-        green "package.json -> package_travis.json  and  package_prod.json -> package.json [done]"
+        green "package.json -> package_npm.json  and  package_prod.json -> package.json [done]"
 
         exit 0
     fi
 
-    if [ -f package_prod.json ]; then
+    if [ ! -f package_prod.json ]; then
 
-        { red "package_prod.json exist, before update run\n    /bin/bash update.sh --prod"; } 2>&3
+        { red "package_prod.json DOES NOT exist, before update run\n    /bin/bash update.sh --prod"; } 2>&3
 
         exit 1;
     fi
-
-make t
 
 if [ "$(git rev-parse --abbrev-ref HEAD)" != $LOCALBRANCH ]; then
 
@@ -87,6 +85,8 @@ if [ "$(git rev-parse --abbrev-ref HEAD)" != $LOCALBRANCH ]; then
 
     exit 1;
 fi
+
+make t
 
 { green "\ncurrent branch: $LOCALBRANCH"; } 2>&3
 
@@ -126,33 +126,33 @@ if [ "$DIFF" != "" ] || [ "$1" = "force" ]; then
     # cat comment.txt dist/spvalidation.min.js > dist/test.js
     # mv dist/test.js dist/spvalidation.min.js
 
-                            #node update-badge.js
-                            #git add README.md
+                            node update-badge.js
+                            git add README.md
 
                             # git add dist
                             # git add examples.es5.js
-                            #git commit --amend --no-edit
+                            git commit --amend --no-edit
 
     git push $ORIGIN $REMOTEBRANCH
 
     if [ "$?" = "0" ]; then
 
-        #npm publish
+        npm publish
 
-        #if [ "$?" != "0" ]; then
+        if [ "$?" != "0" ]; then
 
-        #    { red "\n\nCan't npm publish\n    try to run 'npm login'\n"; } 2>&3
+            { red "\n\nCan't npm publish\n    try to run 'npm login'\n"; } 2>&3
 
-        #    exit 4;
-        #fi
+            exit 4;
+        fi
 
-        #git push --tags --force
+        git push --tags --force
 
         #make h
 
-        #git push origin master --tags
+        git push origin master --tags
 
-        git push heroku master
+#        git push heroku master
 
     else
 
