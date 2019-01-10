@@ -25,6 +25,15 @@ app.use(require('nlab/express/console-logger'));
 
 
 
+
+
+
+
+
+
+/**
+ * only registerItself require iso-fetch in this test server
+ */
 require('isomorphic-fetch');
 
 require('./middlewares/registerItself')({
@@ -32,12 +41,19 @@ require('./middlewares/registerItself')({
     mediator: config.testClientConfig.mediator,
 });
 
+/**
+ * Middleware to provide res.aes({}) method to return encrypted JSON responses to mediator service
+ */
 app.use(require('./libs/mresponse')(process.env.PROTECTED_AES256));
 
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(bodyParser.json());
 
+/**
+ * Decoding entire encoded json for next regular middlewares
+ * The only requirements is that those middlewares should use res.aes() method to return response
+ */
 (function () {
 
     const aes256        = require('nlab/aes256');
@@ -89,7 +105,9 @@ app.use(bodyParser.json());
 }());
 
 /**
- * Test endpoint for manual testing
+ * Test endpoint after decoding encrypted body for manual testing
+ *
+ * WARNING: No need to implement any auth, encoded json works like authentication.
  */
 app.all('/path/:rest(*)?', (req, res) => {
 
@@ -108,6 +126,7 @@ app.all('/path/:rest(*)?', (req, res) => {
 
 
 
+// not important code for this example vvv
 
 const port = config.testClientConfig.port;
 
