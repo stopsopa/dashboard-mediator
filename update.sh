@@ -128,8 +128,8 @@ if [ "$DIFF" != "" ] || [ "$1" = "force" ]; then
     # cat comment.txt dist/spvalidation.min.js > dist/test.js
     # mv dist/test.js dist/spvalidation.min.js
 
-                            node update-badge.js
-                            git add README.md
+#                            node update-badge.js
+#                            git add README.md
 
                             # git add dist
                             # git add examples.es5.js

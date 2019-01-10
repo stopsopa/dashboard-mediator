@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/stopsopa/mediator.svg?branch=v0.0.51)](https://travis-ci.org/stopsopa/mediator)
-[![npm version](https://badge.fury.io/js/%40stopsopa%2Fmediator.svg)](https://badge.fury.io/js/%40stopsopa%2Fmediator)
+[![npm version](https://badge.fury.io/js/%40stopsopa%2Fmediator.svg)](https://www.npmjs.com/package/@stopsopa/mediator)
 [![NpmLicense](https://img.shields.io/npm/l/@stopsopa/mediator.svg)](https://github.com/stopsopa/dashboard-mediator/blob/master/LICENSE)
 
 
