@@ -353,7 +353,16 @@ fetch('/one/root/dd/test', {
 
                 const data = await send(found.shift(), path, req.body);
 
-                return res.jsonNoCache(data);
+                if (data.then) {
+
+                    log.dump({
+                        response_from_client: data.then,
+                    }, 5)
+
+                    return res.jsonNoCache(data.then);
+                }
+
+                return res.jsonError(data.catch);
             }
             catch (e) {
 
