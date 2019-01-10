@@ -19,12 +19,28 @@ require('isomorphic-fetch');
 
 const favicon = require('serve-favicon');
 
-app.use(favicon(path.join(__dirname, 'faviconSender.ico')))
+app.use(favicon(path.join(__dirname, 'faviconSender.ico')));
 
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(bodyParser.json());
 
+
+app.use(require('nlab/express/extend-res'));
+
+app.use(require('nlab/express/console-logger'));
+
+/**
+ * Exposing config to browser code (this server in general is just for test so it's not security issue)
+ */
+app.all('/config', (req, res) => res.jsonNoCache(config));
+
+
+/**
+ * 'admin' field is necessary for 'proxy.js' script
+ *
+ * WARNING: this
+ */
 (function () {
 
     var auth = require('basic-auth');
@@ -90,11 +106,10 @@ app.use(bodyParser.json());
     });
 }());
 
-app.use(require('nlab/express/extend-res'));
-
-app.use(require('nlab/express/console-logger'));
-
-// serving static files
+/**
+ * serving static files
+ * WARNING: static files middleware have to be after auth block
+ */
 (function () {
 
     const dir = path.resolve('./publicSender');
@@ -122,8 +137,9 @@ require('./middlewares/registerItself')({
     mediator: config.testSenderConfig.mediator,
 });
 
-app.all('/config', (req, res) => res.jsonNoCache(config));
-
+/**
+ * Entire api for passing incomming request to nodes identified by cluster and node fields
+ */
 require('./middlewares/proxy')(app);
 
 /**
@@ -168,6 +184,19 @@ require('./middlewares/proxy')(app);
 
     });
 }());
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 const port = config.testSenderConfig.port;
