@@ -137,7 +137,11 @@ if [ "$DIFF" != "" ] || [ "$1" = "force" ]; then
 
     if [ "$?" = "0" ]; then
 
+        make cn
+
         npm publish
+
+        make cp
 
         if [ "$?" != "0" ]; then
 
