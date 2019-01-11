@@ -440,7 +440,7 @@ fetch('/one/root/dd/test', {
         }
     });
 
-    app.all('/admin/clusters', async (req, res) => {
+    app.all('/admin/clusters/:cluster?', async (req, res) => {
 
         // loggin to cli vvv
         process.stdout.write(
@@ -461,9 +461,22 @@ fetch('/one/root/dd/test', {
             return res.basicAuth();
         }
 
+        const cluster = (req.params.cluster || "").trim();
+
         try {
 
-            const list = await knex().model.clusters.findAll();
+            let query       = 'select * from :table:';
+
+            const params    = {};
+
+            if (cluster) {
+
+                query += ' where cluster = :cluster';
+
+                params.cluster = cluster;
+            }
+
+            const list = await knex().model.clusters.query(query, params);
 
             return res.jsonNoCache({
                 list,

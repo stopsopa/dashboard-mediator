@@ -103,6 +103,11 @@ const ext = {
     },
     getValidators: function (mode = null, id, entity) {
 
+        const nameValidator = new Regex({
+            pattern: /^https?:\/\//i,
+            message: 'Domain should start from http:// or https://',
+        });
+
         const validators = {
             id: new Optional(),
             cluster: new Required([
@@ -159,7 +164,8 @@ const ext = {
 
                             resolve('resolve ' + code);
                         })
-                )
+                ),
+                nameValidator,
             ]),
             domain: new Required([
                 new NotBlank(),
@@ -185,6 +191,7 @@ const ext = {
                 validators.node = new Required([
                     new NotBlank(),
                     new Length({max: 50}),
+                    nameValidator,
                 ]);
             }
         }

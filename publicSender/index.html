@@ -104,17 +104,34 @@
 
                 try {
 
-                    const res       = await fetch(mediatorUrl + '/admin/clusters?x-jwt=' + jwt);
+                    let cluster = '';
+                    if (this.state.nodesCluster) {
+
+                        cluster = '/' + this.state.nodesCluster;
+                    }
+
+                    const res       = await fetch(mediatorUrl + `/admin/clusters${cluster}?x-jwt=` + jwt);
                     const json      = await res.json();
+
                     this.setState({
                         nodes: json,
                     });
 
                     if (json.list.length > 0) {
 
-                        this.setState({
-                            nodeId: json.list[0].id,
-                        });
+                        if ( ! this.state.nodeId ) {
+
+                            this.setState({
+                                nodeId: json.list[0].id,
+                            });
+                        }
+
+                        if ( ! (this.state.nodesCluster || '').trim() ) {
+
+                            this.setState({
+                                nodesCluster: json.list[0].cluster,
+                            });
+                        }
                     }
                 }
                 catch (e) {
@@ -222,6 +239,7 @@
                 const {
                     jwt,
                     nodes,
+                    nodesCluster,
                     nodeId,
                     nodeIdJson,
 
@@ -247,7 +265,12 @@
 <h3>list node across all clusters:</h3>
 <p>(request have to be authenticated with basic auth or jwt)</p>
 <pre>{`fetch('/admin/clusters').then(res => res.json()).then(console.log)`}</pre>
-<button onClick={this.onGetNodes}>get nodes</button><button onClick={() => this.onClear('nodes', '')}>clear</button>
+<button onClick={this.onGetNodes}>get nodes</button>
+<button onClick={() => {
+    this.onClear('nodes', '')
+    this.onClear('nodesCluster', '')
+}}>clear</button>
+<input onChange={e => this.setState({nodesCluster: e.target.value})} value={nodesCluster} placeholder="cluster name" style={{width: '300px'}}/>
 <a href="/admin/clusters?x-jwt=" target="_blank">/admin/clusters</a>
 <br />
 <pre type="text" onClick={e => e.target.select()} >{JSON.stringify(nodes, null, 4)}</pre>
@@ -256,8 +279,8 @@
 <p>(request have to be authenticated with basic auth or jwt)</p>
 <pre>{`fetch('/admin/cluster/:id?x-jwt=').then(res => res.json()).then(console.log)`}</pre>
 <button onClick={this.onGetNodeDetails}>get node{nodeId ? `(id: ${nodeId}) ` : ''} details</button>
-<a href={`/admin/cluster/${nodeId}?x-jwt=`} target="_blank">{`/admin/cluster/${nodeId}`}</a>
 <input onChange={e => this.setState({nodeId: e.target.value})} value={nodeId}/>
+<a href={`/admin/cluster/${nodeId}?x-jwt=`} target="_blank">{`/admin/cluster/${nodeId}`}</a>
 <button onClick={() => this.onClear('nodeIdJson', '')}>clear</button>
 <br />
 <pre type="text" onClick={e => e.target.select()} >{JSON.stringify(nodeIdJson, null, 4)}</pre>
