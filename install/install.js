@@ -4,11 +4,6 @@ const path  = require('path');
 
 const fs    = require('fs');
 
-
-console.log('seems to work');
-
-process.exit(0)
-
 const createIgnoreFilter = (ignorefile, root) => {
 
     let ignore = fs.readFileSync(ignorefile).toString();
@@ -346,7 +341,8 @@ function ncp (source, dest, options, callback) {
     }
 }
 
-const mkdirP = require(path.resolve(__dirname, '..', 'libs', 'mkdirp'));
+//const mkdirP = require(path.resolve(__dirname, '..', 'libs', 'mkdirp'));
+const mkdirP = require(path.resolve(__dirname, 'mkdirp'));
 
 /**
  * https://codepen.io/stopsopa/pen/RJYZgj?editors=0010

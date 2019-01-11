@@ -30,6 +30,15 @@ sender: linknpm
 client:
 	node testClient.js
 
+islinked:
+	@cd dev && /bin/bash islinked.sh
+
+link:
+	npm link
+
+unlink:
+	@cd dev && /bin/bash unlink.sh
+
 linknpm:
 	(cd public && ln -s ../node_modules public) | true
 	(cd publicSender && ln -s ../node_modules public) | true
