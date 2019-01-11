@@ -1,7 +1,7 @@
 {
-  "dependencies": {
-    "@stopsopa/dotenv-up": "^1.0.18",
-    "@stopsopa/mediator": "^0.0.59",
-    "express": "^4.16.4"
-  }
+    "dependencies": {
+        "@stopsopa/dotenv-up": "^1.0.18",
+        "@stopsopa/mediator": "0.0.71",
+        "express": "^4.16.4"
+    }
 }
