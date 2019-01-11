@@ -13,7 +13,7 @@
     "@babel/standalone": "^7.2.5",
     "@stopsopa/dotenv-up": "^1.0.22",
     "@stopsopa/knex-abstract": "^0.0.41",
-    "@stopsopa/validator": "^0.0.94",
+    "@stopsopa/validator": "^0.0.95",
     "@types/node": "^8.0.29",
     "basic-auth": "^2.0.1",
     "body-parser": "^1.18.3",

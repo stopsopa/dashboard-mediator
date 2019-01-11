@@ -3,9 +3,9 @@
 
 
 "@stopsopa/dotenv-up@^1.0.18":
-  version "1.0.18"
-  resolved "https://registry.yarnpkg.com/@stopsopa/dotenv-up/-/dotenv-up-1.0.18.tgz#f78ed6401630ba2e5e07c4ff3eda7e4e601d19fb"
-  integrity sha512-HqusLlVAByWCQ9u+va1RqrUE1VkWVlEjibwNFO2CnokGwXHWJnEQXAt2a+Yt4eHGAYbE9Vv3QPg0zv4XzV2g1Q==
+  version "1.0.23"
+  resolved "https://registry.yarnpkg.com/@stopsopa/dotenv-up/-/dotenv-up-1.0.23.tgz#3ee29d6f5d37e93b702c4cacb71dbee53ba06d13"
+  integrity sha512-mDhb+JvGe5a5HCOLJ5kwqoLnQgYMrg8HYqCyp9G2oke+D6oxhWrm9K0/5UBVAFNc+78Xa9W2EkucTP64fHRjrA==
 
 "@stopsopa/mediator@^0.0.59":
   version "0.0.59"

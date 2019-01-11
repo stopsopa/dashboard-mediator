@@ -67,10 +67,21 @@ fetch('/register', {
 
             const cond = (node === null) ? 'is' : '=';
 
-            const found = await man.queryOne(`select id from :table: where cluster = :cluster and node ${cond} :node`, {
-                cluster,
-                node,
-            });
+            let found;
+
+            try {
+
+                found = await man.queryOne(`select id from :table: where cluster = :cluster and node ${cond} :node`, {
+                    cluster,
+                    node,
+                });
+            }
+            catch (e) {
+
+                log.dump(e);
+
+                return res.jsonError(`Database sql error: couldn't find the node by cluster: '${cluster}' & node: '${node}'`);
+            }
 
             if (found) {
 
@@ -154,10 +165,21 @@ fetch('/register', {
 
             const cond = (node === null) ? 'is' : '=';
 
-            const found = await man.queryOne(`select id from :table: where cluster = :cluster and node ${cond} :node`, {
-                cluster,
-                node,
-            });
+            let found;
+
+            try {
+
+                found = await man.queryOne(`select id from :table: where cluster = :cluster and node ${cond} :node`, {
+                    cluster,
+                    node,
+                });
+            }
+            catch (e) {
+
+                log.dump(e);
+
+                return res.jsonError(`Database sql error: couldn't find the node by cluster: '${cluster}' & node: '${node}'`);
+            }
 
             if (found) {
 
@@ -170,7 +192,18 @@ fetch('/register', {
             return res.jsonError(`it's necessary to give id in url or cluster and node in json body`);
         }
 
-        const affected = await man.delete(id);
+        let affected;
+
+        try {
+
+            affected = await man.delete(id);
+        }
+        catch (e) {
+
+            log.dump(e);
+
+            return res.jsonError(`Database sql error: Can't delete node by id: '${id}'`);
+        }
 
         return res.jsonNoCache({
             affected,

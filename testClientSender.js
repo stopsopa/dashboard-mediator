@@ -144,7 +144,9 @@ require('./libs/registerItself')({
         ;
     });
 
+    const ttt = {...process.env};
     const standalone_config = require('./standalone-node/config');
+    Object.assign(process.env, ttt);
 
     app.all('/standalone-service-controller', (req, res) => {
 
