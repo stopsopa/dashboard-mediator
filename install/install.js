@@ -413,7 +413,7 @@ if (process.argv[2] === '--is-linked') {
     process.exit(0);
 }
 
-let project = ((process.argv[2] || 'knex-project') + '').trim();
+let project = ((process.argv[2] || 'mediator-node') + '').trim();
 
 if ( ! project ) {
 
@@ -478,21 +478,21 @@ const installTool = (source, target, filter) => new Promise((resolve, reject) =>
         //     target: path.resolve(project, 'app'),
         // },
         {
-            source: path.resolve(source, 'example'),
+            source: path.resolve(source, 'standalone-node'),
             target: target,
         },
-        {
-            source: path.resolve(source, 'models'),
-            target: path.resolve(target, 'models'),
-        },
-        {
-            source: path.resolve(source, 'migrations'),
-            target: path.resolve(target, 'migrations'),
-        },
-        {
-            source: path.resolve(source, 'docker'),
-            target: path.resolve(target, 'docker'),
-        },
+        // {
+        //     source: path.resolve(source, 'models'),
+        //     target: path.resolve(target, 'models'),
+        // },
+        // {
+        //     source: path.resolve(source, 'migrations'),
+        //     target: path.resolve(target, 'migrations'),
+        // },
+        // {
+        //     source: path.resolve(source, 'docker'),
+        //     target: path.resolve(target, 'docker'),
+        // },
         // {
         //     source: path.resolve(__dirname, '..', 'public'),
         //     target: path.resolve(project, 'public'),
@@ -513,10 +513,10 @@ const installTool = (source, target, filter) => new Promise((resolve, reject) =>
 
     allChain([
         ...chain,
-        () => installTool(path.resolve(source, '.env.dist'), path.resolve(project, '.env'), () => true),
-        () => installTool(path.resolve(source, 'migrations', 'ormconfig.js.dist'), path.resolve(project, 'migrations', 'ormconfig.js'), () => true),
-        () => installTool(path.resolve(source, 'package.json'), path.resolve(project, 'package.json'), () => true),
-        () => installTool(path.resolve(source, 'package.json'), path.resolve(project, 'package.json'), () => true),
+        // () => installTool(path.resolve(source, '.env.dist'), path.resolve(project, '.env'), () => true),
+        // () => installTool(path.resolve(source, 'migrations', 'ormconfig.js.dist'), path.resolve(project, 'migrations', 'ormconfig.js'), () => true),
+        // () => installTool(path.resolve(source, 'package.json'), path.resolve(project, 'package.json'), () => true),
+        // () => installTool(path.resolve(source, 'package.json'), path.resolve(project, 'package.json'), () => true),
         // () => new Promise(res => {
         //
         //     let sourceJson      = require(path.resolve(source, 'package.json'));
@@ -543,17 +543,10 @@ Now run:
 
     cd "${project}"
     yarn
-    yarn add @stopsopa/knex-abstract
-    (cd migrations && yarn add @stopsopa/knex-abstract)
+    # check local .env
+    # then run
+    node server.js
     
-    .. and then:
-    
-        cat Makefile    
-    
-    setup correct credentials for mysql in .env and run:
-    
-        node test.js               
-
 `);
 
         }, err => {
