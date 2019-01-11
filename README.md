@@ -6,14 +6,14 @@
 
 <!-- toc -->
 
-- [console](#console)
-- [readding closest .env](#readding-closest-env)
-- [determining "dev" || "prod"](#determining-dev--prod)
-- [express response extensions:](#express-response-extensions)
-- [access to request & response in react component (SSR):](#access-to-request--response-in-react-component-ssr)
-- [RESTful api (transport)](#restful-api-transport)
-- [Controllers](#controllers)
-  * [Router](#router)
+- [deploy in heroku](#deploy-in-heroku)
+- [to update project just change code, commit and run:](#to-update-project-just-change-code-commit-and-run)
+- [deploy locally](#deploy-locally)
+- [to run local formation](#to-run-local-formation)
+  * [main service (mediator service)](#main-service-mediator-service)
+  * [passive service (just listening)](#passive-service-just-listening)
+  * [active service (only sending to mediator directly and to listener)](#active-service-only-sending-to-mediator-directly-and-to-listener)
+  * [standalone service (sending and listening)](#standalone-service-sending-and-listening)
 
 <!-- tocstop -->
 
@@ -77,12 +77,4 @@ In order to create local formation of nodes run accordingly:
     npx @stopsopa/mediator
     # and follow instructio on the screen
     
-At the end just visit all services through browser and check what's available.                      
-
-
-    
-        
-    
-    
-    
-    
+At the end just visit all services through browser and check what's available.
