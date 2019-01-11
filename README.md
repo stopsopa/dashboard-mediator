@@ -6,14 +6,18 @@
 
 <!-- toc -->
 
-- [deploy in heroku](#deploy-in-heroku)
-- [to update project just change code, commit and run:](#to-update-project-just-change-code-commit-and-run)
-- [deploy locally](#deploy-locally)
-- [to run local formation](#to-run-local-formation)
-  * [main service (mediator service)](#main-service-mediator-service)
-  * [passive service (just listening)](#passive-service-just-listening)
-  * [active service (only sending to mediator directly and to listener)](#active-service-only-sending-to-mediator-directly-and-to-listener)
-  * [standalone service (sending and listening)](#standalone-service-sending-and-listening)
+- [What's that?](#whats-that)
+- [Why?](#why)
+- [Deploy locally](#deploy-locally)
+- [To run local formation](#to-run-local-formation)
+  * [Main service (mediator service)](#main-service-mediator-service)
+  * [Passive service (just listening)](#passive-service-just-listening)
+  * [Active service (only sending to mediator directly and to listener)](#active-service-only-sending-to-mediator-directly-and-to-listener)
+  * [Standalone service (sending and listening)](#standalone-service-sending-and-listening)
+- [Configuration of services](#configuration-of-services)
+- [Using npm libraries to interact with mediator and attached services](#using-npm-libraries-to-interact-with-mediator-and-attached-services)
+- [Deploy in heroku](#deploy-in-heroku)
+- [Dev notes:](#dev-notes)
 
 <!-- tocstop -->
 
@@ -94,4 +98,4 @@ To update project just change what's necessary and run:
 
     make u  
     
-... of course you have to be logged to npm (*npm login*)    
+... of course you have to be logged to npm (*npm login*)
