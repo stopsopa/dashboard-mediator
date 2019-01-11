@@ -12,4 +12,6 @@ else
     cp .env.heroku .env
 fi
 
+(cd public && ln -s ../package.json package.json | true)
+
 make start

@@ -11,3 +11,4 @@ npm-debug.log
 yarn-error.log
 /public/public
 /publicSender/public
+/public/package.json
