@@ -104,8 +104,8 @@ const ext = {
     getValidators: function (mode = null, id, entity) {
 
         const nameValidator = new Regex({
-            pattern: /^https?:\/\//i,
-            message: 'Domain should start from http:// or https://',
+            pattern: /^[a-z\d_-]+$/i,
+            message: 'name should match pattern /^[a-z\\d_-]+$/i',
         });
 
         const validators = {
@@ -163,7 +163,7 @@ const ext = {
                             }
 
                             resolve('resolve ' + code);
-                        })
+                        }),
                 ),
                 nameValidator,
             ]),
@@ -173,7 +173,7 @@ const ext = {
                 new Regex({
                     pattern: /^https?:\/\//i,
                     message: 'Domain should start from http:// or https://',
-                }),
+                })
             ]),
             port: new Required([
                 new NotBlank(),

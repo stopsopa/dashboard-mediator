@@ -3,6 +3,8 @@ const isObject      = require('nlab/isObject');
 
 const log           = require('inspc');
 
+const trim          = require('nlib/trim');
+
 const cache = {};
 
 const th = msg => `mrequest-abstract.js: ` + msg;
@@ -223,6 +225,8 @@ tool.register = (register, opt) => {
     }
 
     domain = domain.trim();
+
+    domain = trim(domain, '/', 'r');
 
     if ( ! domain ) {
 
