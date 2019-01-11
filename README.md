@@ -2,7 +2,20 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/stopsopa/dashboard-mediator/blob/master/LICENSE)
 
 
+## Table of Contents
 
+<!-- toc -->
+
+- [console](#console)
+- [readding closest .env](#readding-closest-env)
+- [determining "dev" || "prod"](#determining-dev--prod)
+- [express response extensions:](#express-response-extensions)
+- [access to request & response in react component (SSR):](#access-to-request--response-in-react-component-ssr)
+- [RESTful api (transport)](#restful-api-transport)
+- [Controllers](#controllers)
+  * [Router](#router)
+
+<!-- tocstop -->
 
 # deploy in heroku
 
@@ -38,9 +51,33 @@
     node index.js
     # finish
         
+# to run local formation
 
-addidional tools
----    
+In order to create local formation of nodes run accordingly:
+(each instruction in separate terminal)
+
+
+(**WARNING**: It's good idea to run mediator first because after that all following client services will try to register itself to mediator, without this mediator won't be able to proxy traffic from one service to another)
+
+## main service (mediator service)
+
+    make start
+    
+## passive service (just listening)  
+
+    make client
+    
+## active service (only sending to mediator directly and to listener)
+
+    make sender
+    
+## standalone service (sending and listening)
+
+    # go to other directory (beyound main repo) and run:
+    npx @stopsopa/mediator
+    # and follow instructio on the screen
+    
+At the end just visit all services through browser and check what's available.                      
 
 
     

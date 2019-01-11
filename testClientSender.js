@@ -143,6 +143,27 @@ require('./libs/registerItself')({
             )
         ;
     });
+
+    const standalone_config = require('./standalone-node/config');
+
+    app.all('/standalone-service-controller', (req, res) => {
+
+        const {
+            clientPath,
+            jsonToSent,
+        } = req.body;
+
+        const cluster   = standalone_config.server.thisserver.cluster;
+
+        const node      = standalone_config.server.thisserver.node;
+
+        test(cluster, node, clientPath, jsonToSent)
+            .then(
+                json => res.jsonNoCache(json),
+                e => res.status(404).jsonNoCache(e)
+            )
+        ;
+    });
 }());
 
 

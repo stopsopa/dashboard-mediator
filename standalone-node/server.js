@@ -34,12 +34,62 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(bodyParser.json());
 
+
+
+
+
+// just common code for both types of services: listening and sending traffic ============== vvv
+
 require('@stopsopa/mediator/registerItself')({
     password    : process.env.PROTECTED_BASIC_AND_JWT,
     mediator    : config.server.mediator,
     thisserver  : config.server.thisserver,
 });
+// just common code for both types of services: listening and sending traffic ============== ^^^
 
+
+
+
+
+
+
+// to be able to receive traffic =========================================================== vvv
+/**
+ * Middleware to provide res.aes({}) method to return encrypted JSON responses to mediator service
+ * and to decode incoming request to pass it to regular routes
+ */
+require('@stopsopa/mediator/mresponse')({
+    aesPass: process.env.PROTECTED_AES256,
+    app,
+});
+
+/**
+ * Test endpoint after decoding encrypted body for manual testing
+ *
+ * WARNING: No need to implement any auth, encoded json works like authentication.
+ */
+app.all('/path/:rest(*)?', (req, res) => {
+
+    return res.aes({
+        response_from_client: {
+            request_body: {
+                ...req.body,
+                ...{
+                    added_by: 'standalone-server'
+                }
+            },
+            request_full_url: req.url,
+            request_url_param_rest: req.params.rest,
+            request_query_params: req.query,
+        }
+    });
+});
+
+// to be able to receive traffic =========================================================== ^^^
+
+
+
+// test of sending traffic to other services================================================ vvv
 /**
  * test controller for sending requests through mediator to another node
  */
@@ -79,6 +129,7 @@ require('@stopsopa/mediator/registerItself')({
         ;
     });
 }());
+// test of sending traffic to other services================================================ ^^^
 
 
 

@@ -543,7 +543,7 @@ Now run:
 
     cd "${project}"
     yarn
-    # check local .env
+    # check local .env setup global variables
     # then run
     node server.js
     

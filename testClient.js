@@ -68,7 +68,12 @@ app.all('/path/:rest(*)?', (req, res) => {
 
     return res.aes({
         response_from_client: {
-            request_body: req.body,
+            request_body: {
+                ...req.body,
+                ...{
+                    added_by: 'client-server'
+                }
+            },
             request_full_url: req.url,
             request_url_param_rest: req.params.rest,
             request_query_params: req.query,

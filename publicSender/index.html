@@ -150,7 +150,7 @@
                     console.log(e)
                 }
             }
-            onTestSend = () => {
+            onTestSend = url => {
 
                 const {
                     jwt,
@@ -178,7 +178,7 @@
                 this.setState({
                     testRes: 'Loading...'
                 }, () => {
-                    fetch(`/sender-service-controller?x-jwt=` + jwt, {
+                    fetch(`${url}?x-jwt=` + jwt, {
                         method: 'post',
                         headers: {
                             'Content-type': 'application/json; charset=utf-8',
@@ -263,7 +263,8 @@
 <pre type="text" onClick={e => e.target.select()} >{JSON.stringify(nodeIdJson, null, 4)}</pre>
 
 <h3>Test request from one client to another through mediator:</h3>
-<button onClick={this.onTestSend}>send</button>
+<button onClick={() => this.onTestSend('/sender-service-controller')}>send</button>
+<button onClick={() => this.onTestSend('/standalone-service-controller')}>send - standalone service</button>
 <input value={testPath} onChange={e => this.setState({testPath: e.target.value})} style={{width: '80%'}} />
 <br />
 <textarea value={testJson} onChange={e => this.setState({testJson: e.target.value})} style={{width: '80%', minHeight: "100px"}}/>
