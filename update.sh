@@ -139,6 +139,7 @@ if [ "$DIFF" != "" ] || [ "$1" = "force" ]; then
                             git commit --amend --no-edit
 
     git push $ORIGIN $REMOTEBRANCH
+    git push heroku $REMOTEBRANCH
 
     if [ "$?" = "0" ]; then
 
