@@ -17,7 +17,60 @@
 
 <!-- tocstop -->
 
-# deploy in heroku
+# What's that?
+
+# Why?
+    
+# Deploy locally
+
+    # copy .env and SETUP EVERYTHING PROPERLY IN .env
+    cp .env.local .env
+    # run docker mysql
+    make doc       
+    # fixtures
+    make fixtures
+    # run server
+    node index.js
+    # finish
+        
+# To run local formation
+
+In order to create local formation of nodes run accordingly:
+(each instruction in separate terminal)
+
+
+(**WARNING**: It's good idea to run mediator first because after that all following client services will try to register itself to mediator, without this mediator won't be able to proxy traffic from one service to another)
+
+## Main service (mediator service)
+
+    make start
+    
+## Passive service (just listening)  
+
+    make client
+    
+## Active service (only sending to mediator directly and to listener)
+
+    make sender
+    
+## Standalone service (sending and listening)
+
+[This](standalone-node/server.js) standalone service is actually very good example how to configure any aplication to communicate with or through mediator service.
+
+Just remember about minimal [dependencies](standalone-node/package.json) for this example. 
+
+    # go to other directory (beyound main repo) and run:
+    npx @stopsopa/mediator
+    # and follow instructio on the screen
+    
+At the end just visit all services through browser and check what's available.
+
+# Configuration of services
+
+# Using npm libraries to interact with mediator and attached services
+
+
+# Deploy in heroku
 
     git clone git@github.com:stopsopa/dashboard-mediator.git dashboard-mediator/runtime
     cd dashboard-mediator/runtime
@@ -35,46 +88,10 @@
     
     make u
     
-# to update project just change code, commit and run:
+# Dev notes:
+
+To update project just change what's necessary and run:
 
     make u  
     
-# deploy locally
-
-    # copy .env
-    cp .env.local .env
-    # run docker mysql
-    make doc       
-    # fixtures
-    make fixtures
-    # run server
-    node index.js
-    # finish
-        
-# to run local formation
-
-In order to create local formation of nodes run accordingly:
-(each instruction in separate terminal)
-
-
-(**WARNING**: It's good idea to run mediator first because after that all following client services will try to register itself to mediator, without this mediator won't be able to proxy traffic from one service to another)
-
-## main service (mediator service)
-
-    make start
-    
-## passive service (just listening)  
-
-    make client
-    
-## active service (only sending to mediator directly and to listener)
-
-    make sender
-    
-## standalone service (sending and listening)
-
-    # go to other directory (beyound main repo) and run:
-    npx @stopsopa/mediator
-    # and follow instructio on the screen
-    
-At the end just visit all services through browser and check what's available.
+... of course you have to be logged to npm (*npm login*)    
