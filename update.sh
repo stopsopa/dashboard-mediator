@@ -118,7 +118,9 @@ if [ "$DIFF" != "" ] || [ "$1" = "force" ]; then
 
     npm version patch
 
-    node copy-package-version.js package.json package_npm.json
+    node json-to-json.js package.json version package_npm.json version
+
+    node json-to-json.js package.json version standalone-node/package.json "dependencies.@stopsopa/mediator"
 
     (cd heroku && /bin/bash keep-awake.sh)
 
@@ -133,6 +135,7 @@ if [ "$DIFF" != "" ] || [ "$1" = "force" ]; then
                             npx markdown-toc -i README.md
                             git add README.md
                             git add package_npm.json
+                            git add standalone-node/package.json
 
                             # git add dist
                             # git add examples.es5.js

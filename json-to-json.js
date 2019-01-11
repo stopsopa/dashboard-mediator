@@ -199,12 +199,12 @@ const value     = get(tmp, fromKey);
 
 if ( ! value ) {
 
-    throw `can't extract value from '${from}' under key: '${}'`;
+    throw `can't extract value from '${from}' under key: '${fromKey}'`;
 }
 
 tmp         = require(to);
 
-set(tmp, toKey);
+set(tmp, toKey, value);
 
 fs.writeFileSync(to, JSON.stringify(tmp, null, 4));
 
