@@ -11,7 +11,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "@babel/standalone": "^7.2.5",
-    "@stopsopa/dotenv-up": "^1.0.18",
+    "@stopsopa/dotenv-up": "^1.0.22",
     "@stopsopa/knex-abstract": "^0.0.41",
     "@stopsopa/validator": "^0.0.94",
     "@types/node": "^8.0.29",

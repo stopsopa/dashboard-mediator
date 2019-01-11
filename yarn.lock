@@ -15,10 +15,15 @@
   resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.2.5.tgz#7a6dd6761fc78853066e384a5e9ba0a1f7df2d11"
   integrity sha512-U00wHmbh0eCUCAsCN1cz/WS2aB/UXjQrALsUmVIcugiK3HiI4PEh93PeGsaJttBmj0+Zfp1SpUNxPl6s8KPHUQ==
 
-"@stopsopa/dotenv-up@^1.0.17", "@stopsopa/dotenv-up@^1.0.18":
+"@stopsopa/dotenv-up@^1.0.17":
   version "1.0.18"
   resolved "https://registry.yarnpkg.com/@stopsopa/dotenv-up/-/dotenv-up-1.0.18.tgz#f78ed6401630ba2e5e07c4ff3eda7e4e601d19fb"
   integrity sha512-HqusLlVAByWCQ9u+va1RqrUE1VkWVlEjibwNFO2CnokGwXHWJnEQXAt2a+Yt4eHGAYbE9Vv3QPg0zv4XzV2g1Q==
+
+"@stopsopa/dotenv-up@^1.0.22":
+  version "1.0.22"
+  resolved "https://registry.yarnpkg.com/@stopsopa/dotenv-up/-/dotenv-up-1.0.22.tgz#07f58e0baae431dcbed1495e2d7999274ec5a5d4"
+  integrity sha512-VjEJnaCGvAKSYxSGAxzCGR8AcpJhX16nz6+womSB6gVaCYpwb/2lfrql4uNUw2laWeLSMcIoVP4LdvnmrDg2nw==
 
 "@stopsopa/knex-abstract@^0.0.41":
   version "0.0.41"

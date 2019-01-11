@@ -13,24 +13,32 @@ const express       = require('express');
 
 const app           = express();
 
+/**
+ * Simple way to serve only index.html
+ */
 app.get('/', (req, res) => {
     res.set('Content-type', 'text/html; charset=UTF-8');
     res.end(fs.readFileSync(path.resolve(__dirname, 'index.html')).toString());
 });
 
+/**
+ * This middleware is just loggin incoming requests ruls to local terminal
+ */
 app.use(require('nlab/express/console-logger'));
 
 /**
- * mainly for proxy.js, but it's general purpose library
+ * mainly for proxy.js, but it's general purpose library.
+ * It's middleware that adds few methods to response object, like:
+ *      res.jsonNoCache({...})
+ *      or
+ *      res.accessDenied(message)
  */
 app.use(require('nlab/express/extend-res'));
 
 /**
- * registerItself & mrequest both require iso-fetch in this test server
+ * registerItself & mrequest both require iso-fetch on this test server
  */
 require('isomorphic-fetch');
-
-app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(bodyParser.json());
 
