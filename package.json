@@ -1,9 +1,6 @@
 {
   "name": "@stopsopa/mediator",
   "version": "0.0.73",
-  "engines": {
-    "node": "8"
-  },
   "scripts": {
     "start": "echo start",
     "test": "echo test"
