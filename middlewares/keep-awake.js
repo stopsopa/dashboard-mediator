@@ -46,14 +46,24 @@ module.exports = app => {
         // console.log(`[${label}]: attempt to request to '${fullUrl}' ... (async)`);
 
         fetch(fullUrl)
-            .then(res => res.json())
-            .then(json => {
+            .then(res => res.text())
+            .then(raw => {
+
+                let json = {};
+
+                try {
+
+                    json = JSON.parse(raw);
+                }
+                catch (e) {
+
+                }
 
                 // console.log(`[${label}]: keep-awake '${fullUrl}' then: `, json);
 
                 if ( json.ok !== true ) {
 
-                    console.log(`[${label}]: request to '${fullUrl}' failed: wrong response body: ` + JSON.stringify(json, null, 4));
+                    console.log(`[${label}]: request to '${fullUrl}' failed: wrong response body: ` + JSON.stringify(raw, null, 4));
 
                     process.exit(1);
 

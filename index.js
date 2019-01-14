@@ -37,6 +37,11 @@ app.use((req, res, next) => {
     next();
 });
 
+/**
+ * Register this before security
+ */
+require('./middlewares/keep-awake')(app);
+
 (function () {
 
     // var auth = require('basic-auth');
@@ -188,8 +193,6 @@ knex.init(require('./models/config'));
 
 
 app.all('/ping', require('./middlewares/ping'));
-
-require('./middlewares/keep-awake')(app);
 
 const port = config.port;
 
