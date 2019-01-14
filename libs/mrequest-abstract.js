@@ -235,7 +235,7 @@ tool.register = (register, opt) => {
         throw th(`register(), domain is not defined`)
     }
 
-    if ( /^https:\/\//.test(domain) ) {
+    if ( ! /^https:\/\//.test(domain) ) {
 
         log.t(th(`register(), domain should start from http:// or https://`))
 
