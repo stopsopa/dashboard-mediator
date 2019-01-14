@@ -89,6 +89,14 @@ app.all('/path/:rest(*)?', (req, res) => {
             request_full_url: req.url,
             request_url_param_rest: req.params.rest,
             request_query_params: req.query,
+            ".env": {
+                THIS_CLUSTER: process.env.THIS_CLUSTER,
+                THIS_NODE: process.env.THIS_NODE,
+                TARGET_CLUSTER: process.env.TARGET_CLUSTER,
+                TARGET_NODE: process.env.TARGET_NODE,
+                MEDIATOR_SERVICE_DOMAIN: process.env.MEDIATOR_SERVICE_DOMAIN,
+                MEDIATOR_SERVICE_PORT: process.env.MEDIATOR_SERVICE_PORT,
+            }
         }
     });
 });
