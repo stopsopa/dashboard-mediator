@@ -56,6 +56,8 @@ yarn-error*
 /env.heroku
 /env.local
 *.tgz
+/yarn.lock
+/package_npm.json
 
 
 
