@@ -51,7 +51,7 @@ fetch('/register', {
 
             log("no access\n");
 
-            return res.basicAuth();
+            return res.accessDenied(req);
         }
 
         let entity              = req.body;
@@ -147,7 +147,7 @@ fetch('/register', {
 
             log("no access\n");
 
-            return res.basicAuth();
+            return res.accessDenied(req);
         }
 
         let id              = req.params.id;
@@ -293,7 +293,7 @@ fetch('/many/root/test', {
 
             log("no access\n");
 
-            return res.basicAuth();
+            return res.accessDenied(req);
         }
 
         try {
@@ -379,7 +379,7 @@ fetch('/one/root/dd/test', {
 
             log("no access\n");
 
-            return res.basicAuth();
+            return res.accessDenied(req);
         }
 
         try {
@@ -458,7 +458,7 @@ fetch('/one/root/dd/test', {
 
             log("no access\n");
 
-            return res.basicAuth();
+            return res.accessDenied(req);
         }
 
         const cluster = (req.params.cluster || "").trim();
@@ -508,7 +508,7 @@ fetch('/one/root/dd/test', {
 
             log("no access\n");
 
-            return res.basicAuth();
+            return res.accessDenied(req);
         }
 
         const id = req.params.id;
@@ -552,7 +552,7 @@ fetch('/one/root/dd/test', {
 
             log("no access\n");
 
-            return res.basicAuth();
+            return res.accessDenied(req);
         }
 
         // to create use:

@@ -511,6 +511,11 @@ diff@^3.1.0:
   resolved "https://registry.yarnpkg.com/diff/-/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
   integrity sha512-A46qtFgd+g7pDZinpnwiRJtxbC1hpgf0uzP3iG89scHk0AUC7A1TGxf5OiiOUv/JMZR8GOt8hL900hV0bOy5xA==
 
+dotenv-up@^1.0.28:
+  version "1.0.28"
+  resolved "https://registry.yarnpkg.com/dotenv-up/-/dotenv-up-1.0.28.tgz#bc9616b5811454343597f00456d26b070fef3bf0"
+  integrity sha512-PDaW75EoTSQ7J31xwk2NyfqsT33k1Pz3734cnTvsb8FRl7iCluTx8b6071b3eMdXtZWLcpv5evsKHmD57XAIqQ==
+
 dotenv@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-5.0.1.tgz#a5317459bd3d79ab88cff6e44057a6a3fbb1fcef"
@@ -1957,6 +1962,15 @@ scheduler@^0.12.0:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
+
+secure-express@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/secure-express/-/secure-express-0.0.6.tgz#079d2d27551ba94c49618b54c10442236c441e16"
+  integrity sha512-Rd8QX08eimLGYzP8j6qwWCfQnc4awHQXjOVS8nxHXNXrouBwhro47jb3B+wFz/mDnN/X/aeL8/luGLPoK+hFZA==
+  dependencies:
+    inspc "^0.0.13"
+    jsonwebtoken "^8.4.0"
+    lodash "^4.17.11"
 
 semver@^5.5.0:
   version "5.6.0"

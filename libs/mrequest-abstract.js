@@ -3,7 +3,7 @@ const isObject      = require('nlab/isObject');
 
 const log           = require('inspc');
 
-const trim          = require('nlib/trim');
+const trim          = require('nlab/trim');
 
 const cache = {};
 

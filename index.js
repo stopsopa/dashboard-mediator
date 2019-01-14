@@ -21,14 +21,68 @@ const favicon = require('serve-favicon');
 
 app.use(favicon(path.join(__dirname, 'favicon.ico')))
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 app.use(bodyParser.json());
+
+app.use(function (req, res, next) {
+    res.removeHeader("X-Powered-By");
+    next();
+});
 
 app.use((req, res, next) => {
     res.set('Access-Control-Allow-Origin', '*');
     next();
 });
+
+// (function (i) {
+//     app.use((req, res, next) => {
+//         console.log(req.method+':'+(i++)+':'+req.url+':'+req.get('Authorization'));
+//         next();
+//     });
+// }(0));
+
+const security = require('secure-express');
+
+const middlewares = security({
+    // debug: true,
+    secret: process.env.PROTECTED_BASIC_AND_JWT,
+    userprovider: async (username, opt) => {
+
+        const users = [
+            {
+                username: 'admin',
+                password: process.env.PROTECTED_BASIC_AND_JWT,
+                // jwtpayload: {
+                //     username: 'admin',
+                //     role: 'admin'
+                // }
+            },
+            {
+                username: 'abc',
+                password: 'def',
+                // jwtpayload: {
+                //     username: 'admin',
+                //     role: 'user'
+                // }
+            },
+        ];
+
+        return users.find(u => u.username === username);
+    },
+    authenticate: async (user = {}, password, opt) => {
+        return user.password === password;
+    },
+    extractpayloadfromuser: async (user, opt) => {
+        return user.jwtpayload || {};
+    },
+});
+
+app.use(middlewares.secure);
+
+app.use('/signout', middlewares.signout);
 
 (function () {
 
@@ -36,22 +90,10 @@ app.use((req, res, next) => {
 
     app.use((req, res, next) => {
 
-        // if (/^\/admin/.test(req.url)) {
-        //
-        //     var credentials = auth(req);
-        //
-        //     if (!credentials || credentials.name !== 'admin' || credentials.pass !== process.env.PROTECTED_BASIC_AND_JWT) {
-        //
-        //         res.statusCode = 401;
-        //
-        //         res.setHeader('WWW-Authenticate', 'Basic realm="Sign in"')
-        //
-        //         return res.end('Access denied');
-        //     } else {
-        //
-        //         return next();
-        //     }
-        // }
+        if (req.auth) {
+
+            return next();
+        }
 
         let token = req.get('x-jwt') || req.query['x-jwt'] || req.body['x-jwt'];
 
@@ -81,15 +123,15 @@ app.use((req, res, next) => {
                 log.t(`api: req: '${req.url}', invalid jwt token: '${e}'`);
             }
         }
-        else {
-
-            var credentials = auth(req);
-
-            if (credentials && credentials.name === 'admin' && credentials.pass === process.env.PROTECTED_BASIC_AND_JWT) {
-
-                req.auth = 'basicauth';
-            }
-        }
+        // else {
+        //
+        //     var credentials = auth(req);
+        //
+        //     if (credentials && credentials.name === 'admin' && credentials.pass === process.env.PROTECTED_BASIC_AND_JWT) {
+        //
+        //         req.auth = 'basicauth';
+        //     }
+        // }
 
         next();
     });
@@ -130,7 +172,7 @@ require('./middlewares/proxy')(app);
 
             if ( ! req.auth ) {
 
-                return res.basicAuth();
+                return res.accessDenied(req);
             }
         }
 

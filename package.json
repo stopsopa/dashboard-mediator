@@ -2,7 +2,7 @@
   "name": "@stopsopa/mediator",
   "version": "0.0.71",
   "engines": {
-    "node": "8.12.0"
+    "node": "8"
   },
   "scripts": {
     "start": "echo start",
@@ -17,6 +17,7 @@
     "@types/node": "^8.0.29",
     "basic-auth": "^2.0.1",
     "body-parser": "^1.18.3",
+    "dotenv-up": "^1.0.28",
     "express": "^4.16.4",
     "inspc": "^0.0.13",
     "isomorphic-fetch": "^2.2.1",
@@ -28,6 +29,7 @@
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "reflect-metadata": "^0.1.10",
+    "secure-express": "^0.0.6",
     "serve-favicon": "^2.5.0",
     "ts-node": "3.3.0",
     "typeorm": "^0.2.9",

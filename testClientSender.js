@@ -45,7 +45,7 @@ app.use(require('nlab/express/extend-res'));
     //
     //         if ( ! req.auth ) {
     //
-    //             return res.basicAuth();
+    //             return res.accessDenied(req);
     //         }
     //     }
     //
@@ -72,7 +72,7 @@ app.use(require('nlab/express/extend-res'));
 //
 //             if ( ! req.auth ) {
 //
-//                 return res.basicAuth();
+//                 return res.accessDenied(req);
 //             }
 //         }
 //
