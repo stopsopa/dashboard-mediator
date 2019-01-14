@@ -1,6 +1,6 @@
 {
     "name": "@stopsopa/mediator",
-    "version": "0.0.72",
+    "version": "0.0.73",
     "engines": {
         "node": "8.12.0"
     },
