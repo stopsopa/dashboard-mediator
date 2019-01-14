@@ -37,56 +37,9 @@ app.use((req, res, next) => {
     next();
 });
 
-// (function (i) {
-//     app.use((req, res, next) => {
-//         console.log(req.method+':'+(i++)+':'+req.url+':'+req.get('Authorization'));
-//         next();
-//     });
-// }(0));
-
-const security = require('secure-express');
-
-const middlewares = security({
-    // debug: true,
-    secret: process.env.PROTECTED_BASIC_AND_JWT,
-    userprovider: async (username, opt) => {
-
-        const users = [
-            {
-                username: 'admin',
-                password: process.env.PROTECTED_BASIC_AND_JWT,
-                // jwtpayload: {
-                //     username: 'admin',
-                //     role: 'admin'
-                // }
-            },
-            {
-                username: 'abc',
-                password: 'def',
-                // jwtpayload: {
-                //     username: 'admin',
-                //     role: 'user'
-                // }
-            },
-        ];
-
-        return users.find(u => u.username === username);
-    },
-    authenticate: async (user = {}, password, opt) => {
-        return user.password === password;
-    },
-    extractpayloadfromuser: async (user, opt) => {
-        return user.jwtpayload || {};
-    },
-});
-
-app.use(middlewares.secure);
-
-app.use('/signout', middlewares.signout);
-
 (function () {
 
-    var auth = require('basic-auth');
+    // var auth = require('basic-auth');
 
     app.use((req, res, next) => {
 
@@ -136,6 +89,53 @@ app.use('/signout', middlewares.signout);
         next();
     });
 }());
+
+// (function (i) {
+//     app.use((req, res, next) => {
+//         console.log(req.method+':'+(i++)+':'+req.url+':'+req.get('Authorization'));
+//         next();
+//     });
+// }(0));
+
+const security = require('secure-express');
+
+const middlewares = security({
+    debug: true,
+    secret: process.env.PROTECTED_BASIC_AND_JWT,
+    userprovider: async (username, opt) => {
+
+        const users = [
+            {
+                username: 'admin',
+                password: process.env.PROTECTED_BASIC_AND_JWT,
+                // jwtpayload: {
+                //     username: 'admin',
+                //     role: 'admin'
+                // }
+            },
+            {
+                username: 'abc',
+                password: 'def',
+                // jwtpayload: {
+                //     username: 'admin',
+                //     role: 'user'
+                // }
+            },
+        ];
+
+        return users.find(u => u.username === username);
+    },
+    authenticate: async (user = {}, password, opt) => {
+        return user.password === password;
+    },
+    extractpayloadfromuser: async (user, opt) => {
+        return user.jwtpayload || {};
+    },
+});
+
+app.use(middlewares.secure);
+
+app.use('/signout', middlewares.signout);
 
 app.use(require('nlab/express/extend-res'));
 
