@@ -1,6 +1,6 @@
 {
   "name": "@stopsopa/mediator",
-  "version": "0.0.77",
+  "version": "0.0.78",
   "scripts": {
     "start": "echo start",
     "test": "echo test"
