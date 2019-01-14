@@ -1,6 +1,6 @@
 {
     "name": "@stopsopa/mediator",
-    "version": "0.0.76",
+    "version": "0.0.77",
     "bin": "./install/install.js",
     "scripts": {
         "start": "echo start",
