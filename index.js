@@ -100,7 +100,7 @@ app.use((req, res, next) => {
 const security = require('secure-express');
 
 const middlewares = security({
-    debug: true,
+    // debug: true,
     secret: process.env.PROTECTED_BASIC_AND_JWT,
     userprovider: async (username, opt) => {
 

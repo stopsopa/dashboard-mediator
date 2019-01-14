@@ -13,6 +13,8 @@ const jwt           = require('jsonwebtoken');
 
 const config        = require('../config');
 
+const isObject      = require('nlab/isObject');
+
 module.exports = app => {
 
     /**
@@ -49,7 +51,7 @@ fetch('/register', {
 
         if ( ! req.auth ) {
 
-            log("no access\n");
+            log("no access 1\n");
 
             return res.accessDenied(req);
         }
@@ -145,7 +147,7 @@ fetch('/register', {
 
         if ( ! req.auth ) {
 
-            log("no access\n");
+            log("no access 2\n");
 
             return res.accessDenied(req);
         }
@@ -291,7 +293,7 @@ fetch('/many/root/test', {
 
         if ( ! req.auth ) {
 
-            log("no access\n");
+            log("no access 3\n");
 
             return res.accessDenied(req);
         }
@@ -377,7 +379,7 @@ fetch('/one/root/dd/test', {
 
         if ( ! req.auth ) {
 
-            log("no access\n");
+            log("no access 4\n");
 
             return res.accessDenied(req);
         }
@@ -456,7 +458,7 @@ fetch('/one/root/dd/test', {
 
         if ( ! req.auth ) {
 
-            log("no access\n");
+            log("no access 5\n");
 
             return res.accessDenied(req);
         }
@@ -506,7 +508,7 @@ fetch('/one/root/dd/test', {
 
         if ( ! req.auth ) {
 
-            log("no access\n");
+            log("no access 6\n");
 
             return res.accessDenied(req);
         }
@@ -548,9 +550,11 @@ fetch('/one/root/dd/test', {
             req.clilogged = true;
         // loggin to cli ^^^
 
-        if ( req.auth !== 'basicauth' ) {
+        if ( ! isObject(req.auth) ) {
 
-            log("no access\n");
+            log("no access 7\n");
+
+            log.dump(req.auth, 4)
 
             return res.accessDenied(req);
         }

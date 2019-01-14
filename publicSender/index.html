@@ -248,6 +248,10 @@
                     testRes,
                 } = this.state;
 
+                const {
+                    mediatorUrl,
+                } = this.props;
+
                 return (
                     <>
                         <div>
@@ -271,7 +275,7 @@
     this.onClear('nodesCluster', '')
 }}>clear</button>
 <input onChange={e => this.setState({nodesCluster: e.target.value})} value={nodesCluster} placeholder="cluster name" style={{width: '300px'}}/>
-<a href="/admin/clusters?x-jwt=" target="_blank">/admin/clusters</a>
+<a href={`${mediatorUrl}/admin/clusters${nodesCluster && `/${nodesCluster}`}?x-jwt=${jwt ? jwt : ''}`} target="_blank">{mediatorUrl}/admin/clusters{nodesCluster && `/${nodesCluster}`}?jwt=...</a>
 <br />
 <pre type="text" onClick={e => e.target.select()} >{JSON.stringify(nodes, null, 4)}</pre>
 
