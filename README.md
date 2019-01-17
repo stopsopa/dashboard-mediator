@@ -79,7 +79,7 @@ In order to create local formation of nodes, run accordingly:
     
 ## Standalone service (sending and listening)
 
-[This](standalone-node/server.js) standalone service is actually very good example how to configure any application to communicate with or through mediator service.
+[This](standalone-node/server.js) standalone service is actually very good as an example how to configure any application to communicate with or through mediator service.
 
 Just remember about minimal [dependencies](standalone-node/package.json). 
 
