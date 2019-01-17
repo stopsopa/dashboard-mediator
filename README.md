@@ -42,7 +42,9 @@ Due to this architecture in case if particular microservice have to be moved to 
     # git clone ...
     # copy .env and SETUP EVERYTHING PROPERLY IN .env
     cp .env.local .env
-    # run docker mysql # WARNING: give mysql container little time to properly start (you can track state using "docker ps")
+    # run docker mysql 
+    # WARNING: give mysql container little time to properly start (you can track state using "docker ps")
+    
     make doc       
     # fixtures
     make fixtures
