@@ -39,6 +39,7 @@ Due to this architecture in case if particular microservice have to be moved to 
     
 # Deploy locally
 
+    # git clone ...
     # copy .env and SETUP EVERYTHING PROPERLY IN .env
     cp .env.local .env
     # run docker mysql
