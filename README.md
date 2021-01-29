@@ -1,3 +1,7 @@
+# OBSOLITE
+Further investigation of sockets in node made solution provided by this repository underpowered
+
+
 [![npm version](https://badge.fury.io/js/%40stopsopa%2Fmediator.svg)](https://www.npmjs.com/package/@stopsopa/mediator)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/stopsopa/dashboard-mediator/blob/master/LICENSE)
 
